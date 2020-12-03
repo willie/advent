@@ -1,2 +1,2 @@
-# advent
-advent of code solutions, plus some utilities
+# advent of code
+solutions and utilities
