@@ -13,16 +13,16 @@ func parse(in string) (l, w, h int) {
 
 func wrap(in string) (paper int) {
 	l, w, h := parse(in)
-	sides := []int{l * w, w * h, h * l, l * w, w * h, h * l}
+	sides := []int{l * w, w * h, h * l}
 
-	return aoc.Sum(sides) + aoc.Min(sides)
+	return 2*aoc.Sum(sides...) + aoc.Min(sides...)
 }
 
 func ribbon(in string) (ribbon int) {
 	l, w, h := parse(in)
 	perimeter := []int{2 * (l + w), 2 * (w + h), 2 * (h + l)}
 
-	return aoc.Min(perimeter) + (l * w * h)
+	return aoc.Min(perimeter...) + (l * w * h)
 }
 
 func part1(in []string) (total int) {

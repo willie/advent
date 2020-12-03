@@ -6,12 +6,53 @@ import (
 	"math"
 )
 
+// Sum returns total
+func Sum(in ...int) (sum int) {
+	for _, i := range in {
+		sum += i
+	}
+
+	return
+}
+
 // Product multiplies all the numbers together
 func Product(ints ...int) (p int) {
 	p = 1
 	for _, i := range ints {
 		p = p * i
 	}
+	return
+}
+
+// Min returns smallest value
+func Min(in ...int) (min int) {
+	if len(in) == 0 {
+		log.Fatalln("no values in array")
+	}
+
+	min = in[0]
+	for i := 1; i < len(in); i++ {
+		if in[i] < min {
+			min = in[i]
+		}
+	}
+
+	return
+}
+
+// Max returns largest value
+func Max(in ...int) (max int) {
+	if len(in) == 0 {
+		log.Fatalln("no values in array")
+	}
+
+	max = in[0]
+	for i := 1; i < len(in); i++ {
+		if max < in[i] {
+			max = in[i]
+		}
+	}
+
 	return
 }
 
@@ -92,45 +133,4 @@ func AngleDistance(a, b image.Point) (angle, distance float64) {
 	distance = math.Sqrt((n * n) + (d * d))
 
 	return angle, distance
-}
-
-// Min returns smallest value
-func Min(in []int) (min int) {
-	if len(in) == 0 {
-		log.Fatalln("no values in array")
-	}
-
-	min = in[0]
-	for i := 1; i < len(in); i++ {
-		if in[i] < min {
-			min = in[i]
-		}
-	}
-
-	return
-}
-
-// Max returns largest value
-func Max(in []int) (max int) {
-	if len(in) == 0 {
-		log.Fatalln("no values in array")
-	}
-
-	max = in[0]
-	for i := 1; i < len(in); i++ {
-		if max < in[i] {
-			max = in[i]
-		}
-	}
-
-	return
-}
-
-// Sum returns total
-func Sum(in []int) (sum int) {
-	for _, i := range in {
-		sum += i
-	}
-
-	return
 }
