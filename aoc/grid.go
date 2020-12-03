@@ -30,7 +30,7 @@ func NewGrid(in []string) (grid Grid) {
 func (grid Grid) Print() {
 	for _, row := range grid {
 		for _, r := range row {
-			fmt.Println(r)
+			fmt.Print(r)
 		}
 		fmt.Println()
 	}
