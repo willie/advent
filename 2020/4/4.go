@@ -20,49 +20,54 @@ var passportFields = map[string]bool{
 	"cid": true,
 }
 
-func part1(in []string) (valid int) {
-	var current []string
+func parse(in string) (passports []map[string]string) {
+	lines := strings.Split(in, "\n\n")
 
-	for _, i := range in {
-		// fmt.Println(i)
-		fields := strings.Split(i, " ")
-		// fmt.Println(len(i), len(fields))
-		current = append(current, fields...)
+	for _, p := range lines {
+		p = strings.ReplaceAll(p, "\n", " ")
 
-		if len(i) == 0 { // end of passport
-			count := 0
-			opt := false
+		passport := map[string]string{}
 
-			fields := []string{}
-			// check
-			for _, j := range current {
-				kv := strings.Split(j, ":")
-				name := kv[0]
-				// value = kv[1]
-				// fmt.Println(name)
-				fields = append(fields, name)
-
-				if optional, ok := passportFields[name]; ok {
-					count++
-					if optional {
-						opt = true
-					}
-				}
+		fields := strings.Split(p, " ")
+		for _, f := range fields {
+			if len(f) == 0 {
+				continue
 			}
 
-			qualifies := false
+			kv := strings.Split(f, ":")
 
-			switch {
-			case count == len(passportFields):
-				qualifies = true
-			case (count == len(passportFields)-1) && opt:
-				qualifies = true
-			}
+			name := kv[0]
+			value := kv[1]
 
-			fmt.Println(fields)
-
-			current = []string{}
+			passport[name] = value
 		}
+
+		passports = append(passports, passport)
+	}
+	return
+}
+
+func part1(in string) (valid int) {
+	passports := parse(in)
+
+	for _, passport := range passports {
+		pass := false
+
+		if len(passport) == len(passportFields) {
+			pass = true
+		}
+
+		if len(passport)+1 == len(passportFields) {
+			if _, there := passport["cid"]; !there {
+				pass = true
+			}
+		}
+
+		if pass {
+			valid++
+		}
+
+		fmt.Println(passport, pass)
 	}
 
 	return
@@ -73,8 +78,9 @@ const day = "https://adventofcode.com/2020/day/4"
 func main() {
 	println(day)
 
-	aoc.Test("test1", part1(aoc.Strings("test")), 2)
-	aoc.Run("part1", part1(aoc.Strings(day)))
+	parse(aoc.String("test"))
+	aoc.Test("test1", part1(aoc.String("test")), 2)
+	aoc.Run("part1", part1(aoc.String(day)))
 
 	// println("-------")
 
