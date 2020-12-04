@@ -2,10 +2,8 @@ package main
 
 import (
 	"fmt"
-	"image/color"
 
 	"github.com/willie/advent/aoc"
-	"golang.org/x/image/colornames"
 )
 
 func part1(in []string, right, down int) (trees int) {
@@ -59,14 +57,4 @@ func main() {
 
 	aoc.Test("test2", part2(aoc.Strings("test")), 336)
 	aoc.Run("part2", part2(aoc.Strings(day)))
-
-	// having fun
-	g := aoc.NewGrid(aoc.Strings(day))
-	scale := 4
-	img := g.NewRGBAImage(scale)
-	g.DrawImage(img, scale, map[string]color.Color{"#": colornames.Red})
-	aoc.SavePNG("test.png", img)
-
-	pimg := aoc.PaletteImageFromImage(img)
-	aoc.SaveGIF("text.gif", pimg)
 }
