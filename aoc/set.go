@@ -62,8 +62,9 @@ func (s StringSet) Subtract(x *StringSet) (difference []string) {
 type IntSet map[int]struct{}
 
 // NewIntSet returns a new IntSet
-func NewIntSet() IntSet {
+func NewIntSet(values ...int) IntSet {
 	s := IntSet{}
+	s.AddMany(values)
 	return s
 }
 
