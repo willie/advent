@@ -10,17 +10,12 @@ type StringSet map[string]struct{}
 // NewStringSet returns a new StringSet
 func NewStringSet(values ...string) StringSet {
 	s := StringSet{}
-	s.Add(values...)
+	s.AddMany(values)
 	return s
 }
 
 // Add values to the set
-func (s StringSet) Add(values ...string) StringSet {
-	for _, value := range values {
-		s[value] = exists
-	}
-	return s
-}
+func (s StringSet) Add(values ...string) StringSet { return s.AddMany(values) }
 
 // AddMany values to the set
 func (s StringSet) AddMany(values []string) StringSet {
@@ -68,17 +63,12 @@ type IntSet map[int]struct{}
 // NewIntSet returns a new IntSet
 func NewIntSet(values ...int) IntSet {
 	s := IntSet{}
-	s.Add(values...)
+	s.AddMany(values)
 	return s
 }
 
 // Add a value to the set
-func (s IntSet) Add(values ...int) IntSet {
-	for _, value := range values {
-		s[value] = exists
-	}
-	return s
-}
+func (s IntSet) Add(values ...int) IntSet { return s.AddMany(values) }
 
 // AddMany values to the set
 func (s IntSet) AddMany(values []int) IntSet {
