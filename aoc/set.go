@@ -10,13 +10,15 @@ type StringSet map[string]struct{}
 // NewStringSet returns a new StringSet
 func NewStringSet(values ...string) StringSet {
 	s := StringSet{}
-	s.AddMany(values)
+	s.Add(values...)
 	return s
 }
 
-// Add a value to the set
-func (s StringSet) Add(value string) StringSet {
-	s[value] = exists
+// Add values to the set
+func (s StringSet) Add(values ...string) StringSet {
+	for _, value := range values {
+		s[value] = exists
+	}
 	return s
 }
 
@@ -28,9 +30,11 @@ func (s StringSet) AddMany(values []string) StringSet {
 	return s
 }
 
-// Remove value from set
-func (s StringSet) Remove(value string) StringSet {
-	delete(s, value)
+// Remove values from set
+func (s StringSet) Remove(values ...string) StringSet {
+	for _, value := range values {
+		delete(s, value)
+	}
 	return s
 }
 
@@ -64,13 +68,16 @@ type IntSet map[int]struct{}
 // NewIntSet returns a new IntSet
 func NewIntSet(values ...int) IntSet {
 	s := IntSet{}
-	s.AddMany(values)
+	s.Add(values...)
 	return s
 }
 
 // Add a value to the set
-func (s IntSet) Add(value int) {
-	s[value] = exists
+func (s IntSet) Add(values ...int) IntSet {
+	for _, value := range values {
+		s[value] = exists
+	}
+	return s
 }
 
 // AddMany values to the set
@@ -82,8 +89,11 @@ func (s IntSet) AddMany(values []int) IntSet {
 }
 
 // Remove value from set
-func (s IntSet) Remove(value int) {
-	delete(s, value)
+func (s IntSet) Remove(values ...int) IntSet {
+	for _, value := range values {
+		delete(s, value)
+	}
+	return s
 }
 
 // Contains returns if a value is in the set
