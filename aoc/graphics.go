@@ -24,14 +24,14 @@ func SavePNG(filename string, i image.Image) {
 	}
 }
 
-// PaletteImageFromImage return a paletted image from a regular image
+// PaletteImageFromImage return a paletted image copied from a regular image
 func PaletteImageFromImage(img image.Image) (palleted *image.Paletted) {
 	palleted = image.NewPaletted(img.Bounds(), palette.Plan9)
 	draw.FloydSteinberg.Draw(palleted, img.Bounds(), img, image.ZP)
 	return
 }
 
-// SaveGIF a single palette image
+// SaveGIF from a single palette image
 func SaveGIF(filename string, img *image.Paletted) {
 	SaveGIFs("text.gif", []*image.Paletted{img}, 0)
 }
