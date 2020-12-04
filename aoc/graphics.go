@@ -1,7 +1,9 @@
 package aoc
 
 import (
+	"fmt"
 	"image"
+	"image/color"
 	"image/color/palette"
 	"image/draw"
 	"image/gif"
@@ -54,6 +56,25 @@ func SaveGIFs(filename string, images []*image.Paletted, delay int) {
 	if err != nil {
 		log.Fatalf("gif.Encode() failed with %s\n", err)
 	}
+}
+
+// ParseHexColor parses a webcolor string
+// from https://stackoverflow.com/questions/54197913/parse-hex-string-to-image-color
+func ParseHexColor(s string) (c color.RGBA, err error) {
+	c.A = 0xff
+	switch len(s) {
+	case 7:
+		_, err = fmt.Sscanf(s, "#%02x%02x%02x", &c.R, &c.G, &c.B)
+	case 4:
+		_, err = fmt.Sscanf(s, "#%1x%1x%1x", &c.R, &c.G, &c.B)
+		// Double the hex digits:
+		c.R *= 17
+		c.G *= 17
+		c.B *= 17
+	default:
+		err = fmt.Errorf("invalid length, must be 7 or 4")
+	}
+	return
 }
 
 // future: text version of graphic image
