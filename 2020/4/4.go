@@ -12,16 +12,14 @@ var passportFields = aoc.NewStringSet("byr", "iyr", "eyr", "hgt", "hcl", "ecl", 
 var eyeColor = aoc.NewStringSet("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
 
 func parse(in string) (passports []map[string]string) {
-	lines := strings.Split(strings.TrimSpace(in), "\n\n")
+	for _, p := range strings.Split(strings.TrimSpace(in), "\n\n") {
+		p = strings.ReplaceAll(p, "\n", " ")
 
-	for _, p := range lines {
 		passport := map[string]string{}
 
-		p = strings.ReplaceAll(p, "\n", " ")
-		fields := strings.Split(p, " ")
-
-		for _, f := range fields {
+		for _, f := range strings.Split(p, " ") {
 			kv := strings.Split(f, ":")
+
 			name := kv[0]
 			if !passportFields.Contains(name) {
 				continue
@@ -41,7 +39,6 @@ func part1(in string) (valid int) {
 		if len(passport) == len(passportFields) {
 			valid++
 		}
-		// fmt.Println(passport, pass)
 	}
 	return
 }
@@ -95,19 +92,14 @@ func part2(in string) (count int) {
 				continue
 			}
 
-			if valid {
-				// fmt.Println(k, "valid:\t", v)
-			} else {
+			if !valid {
 				passportValid = false
-				// fmt.Println(k, "invalid:\t", v)
 			}
 		}
 
 		if passportValid && (len(passport) == len(passportFields)) {
 			count++
 		}
-
-		// fmt.Println()
 	}
 
 	return
