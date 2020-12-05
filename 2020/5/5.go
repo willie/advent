@@ -107,4 +107,9 @@ func main() {
 			return
 		}
 	}
+
+	// try without sets? in progress
+	// L := seatIDs[0]
+	// H := seatIDs[len(seatIDs)-1]
+	// fmt.Println("part2 alt:", (H*(H+1)-L*(L-1))/2)
 }
