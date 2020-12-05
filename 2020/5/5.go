@@ -85,7 +85,7 @@ func main() {
 	fmt.Println("binary solution after some sleep, damnit")
 
 	seatIDs := []int{}
-	bc := strings.NewReplacer("F", "0", "B", "1", "L", "0", "R", "1")
+	bc := strings.NewReplacer("F", "0", "B", "1", "R", "1", "L", "0")
 
 	// for _, pass := range aoc.Strings("test") {
 	for _, pass := range aoc.Strings(day) {
