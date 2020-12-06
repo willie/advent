@@ -45,11 +45,11 @@ const day = "https://adventofcode.com/2020/day/1"
 func main() {
 	println(day)
 
-	aoc.Test("test1", part1(aoc.Ints("test"), 2020), 514579)
-	aoc.Test("test2", part2(aoc.Ints("test"), 2020), 241861950)
+	aoc.Test("test1", part1(aoc.LoadInts("test"), 2020), 514579)
+	aoc.Test("test2", part2(aoc.LoadInts("test"), 2020), 241861950)
 
 	println("-------")
 
-	aoc.Run("part1", part1(aoc.Ints(day), 2020))
-	aoc.Run("part2", part2(aoc.Ints(day), 2020))
+	aoc.Run("part1", part1(aoc.LoadInts(day), 2020))
+	aoc.Run("part2", part2(aoc.LoadInts(day), 2020))
 }

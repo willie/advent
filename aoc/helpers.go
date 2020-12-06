@@ -54,7 +54,7 @@ func String(url string) string {
 // Strings returns each line in input as a string array
 func Strings(url string) (strings []string) {
 	scanner := bufio.NewScanner(bytes.NewReader(Input(url)))
-	scanner.Split(bufio.ScanLines)
+	// scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		s := scanner.Text()
 		strings = append(strings, s)
@@ -62,8 +62,8 @@ func Strings(url string) (strings []string) {
 	return
 }
 
-// Ints rreturns each line in input as a int array
-func Ints(url string) (ints []int) {
+// LoadInts returns each line in input as a int array
+func LoadInts(url string) (ints Ints) {
 	for _, s := range Strings(url) {
 		ints = append(ints, AtoI(s))
 	}

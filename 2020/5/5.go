@@ -80,17 +80,14 @@ func main() {
 	aoc.Run("part1", part1(aoc.Strings(day)))
 	aoc.Run("part2", part2(aoc.Strings(day)))
 
-	println("-------")
+	fmt.Println("------- binary solution after some sleep, damnit")
 
-	fmt.Println("binary solution after some sleep, damnit")
-
-	seatIDs := []int{}
-	bc := strings.NewReplacer("F", "0", "B", "1", "R", "1", "L", "0")
+	seatIDs := aoc.Ints{}
 
 	// for _, pass := range aoc.Strings("test") {
 	for _, pass := range aoc.Strings(day) {
-		pass = bc.Replace(pass) // convert to binary
-		seatID, _ := strconv.ParseUint(pass, 2, 10)
+		b := strings.NewReplacer("F", "0", "B", "1", "R", "1", "L", "0").Replace(pass) // convert to binary
+		seatID, _ := strconv.ParseUint(b, 2, 10)
 		seatIDs = append(seatIDs, int(seatID))
 
 		// r, _ := strconv.ParseUint(pass[:7], 2, 7)
@@ -101,15 +98,20 @@ func main() {
 	sort.Ints(seatIDs)
 	fmt.Println("part1", seatIDs[len(seatIDs)-1])
 
+exit:
 	for i, id := range seatIDs {
 		if id+1 != seatIDs[i+1] {
 			fmt.Println("part2", id+1)
-			return
+			break exit
 		}
 	}
 
-	// try without sets? in progress
-	// L := seatIDs[0]
-	// H := seatIDs[len(seatIDs)-1]
-	// fmt.Println("part2 alt:", (H*(H+1)-L*(L-1))/2)
+	//  sum version
+	println("------- sum version")
+	fmt.Println("part2", aoc.Sum(aoc.Series(aoc.Min(seatIDs...), aoc.Max(seatIDs...))...)-aoc.Sum(seatIDs...))
+
+	// test Ints
+	println("------- sum Ints version")
+	fmt.Println("part2", aoc.Series(seatIDs.Min(), seatIDs.Max()).Sum()-seatIDs.Sum())
+
 }
