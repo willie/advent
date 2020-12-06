@@ -48,10 +48,10 @@ func (s StringSet) Values() (values []string) {
 }
 
 // Subtract returns the differences
-func (s StringSet) Subtract(x *StringSet) (difference []string) {
+func (s StringSet) Subtract(x StringSet) (difference StringSet) {
 	for k := range s {
 		if !x.Contains(k) {
-			difference = append(difference, k)
+			difference.Add(k)
 		}
 	}
 	return
