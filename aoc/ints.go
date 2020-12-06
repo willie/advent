@@ -55,7 +55,7 @@ func (ints Ints) Max() (max int) {
 	return
 }
 
-// Series returns array of low through high
+// Series returns array of low including high
 func Series(low, high int) (series Ints) {
 	series = make(Ints, (high-low)+1)
 
