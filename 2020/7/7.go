@@ -51,8 +51,44 @@ func part1(in []string) (count int) {
 	return len(con)
 }
 
-func part2(in string) (total int) {
+func bagger(rules map[string]map[string]int, color string) (bags int) {
+	for c, count := range rules[color] {
+		bags += count * (1 + bagger(rules, c))
+	}
+
 	return
+}
+
+func part2(in []string) (count int) {
+	rules := map[string]map[string]int{}
+	contained := map[string][]string{}
+
+	for _, i := range in {
+		i := strings.NewReplacer(" bags", "", " bag", "", ".", "").Replace(i) // convert to binary
+		parts := strings.Split(i, " contain ")
+
+		color := parts[0]
+		inner := strings.Split(parts[1], ",")
+
+		rules[color] = map[string]int{}
+
+		for _, j := range inner {
+			if j == "no other" {
+				continue
+			}
+
+			f := strings.Fields(j)
+			c := f[1] + " " + f[2]
+
+			count := aoc.AtoI(f[0])
+
+			rules[color][c] = count
+			contained[c] = append(contained[c], color)
+			// fmt.Println(count, color)
+		}
+	}
+
+	return bagger(rules, "shiny gold")
 }
 
 const day = "https://adventofcode.com/2020/day/7"
@@ -67,6 +103,7 @@ func main() {
 
 	println("------- part 2")
 
-	// aoc.Test("test2", part2(aoc.String("test")), 6)
-	// aoc.Run("part2", part2(aoc.String(day)))
+	aoc.Test("test2", part2(aoc.Strings("test")), 32)
+	aoc.Test("test2-2", part2(aoc.Strings("test2")), 126)
+	aoc.Run("part2", part2(aoc.Strings(day)))
 }
