@@ -81,16 +81,33 @@ func StringsSplit(url string, delimiter string) (out [][]string) {
 
 // Test prints output and compares to expected
 func Test(label string, result int, expected int) {
-	var extra string
+	extra := "PASS"
 
 	if result != expected {
 		extra = fmt.Sprint("FAIL, expected: ", expected)
-	} else {
-		extra = "PASS"
 	}
 
-	fmt.Println(label, ":", result, extra)
+	fmt.Println(label+":\t", result, extra)
 }
 
 // Run prints output
-func Run(label string, result int) { fmt.Println(label, ":", result) }
+func Run(label string, result int) { fmt.Println(label+":\t", result) }
+
+// TestX prints output and compares results to expected (results..., expected...)
+func TestX(label string, resultExpected ...int) {
+	if len(resultExpected)%2 != 0 {
+		log.Fatalln(len(resultExpected), "resultedExpected is results, expected")
+	}
+
+	half := len(resultExpected) / 2
+	for i := 0; i < half; i++ {
+		Test(fmt.Sprint(label, i+1), resultExpected[i], resultExpected[i+half])
+	}
+}
+
+// RunX prints output
+func RunX(label string, results ...int) {
+	for i, result := range results {
+		Run(fmt.Sprint(label, i+1), result)
+	}
+}
