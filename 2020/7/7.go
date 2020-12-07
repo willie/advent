@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/willie/advent/aoc"
@@ -23,9 +22,7 @@ func part1(in []string) (count int) {
 	contained := map[string][]string{}
 
 	for _, i := range in {
-		i = strings.ReplaceAll(i, " bags", "")
-		i = strings.ReplaceAll(i, " bag", "")
-		i = strings.ReplaceAll(i, ".", "")
+		i := strings.NewReplacer(" bags", "", " bag", "", ".", "").Replace(i) // convert to binary
 		parts := strings.Split(i, " contain ")
 
 		color := parts[0]
@@ -40,20 +37,16 @@ func part1(in []string) (count int) {
 			c := f[1] + " " + f[2]
 
 			// count := aoc.AtoI(f[0])
-			// fmt.Println(f)
+
 			rules[color] = append(rules[color], c)
 			contained[c] = append(contained[c], color)
 			// fmt.Println(count, color)
 		}
-
-		// fmt.Println(outer, inner)
 	}
 
-	// fmt.Println(rules)
-	// fmt.Println()
 	con := aoc.NewStringSet(contains(contained, "shiny gold")...)
 
-	fmt.Println(con)
+	// fmt.Println(con)
 
 	return len(con)
 }
