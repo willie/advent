@@ -25,6 +25,14 @@ func (s StringSet) AddMany(values []string) StringSet {
 	return s
 }
 
+// AddSet to the set
+func (s StringSet) AddSet(set StringSet) StringSet {
+	for key := range set {
+		s[key] = exists
+	}
+	return s
+}
+
 // Remove values from set
 func (s StringSet) Remove(values ...string) StringSet {
 	for _, value := range values {
