@@ -1,6 +1,8 @@
 package aoc
 
-import "sort"
+import (
+	"sort"
+)
 
 var exists = struct{}{}
 

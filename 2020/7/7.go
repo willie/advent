@@ -7,7 +7,7 @@ import (
 )
 
 func contains(m map[string][]string, color string) (out aoc.StringSet) {
-	out = aoc.NewStringSet()
+	out = aoc.StringSet{}
 
 	if colors, has := m[color]; has {
 		out.AddMany(colors)
@@ -23,6 +23,7 @@ func bagger(rules map[string]map[string]int, color string) (bags int) {
 	for c, count := range rules[color] {
 		bags += count * (1 + bagger(rules, c))
 	}
+
 	return
 }
 
