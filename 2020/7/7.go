@@ -6,60 +6,27 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func contains(m map[string][]string, color string) (out []string) {
+func contains(m map[string][]string, color string) (out aoc.StringSet) {
+	out = aoc.NewStringSet()
+
 	if colors, has := m[color]; has {
-		out = append(out, colors...)
+		out.AddMany(colors)
 		for _, c := range colors {
-			out = append(out, contains(m, c)...)
+			out.AddSet(contains(m, c))
 		}
 	}
 
 	return
-}
-
-func part1(in []string) (count int) {
-	rules := map[string][]string{}
-	contained := map[string][]string{}
-
-	for _, i := range in {
-		i := strings.NewReplacer(" bags", "", " bag", "", ".", "").Replace(i) // convert to binary
-		parts := strings.Split(i, " contain ")
-
-		color := parts[0]
-		inner := strings.Split(parts[1], ",")
-
-		for _, j := range inner {
-			if j == "no other" {
-				continue
-			}
-
-			f := strings.Fields(j)
-			c := f[1] + " " + f[2]
-
-			// count := aoc.AtoI(f[0])
-
-			rules[color] = append(rules[color], c)
-			contained[c] = append(contained[c], color)
-			// fmt.Println(count, color)
-		}
-	}
-
-	con := aoc.NewStringSet(contains(contained, "shiny gold")...)
-
-	// fmt.Println(con)
-
-	return len(con)
 }
 
 func bagger(rules map[string]map[string]int, color string) (bags int) {
 	for c, count := range rules[color] {
 		bags += count * (1 + bagger(rules, c))
 	}
-
 	return
 }
 
-func part2(in []string) (count int) {
+func combined(in []string) (count, bags int) {
 	rules := map[string]map[string]int{}
 	contained := map[string][]string{}
 
@@ -84,11 +51,20 @@ func part2(in []string) (count int) {
 
 			rules[color][c] = count
 			contained[c] = append(contained[c], color)
-			// fmt.Println(count, color)
 		}
 	}
 
-	return bagger(rules, "shiny gold")
+	return len(contains(contained, "shiny gold")), bagger(rules, "shiny gold")
+}
+
+func part1(in []string) (count int) {
+	count, _ = combined(in)
+	return
+}
+
+func part2(in []string) (count int) {
+	_, count = combined(in)
+	return
 }
 
 const day = "https://adventofcode.com/2020/day/7"
@@ -98,12 +74,20 @@ func main() {
 
 	println("------- part 1")
 
-	aoc.Test("test1", part1(aoc.Strings("test")), 4)
-	aoc.Run("part1", part1(aoc.Strings(day)))
+	aoc.Test("test", part1(aoc.Strings("test")), 4)
+	aoc.Run("run", part1(aoc.Strings(day)))
 
 	println("------- part 2")
 
-	aoc.Test("test2", part2(aoc.Strings("test")), 32)
-	aoc.Test("test2-2", part2(aoc.Strings("test2")), 126)
-	aoc.Run("part2", part2(aoc.Strings(day)))
+	aoc.Test("test", part2(aoc.Strings("test")), 32)
+	aoc.Test("test2", part2(aoc.Strings("test2")), 126)
+	aoc.Run("run", part2(aoc.Strings(day)))
+
+	println("------- combined")
+
+	t1, t2 := combined(aoc.Strings("test"))
+	aoc.TestX("test", t1, t2, 4, 32)
+
+	r1, r2 := combined(aoc.Strings(day))
+	aoc.RunX("part", r1, r2)
 }
