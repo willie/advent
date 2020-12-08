@@ -96,13 +96,13 @@ func (program program) run() (accumulator int, normalTermination bool) {
 		// fmt.Println(ip, current)
 
 		switch current.instruction {
-		case "nop":
-			ip++
 		case "acc":
 			accumulator += current.argument
 			ip++
 		case "jmp":
 			ip += current.argument
+		case "nop":
+			ip++
 		default:
 			log.Fatalln("unrecognized instruction", current.instruction)
 		}
@@ -112,8 +112,8 @@ func (program program) run() (accumulator int, normalTermination bool) {
 			return
 		}
 	}
-	normalTermination = true
 
+	normalTermination = true
 	return
 }
 
@@ -138,7 +138,7 @@ func part2x(in []string) (accumulator int) {
 	for i := range in {
 		copy(tmp, in)
 
-		tmp[i] = strings.ReplaceAll(tmp[i], "jmp", "nop")
+		tmp[i] = strings.NewReplacer("jmp", "nop", "nop", "jmp").Replace(tmp[i])
 		p := loadProgram(tmp)
 		accumulator, normalTermination := p.run()
 
