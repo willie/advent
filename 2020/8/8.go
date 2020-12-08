@@ -153,6 +153,7 @@ const day = "https://adventofcode.com/2020/day/8"
 
 func main() {
 	println(day)
+	aoc.Input(day)
 
 	println("------- part 1")
 

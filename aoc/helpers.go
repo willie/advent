@@ -32,16 +32,14 @@ func Input(url string) (input []byte) {
 	}
 
 	// remote?
-	println("url:", url)
 	input = bodyFromURL(url, SessionCookie())
 
 	// cache it.
-	println("saving:", filename)
 	err = ioutil.WriteFile(filename, input, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
-	println()
+	fmt.Println(url, "saved")
 
 	return
 }
