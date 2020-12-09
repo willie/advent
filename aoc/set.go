@@ -59,6 +59,8 @@ func (s StringSet) Values() (values []string) {
 
 // Subtract returns the differences
 func (s StringSet) Subtract(x StringSet) (difference StringSet) {
+	difference = StringSet{}
+
 	for k := range s {
 		if !x.Contains(k) {
 			difference.Add(k)
@@ -108,5 +110,17 @@ func (s IntSet) Values() (values []int) {
 		values = append(values, k)
 	}
 	sort.Ints(values)
+	return
+}
+
+// Subtract returns the differences
+func (s IntSet) Subtract(x IntSet) (difference IntSet) {
+	difference = IntSet{}
+
+	for k := range s {
+		if !x.Contains(k) {
+			difference.Add(k)
+		}
+	}
 	return
 }
