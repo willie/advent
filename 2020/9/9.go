@@ -5,8 +5,6 @@ import (
 )
 
 func combined(in aoc.Ints, window int) (first, second int) {
-	// for next := window; next < len(in); next++ {
-	// preamble := in[next-window : next]
 	for i, next := range in[window:] {
 		preamble := in[i : i+window]
 
