@@ -29,10 +29,10 @@ func combined(in aoc.Ints, window int) (first, second int) {
 	}
 
 	for start := 0; start < len(in); start++ {
-		for end := start; end < len(in); end++ {
+		for end := start + 1; end < len(in); end++ {
 			candidate := in[start:end]
-			if first == aoc.Sum(candidate...) {
-				second = aoc.Min(candidate...) + aoc.Max(candidate...)
+			if first == candidate.Sum() {
+				second = candidate.Min() + candidate.Max()
 				return
 			}
 		}
