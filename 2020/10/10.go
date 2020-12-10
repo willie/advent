@@ -1,52 +1,31 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"sort"
 
 	"github.com/willie/advent/aoc"
 )
 
-func permutation(current int, in aoc.Ints) (perms []aoc.Ints) {
-	adapters := aoc.NewIntSet(in...)
-
-	for i, v := range in {
-		for x := v; x < v+3; x++ {
-			if adapters.Contains(x) {
-				rest := permutation(x, //range of ints after x)
-				for _, r := range rest {
-				combined := append(// range of ints after x, r...)
-				perms = append(perms, combined)
-				}
-			}
-		}
-
-		current = v
-	}
-
-	return
-}
-
 func combined(in aoc.Ints) (first, second int) {
 	sort.Ints(in)
 
+	last := 0
 	differences := map[int]int{3: 1}
-	current := 0
 
-	for i, v := range in {
-		diff := v - current
+	perms := map[int]int{0: 1}
 
-		if diff > 3 {
-			log.Fatal("diff too big", i, v, diff)
-		}
+	for _, current := range in {
+		differences[current-last]++
 
-		differences[diff]++
-		current = v
+		// consecutive runs cause permutations
+		perms[current] = perms[current-1] + perms[current-2] + perms[current-3]
+
+		last = current
 	}
 
-	fmt.Println(len(in), differences)
 	first = differences[1] * differences[3]
+	second = perms[aoc.Max(in...)]
+
 	return
 }
 
@@ -64,6 +43,6 @@ func main() {
 	t1, t2 = combined(aoc.LoadInts("test2"))
 	aoc.TestX("test2", t1, t2, 22*10, 19208)
 
-	r1, _ := combined(aoc.LoadInts(day))
-	aoc.RunX("part", r1)
+	r1, r2 := combined(aoc.LoadInts(day))
+	aoc.RunX("combined", r1, r2)
 }
