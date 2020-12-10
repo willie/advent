@@ -17,7 +17,7 @@ func combined(in aoc.Ints) (first, second int) {
 	for _, current := range in {
 		differences[current-last]++
 
-		// consecutive runs cause permutations
+		// consecutive values cause permutations, this accumulates them
 		perms[current] = perms[current-1] + perms[current-2] + perms[current-3]
 
 		last = current
