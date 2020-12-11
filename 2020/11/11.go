@@ -2,6 +2,7 @@ package main
 
 import (
 	"image"
+	"image/color"
 
 	"github.com/willie/advent/aoc"
 )
@@ -64,6 +65,18 @@ func part1(in aoc.Grid) (first int) {
 	}
 	first = prev.Count(occupied)
 
+	images := []*image.Paletted{}
+	for _, g := range grids {
+		img := g.NewRGBAImage(5)
+		g.DrawImage(img, 5, map[string]color.Color{
+			occupied: blue,
+			empty:    black,
+			floor:    red,
+		})
+		images = append(images, aoc.PaletteImageFromImage(img))
+	}
+	aoc.SaveGIFs("part1.gif", images, 1)
+
 	return
 }
 
@@ -110,7 +123,23 @@ func part2(in aoc.Grid) (second int) {
 
 	prev := in
 	for {
-		next := nextRound2(prev)
+		next := aoc.NewBlankGrid(in.Width(), in.Height(), "")
+		prev.Iterate(func(x, y int, s string) bool {
+			switch s {
+			case empty:
+				if countVisibleOccupied(prev, x, y) == 0 {
+					s = occupied
+				}
+			case occupied:
+				if countVisibleOccupied(prev, x, y) >= 5 {
+					s = empty
+				}
+			}
+
+			next.Set(x, y, s)
+			return true
+		})
+
 		if next.Count(occupied) == prev.Count(occupied) {
 			break
 		}
@@ -120,8 +149,29 @@ func part2(in aoc.Grid) (second int) {
 	}
 	second = prev.Count(occupied)
 
+	images := []*image.Paletted{}
+	for _, g := range grids {
+		img := g.NewRGBAImage(5)
+		g.DrawImage(img, 5, map[string]color.Color{
+			occupied: blue,
+			empty:    black,
+			floor:    red,
+		})
+		images = append(images, aoc.PaletteImageFromImage(img))
+	}
+	aoc.SaveGIFs("part2.gif", images, 1)
+
 	return
 }
+
+var (
+	black = color.RGBA{0, 0, 0, 255}
+	red   = color.RGBA{255, 0, 0, 255}
+	gray  = color.RGBA{128, 128, 128, 255}
+	green = color.RGBA{0, 255, 0, 255}
+	blue  = color.RGBA{0, 0, 255, 255}
+	white = color.RGBA{255, 255, 255, 255}
+)
 
 const day = "https://adventofcode.com/2020/day/11"
 
