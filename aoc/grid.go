@@ -61,6 +61,26 @@ func (grid Grid) Iterate(f func(x, y int, s string) bool) bool {
 	return true
 }
 
+// SlopeIterate from origin
+func (grid Grid) SlopeIterate(x, y int, dx, dy int, f func(x, y int, s string) bool) {
+	bounds := grid.Bounds()
+
+	for {
+		x += dx
+		y += dy
+
+		// out of bounds?
+		if !image.Pt(x, y).In(bounds) {
+			return
+		}
+
+		// call f
+		if !f(x, y, grid.At(x, y)) {
+			return
+		}
+	}
+}
+
 // Copy and return a new grid
 func (grid Grid) Copy() (c Grid) {
 	c = NewBlankGrid(grid.Width(), grid.Height(), "")
@@ -113,6 +133,17 @@ func (grid Grid) FindFirst(find string) (x, y int) {
 		return true
 	})
 
+	return
+}
+
+// Count occurences of s in the grid
+func (grid Grid) Count(t string) (total int) {
+	grid.Iterate(func(x, y int, s string) bool {
+		if s == t {
+			total++
+		}
+		return true
+	})
 	return
 }
 

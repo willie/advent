@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"image"
 
 	"github.com/willie/advent/aoc"
 )
@@ -12,21 +12,18 @@ const (
 	floor    = "."
 )
 
-func countAdjacentOccupied(in aoc.Grid, x, y int) (count int) {
-	delta := []struct {
-		x, y int
-	}{
-		{-1, 1}, {0, 1}, {1, 1},
-		{-1, 0} /*{0,0}*/, {1, 0},
-		{-1, -1}, {0, -1}, {1, -1},
-	}
+var slopes = []image.Point{
+	{-1, 1}, {0, 1}, {1, 1},
+	{-1, 0} /*{0,0}*/, {1, 0},
+	{-1, -1}, {0, -1}, {1, -1},
+}
 
-	for _, d := range delta {
-		if in.Get(x+d.x, y+d.y, "") == occupied {
+func countAdjacent(in aoc.Grid, x, y int, s string) (count int) {
+	for _, d := range slopes {
+		if in.Get(x+d.X, y+d.Y, "") == s {
 			count++
 		}
 	}
-
 	return
 }
 
@@ -36,14 +33,13 @@ func nextRound(in aoc.Grid) (dst aoc.Grid) {
 	in.Iterate(func(x, y int, s string) bool {
 		switch s {
 		case empty:
-			if countAdjacentOccupied(in, x, y) == 0 {
+			if countAdjacent(in, x, y, occupied) == 0 {
 				s = occupied
 			}
 		case occupied:
-			if countAdjacentOccupied(in, x, y) >= 4 {
+			if countAdjacent(in, x, y, occupied) >= 4 {
 				s = empty
 			}
-		default:
 		}
 
 		dst.Set(x, y, s)
@@ -53,62 +49,37 @@ func nextRound(in aoc.Grid) (dst aoc.Grid) {
 	return
 }
 
-func count(in aoc.Grid, t string) (total int) {
-	in.Iterate(func(x, y int, s string) bool {
-		if s == t {
-			total++
-		}
-		return true
-	})
-	return
-}
-
 func part1(in aoc.Grid) (first int) {
 	grids := []aoc.Grid{in}
 
 	prev := in
 	for {
 		next := nextRound(prev)
-		if count(next, occupied) == count(prev, occupied) {
+		if next.Count(occupied) == prev.Count(occupied) {
 			break
 		}
 
 		grids = append(grids, next)
 		prev = next
 	}
-	first = count(prev, occupied)
-
-	for i, g := range grids {
-		fmt.Println("-------", "grid", i, count(g, occupied))
-		// g.Print()
-	}
+	first = prev.Count(occupied)
 
 	return
 }
 
 func countVisibleOccupied(in aoc.Grid, x, y int) (count int) {
-	delta := []struct {
-		x, y int
-	}{
-		{-1, 1}, {0, 1}, {1, 1},
-		{-1, 0} /*{0,0}*/, {1, 0},
-		{-1, -1}, {0, -1}, {1, -1},
-	}
-
-	max := aoc.Max(in.Width(), in.Height())
-
-	for _, d := range delta {
-		for scale := 1; scale <= max; scale++ {
-			s := in.Get(x+(d.x*scale), y+(d.y*scale), "")
-			if s == occupied {
+	for _, d := range slopes {
+		in.SlopeIterate(x, y, d.X, d.Y, func(gx, gy int, seat string) bool {
+			if seat == occupied {
 				count++
-				break
-			} else if s == empty {
-				break
+				return false
+			} else if seat == empty {
+				return false
 			}
-		}
-	}
 
+			return true
+		})
+	}
 	return
 }
 
@@ -140,19 +111,14 @@ func part2(in aoc.Grid) (second int) {
 	prev := in
 	for {
 		next := nextRound2(prev)
-		if count(next, occupied) == count(prev, occupied) {
+		if next.Count(occupied) == prev.Count(occupied) {
 			break
 		}
 
 		grids = append(grids, next)
 		prev = next
 	}
-	second = count(prev, occupied)
-
-	for i, g := range grids {
-		fmt.Println("-------", "grid", i, count(g, occupied))
-		g.Print()
-	}
+	second = prev.Count(occupied)
 
 	return
 }
