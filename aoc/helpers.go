@@ -77,6 +77,9 @@ func StringsSplit(url string, delimiter string) (out [][]string) {
 	return
 }
 
+// LoadGrid returns the input as a Grid
+func LoadGrid(url string) (grid Grid) { return NewGrid(Strings(url)) }
+
 // Test prints output and compares to expected
 func Test(label string, result int, expected int) {
 	extra := "PASS"

@@ -26,6 +26,19 @@ func NewGrid(in []string) (grid Grid) {
 	return
 }
 
+// NewBlankGrid returns a Grid
+func NewBlankGrid(width, height int, init string) (grid Grid) {
+	grid = Grid{}
+	for y := 0; y < height; y++ {
+		var row Row
+		for x := 0; x < width; x++ {
+			row = append(row, init)
+		}
+		grid = append(grid, row)
+	}
+	return
+}
+
 // Print the grid
 func (grid Grid) Print() {
 	for _, row := range grid {
@@ -36,11 +49,72 @@ func (grid Grid) Print() {
 	}
 }
 
+// Iterate the grid, return false if f returns false
+func (grid Grid) Iterate(f func(x, y int, s string) bool) bool {
+	for y, row := range grid {
+		for x, s := range row {
+			if !f(x, y, s) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+// Copy and return a new grid
+func (grid Grid) Copy() (c Grid) {
+	c = NewBlankGrid(grid.Width(), grid.Height(), "")
+
+	grid.Iterate(func(x, y int, s string) bool {
+		c.Set(x, y, s)
+		return true
+	})
+
+	return
+}
+
+// Equal returns if the grids are the same
+func (grid Grid) Equal(in Grid) (equal bool) {
+	if (grid.Width() != in.Width()) || (grid.Height() != in.Height()) {
+		return
+	}
+
+	return grid.Iterate(func(x, y int, s string) bool {
+		return s == in.At(x, y)
+	})
+}
+
 // At returns the string at (x,y). Conveinence wrapper since grid is y-coordinate first.
 func (grid Grid) At(x, y int) string { return grid[y][x] }
 
 // Set the string at (x,y). Conveinence wrapper since grid is y-coordinate first.
 func (grid Grid) Set(x, y int, s string) { grid[y][x] = s }
+
+// Get the string at (x,y). Returns default if out of bounds
+func (grid Grid) Get(x, y int, s string) string {
+	if x < 0 || x >= grid.Width() || y < 0 || y >= grid.Height() {
+		return s
+	}
+
+	return grid.At(x, y)
+}
+
+// FindFirst string in grid, return (x,y)
+func (grid Grid) FindFirst(find string) (x, y int) {
+	x = -1
+	y = -1
+
+	grid.Iterate(func(gx, gy int, s string) bool {
+		if s == find {
+			x = gx
+			y = gy
+			return false
+		}
+		return true
+	})
+
+	return
+}
 
 // Height of the grid
 func (grid Grid) Height() int { return len(grid) }
@@ -58,18 +132,33 @@ func (grid Grid) NewRGBAImage(scale int) draw.Image {
 
 // DrawImage convert strings to color
 func (grid Grid) DrawImage(img draw.Image, scale int, mapping map[string]color.Color) {
-	for x := 0; x < grid.Width(); x++ {
-		for y := 0; y < grid.Height(); y++ {
-			c, ok := mapping[grid.At(x, y)]
-			if !ok {
-				continue
-			}
-
-			xo := x * scale
-			yo := y * scale
-
-			r := image.Rect(xo, yo, xo+scale, yo+scale)
-			draw.Draw(img, r, &image.Uniform{c}, image.ZP, draw.Src)
+	grid.Iterate(func(x, y int, s string) bool {
+		c, ok := mapping[s]
+		if !ok {
+			return true
 		}
-	}
+
+		xo := x * scale
+		yo := y * scale
+
+		r := image.Rect(xo, yo, xo+scale, yo+scale)
+		draw.Draw(img, r, &image.Uniform{c}, image.ZP, draw.Src)
+
+		return true
+	})
+
+	// for x := 0; x < grid.Width(); x++ {
+	// 	for y := 0; y < grid.Height(); y++ {
+	// 		c, ok := mapping[grid.At(x, y)]
+	// 		if !ok {
+	// 			continue
+	// 		}
+
+	// 		xo := x * scale
+	// 		yo := y * scale
+
+	// 		r := image.Rect(xo, yo, xo+scale, yo+scale)
+	// 		draw.Draw(img, r, &image.Uniform{c}, image.ZP, draw.Src)
+	// 	}
+	// }
 }
