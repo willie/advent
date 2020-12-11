@@ -66,7 +66,11 @@ func part1(in aoc.Grid) (first int) {
 	first = prev.Count(occupied)
 
 	images := []*image.Paletted{}
-	for _, g := range grids {
+	for i, g := range grids {
+		if i%2 != 0 {
+			continue
+		}
+
 		img := g.NewRGBAImage(5)
 		g.DrawImage(img, 5, map[string]color.Color{
 			occupied: blue,
@@ -150,7 +154,11 @@ func part2(in aoc.Grid) (second int) {
 	second = prev.Count(occupied)
 
 	images := []*image.Paletted{}
-	for _, g := range grids {
+	for i, g := range grids {
+		if i%2 != 0 {
+			continue
+		}
+
 		img := g.NewRGBAImage(5)
 		g.DrawImage(img, 5, map[string]color.Color{
 			occupied: blue,
