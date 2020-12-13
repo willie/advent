@@ -32,47 +32,39 @@ func part1(in []string) (first int) {
 	return
 }
 
-func part2(in string, start int) (first int) {
-	buses := []int{}
+func part2(in string) (first int64) {
+	buses := []int64{}
 
 	for _, b := range strings.FieldsFunc(in, func(c rune) bool { return unicode.IsPunct(c) }) {
 		if b == "x" {
 			buses = append(buses, 0)
 			continue
 		}
-		buses = append(buses, aoc.AtoI(b))
+		buses = append(buses, int64(aoc.AtoI(b)))
 	}
 
 	fmt.Println(buses)
 
-	for timestamp := start; first == 0; timestamp += buses[0] {
-		// for timestamp := 3416; timestamp < 3418; timestamp++ {
-		pos := []int{}
-
-		for offset, bus := range buses {
-			if bus == 0 {
-				pos = append(pos, bus)
-				continue
-			}
-
-			t := timestamp + offset
-
-			if t%bus == 0 {
-				pos = append(pos, bus)
-			}
+	step := int64(1)                 // step is multiples of the first bus
+	timestamp := int64(0)            // start at time 0
+	for offset, bus := range buses { // offset, bus number
+		if bus == 0 { // I substituted 0 for x
+			continue
 		}
 
-		if len(pos) == len(buses) {
-			first = timestamp
+		for (timestamp+int64(offset))%bus != 0 { // loop over this bus until you get 0
+			timestamp += step
 		}
 
-		// fmt.Println(timestamp, buses, pos)
+		step *= bus // all multiples from this point will divisible
 	}
+
+	first = timestamp
 
 	return
 }
 
-func part2x(in string, start int) (first int) {
+func part2mathematica(in string) (s string) {
 	buses := []int{}
 
 	for _, b := range strings.FieldsFunc(in, func(c rune) bool { return unicode.IsPunct(c) }) {
@@ -83,45 +75,15 @@ func part2x(in string, start int) (first int) {
 		buses = append(buses, aoc.AtoI(b))
 	}
 
-	fmt.Println(buses)
-
-	// values := []int64{}
+	out := []string{}
 	for offset, bus := range buses {
 		if bus == 0 {
 			continue
 		}
-		fmt.Print("(t+", offset, ") mod ", bus, "= 0, ")
-
-	}
-	fmt.Println()
-	return
-
-	// fmt.Println(aoc.LCM(values[0], values[1], values[2:]...))
-
-	for timestamp := start; first == 0; timestamp += buses[0] {
-		// for timestamp := 3416; timestamp < 3418; timestamp++ {
-		pos := []int{}
-
-		for offset, bus := range buses {
-			if bus == 0 {
-				pos = append(pos, bus)
-				continue
-			}
-
-			t := timestamp + offset
-
-			if t%bus == 0 {
-				pos = append(pos, bus)
-			}
-		}
-
-		if len(pos) == len(buses) {
-			first = timestamp
-		}
-
-		// fmt.Println(timestamp, buses, pos)
+		out = append(out, fmt.Sprint("(t+", offset, ") mod ", bus, "= 0"))
 	}
 
+	s = fmt.Sprint("\"", strings.Join(out, ", "), "\"")
 	return
 }
 
@@ -132,23 +94,25 @@ func main() {
 	aoc.Input(day)
 
 	println("------- part1")
-
 	aoc.Test("test", part1(aoc.Strings("test")), 295)
 	aoc.Run("run", part1(aoc.Strings(day)))
 
+	println()
 	println("------- part2")
-	aoc.Test("test", part2("17,x,13,19", 0), 3417)
-	aoc.Test("test", part2("67,7,59,61", 0), 754018)
-	aoc.Test("test", part2("67,x,7,59,61", 0), 779210)
-	aoc.Test("test", part2("67,7,x,59,61", 0), 1261476)
-	aoc.Test("test", part2("1789,37,47,1889", 0), 1202161486)
+	fmt.Println("test", part2("17,x,13,19"), 3417)
+	fmt.Println("test", part2("67,7,59,61"), 754018)
+	fmt.Println("test", part2("67,x,7,59,61"), 779210)
+	fmt.Println("test", part2("67,7,x,59,61"), 1261476)
+	fmt.Println("test", part2("1789,37,47,1889"), 1202161486)
+	fmt.Println("run", part2(aoc.Strings(day)[1]))
 
-	println("------- part2x")
-	aoc.Test("test", part2x("17,x,13,19", 0), 3417)
-	// aoc.Test("test", part2x("67,7,59,61", 0), 754018)
-	// aoc.Test("test", part2x("67,x,7,59,61", 0), 779210)
-	// aoc.Test("test", part2x("67,7,x,59,61", 0), 1261476)
-	// aoc.Test("test", part2x("1789,37,47,1889", 0), 1202161486)
+	println()
+	println("------- part2, paste into Mathematica")
+	fmt.Println(part2mathematica("17,x,13,19"), 3417)
+	fmt.Println(part2mathematica("67,7,59,61"), 754018)
+	fmt.Println(part2mathematica("67,x,7,59,61"), 779210)
+	fmt.Println(part2mathematica("67,7,x,59,61"), 1261476)
+	fmt.Println(part2mathematica("1789,37,47,1889"), 1202161486)
 
-	aoc.Run("run", part2x(aoc.Strings(day)[1], 100000000000000))
+	fmt.Println("run", part2mathematica(aoc.Strings(day)[1]))
 }
