@@ -144,7 +144,7 @@ func main() {
 	aoc.Test("test", part2("1789,37,47,1889", 0), 1202161486)
 
 	println("------- part2x")
-	// aoc.Test("test", part2x("17,x,13,19", 0), 3417)
+	aoc.Test("test", part2x("17,x,13,19", 0), 3417)
 	// aoc.Test("test", part2x("67,7,59,61", 0), 754018)
 	// aoc.Test("test", part2x("67,x,7,59,61", 0), 779210)
 	// aoc.Test("test", part2x("67,7,x,59,61", 0), 1261476)
