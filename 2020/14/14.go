@@ -14,20 +14,20 @@ func combined(in []string) (result [2]uint64) {
 	mem2 := map[uint64]uint64{}
 
 	var AND, OR uint64 // AND is mask, OR is value
+	var mask string
 
 	for _, i := range in {
 		switch i[:3] {
 		case "mas":
-			var m string
-			fmt.Sscanf(i, "mask = %s", &m)
+			fmt.Sscanf(i, "mask = %s", &mask)
 
 			AND, _ = strconv.ParseUint(
 				strings.NewReplacer("1", "0", "X", "1").
-					Replace(m), 2, 36)
+					Replace(mask), 2, 36)
 
 			OR, _ = strconv.ParseUint(
 				strings.NewReplacer("X", "0").
-					Replace(m), 2, 36)
+					Replace(mask), 2, 36)
 
 		case "mem":
 			var loc, v uint64
