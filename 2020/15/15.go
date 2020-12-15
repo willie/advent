@@ -6,11 +6,11 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func combined(in []string) (result [2]uint64) {
+func combined(in []string) (result [2]int) {
 	return
 }
 
-const day = "https://adventofcode.com/2020/day/14"
+const day = "https://adventofcode.com/2020/day/15"
 
 func main() {
 	println(day)
