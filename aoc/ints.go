@@ -55,6 +55,55 @@ func (ints Ints) Max() (max int) {
 	return
 }
 
+// Last returns last value
+func (ints Ints) Last() (last int) {
+	if len(ints) == 0 {
+		log.Fatalln("no values in array")
+	}
+
+	return ints[len(ints)-1]
+}
+
+// Index the first index where i is
+func (ints Ints) Index(in int) (idx int) {
+	for i, c := range ints {
+		if c == in {
+			return i
+		}
+	}
+
+	return -1
+}
+
+// LastIndex where i is
+func (ints Ints) LastIndex(in int) (last int) {
+	last = -1
+
+	for i, c := range ints {
+		if c == in {
+			last = i
+		}
+	}
+
+	return
+}
+
+// AllIndex all indexes
+func (ints Ints) AllIndex(in int) (idx []int) {
+	for i, c := range ints {
+		if c == in {
+			idx = append(idx, i)
+		}
+	}
+
+	return
+}
+
+// Append a value
+func (ints Ints) Append(i int) {
+	ints = append(ints, i)
+}
+
 // Series returns array of low including high
 func Series(low, high int) (series Ints) {
 	series = make(Ints, (high-low)+1)
