@@ -7,11 +7,30 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
+// var validation = map[int][]string{}
+
+func parseTickets(in string) (tickets []aoc.Ints) {
+	for _, tix := range strings.Split(in, "\n") {
+		ticket := aoc.Ints{}
+		for _, v := range strings.Split(tix, ",") {
+			if strings.Contains(v, ":") || (v == "") {
+				continue
+			}
+
+			value := aoc.AtoI(v)
+			ticket = append(ticket, value)
+		}
+
+		tickets = append(tickets, ticket)
+	}
+
+	return
+}
+
 func part1(in string) (result [2]int) {
 	parts := strings.Split(in, "\n\n")
 
 	validation := map[int][]string{}
-
 	// parse fields, ranges
 	for _, p := range strings.Split(parts[0], "\n") {
 		row := strings.Split(p, ": ")
@@ -33,18 +52,12 @@ func part1(in string) (result [2]int) {
 
 	var first int
 
-	for _, ticket := range strings.Split(parts[2], "\n") {
-		for _, v := range strings.Split(ticket, ",") {
-			if strings.Contains(v, ":") {
-				continue
-			}
+	nearbyTickets := parseTickets(parts[2])
 
-			if v == "" {
-				continue
-			}
-
-			// println(v)
-			value := aoc.AtoI(v)
+	// check invalid fields
+	for _, ticket := range nearbyTickets {
+		for _, value := range ticket {
+			// check for invalid values
 			if _, ok := validation[value]; !ok {
 				first += value
 			}
@@ -52,8 +65,13 @@ func part1(in string) (result [2]int) {
 	}
 
 	result[0] = first
-	// parse your ticket
-	// parse nearby tickets
+
+	// part 2
+	myTicket := parseTickets(parts[1])[1]
+	nearbyTickets = append(nearbyTickets, myTicket)
+	// for _, ticket := range nearbyTickets {
+
+	// }
 
 	return
 }
@@ -65,7 +83,7 @@ func main() {
 	aoc.Input(day)
 
 	println("------- part 1")
-	fmt.Println("test", part1(aoc.String("test")), 71)
+	fmt.Println("test", part1(aoc.String("test")), 71, 13)
 	fmt.Println("run", part1(aoc.String(day)))
 
 	println("------- part 2")
