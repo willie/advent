@@ -9,6 +9,10 @@ import (
 
 func parseTickets(in string) (tickets []aoc.Ints) {
 	for _, tix := range strings.Split(in, "\n")[1:] {
+		if tix == "" {
+			continue
+		}
+
 		ticket := aoc.Ints{}
 		for _, v := range strings.Split(tix, ",") {
 			if strings.Contains(v, ":") || (v == "") {
