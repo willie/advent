@@ -1,3 +1,5 @@
+package aoc
+
 // type stack struct {
 // 	s []int
 // }

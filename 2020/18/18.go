@@ -8,45 +8,43 @@ import (
 )
 
 func evalulate(in string) (result int) {
-	op := '+'
+	in = strings.ReplaceAll(in, " ", "")
 
-	// fmt.Println("in", in)
-	for i := 0; i < len(in); i++ {
-		var x int
+	var sub func(string) (int, string)
+	sub = func(s string) (int, string) {
+		op := '+'
+		x := 0
+		r := 0
 
-		c := rune(in[i])
-		switch c {
-		case '1', '2', '3', '4', '5', '6', '7', '8', '9':
-			x = aoc.AtoI(string(c))
-		case '+', '*':
-			op = c
-			continue
-		case '(':
-			basis := in[i+1:]
-			p := strings.LastIndex(basis, ")")
-			basis = basis[:p+1]
+		for len(s) > 0 && s[0] != ')' {
+			c := s[0]
+			s = s[1:]
 
-			fmt.Println("basis", basis)
-			i += len(basis)
-			x = evalulate(basis)
+			switch c {
+			case '1', '2', '3', '4', '5', '6', '7', '8', '9':
+				x = int(c - '0')
+			case '+', '*':
+				op = rune(c)
+				continue
 
-		case ')':
-			continue
-		case ' ':
-			continue
+			case '(':
+				x, s = sub(s)
+				s = s[1:]
+			}
+
+			switch op {
+			case '+':
+				r += x
+			case '*':
+				r *= x
+			}
 		}
 
-		// fmt.Println(result, string(op), x)
-
-		switch op {
-		case '+':
-			result += x
-		case '*':
-			result *= x
-		}
+		return r, s
 	}
 
-	return
+	r, _ := sub(in)
+	return r
 }
 
 func part1(in []string) (result int) {
@@ -66,8 +64,8 @@ func main() {
 	fmt.Println("test", evalulate("2 * 3 + (4 * 5)"), 26)
 	fmt.Println("test", evalulate("1 + (2 * 3) + (4 * (5 + 6))"), 51)
 	fmt.Println("test", evalulate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2"), 13632)
-	// fmt.Println("test", part1(aoc.Strings("test")), 13632)
-	// fmt.Println("run", part1(aoc.Strings(day)))
+	fmt.Println("test", part1(aoc.Strings("test")), 13632)
+	fmt.Println("run", part1(aoc.Strings(day)))
 
 	// fmt.Println("test2", part2(aoc.Strings("test")), 848)
 	// fmt.Println("run", part2(aoc.Strings(day)))
