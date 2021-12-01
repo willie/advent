@@ -6,13 +6,18 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"path"
 	"strings"
 )
 
 // SessionCookie returns a session cookie for AoC
 func SessionCookie() string {
-	return "53616c7465645f5fcf64f9c60cbeb373a6a3b4e4d1d7185ae43f6d330b64d3957615d9da67fdfd13fd3f9e9b85478cc7"
+	value, exists := os.LookupEnv("AOC_SESSSION_COOKIE")
+	if !exists {
+		log.Fatal("no AOC_SESSSION_COOKIE defined")
+	}
+	return value
 }
 
 // Input caches and returns input data from a given URL
