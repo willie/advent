@@ -173,7 +173,7 @@ func (grid Grid) DrawImage(img draw.Image, scale int, mapping map[string]color.C
 		yo := y * scale
 
 		r := image.Rect(xo, yo, xo+scale, yo+scale)
-		draw.Draw(img, r, &image.Uniform{c}, image.ZP, draw.Src)
+		draw.Draw(img, r, &image.Uniform{c}, image.Point{}, draw.Src)
 
 		return true
 	})
