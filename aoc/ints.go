@@ -99,11 +99,6 @@ func (ints Ints) AllIndex(in int) (idx []int) {
 	return
 }
 
-// Append a value
-func (ints Ints) Append(i int) {
-	ints = append(ints, i)
-}
-
 // Series returns array of low including high
 func Series(low, high int) (series Ints) {
 	series = make(Ints, (high-low)+1)
