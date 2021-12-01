@@ -12,7 +12,7 @@ import (
 
 // SessionCookie returns a session cookie for AoC
 func SessionCookie() string {
-	return "53616c7465645f5f6b02c508a13810bbd6286c82b3c85792aec35e78df61c9975af13d1164f104652d177e51c7d9236c"
+	return "53616c7465645f5fcf64f9c60cbeb373a6a3b4e4d1d7185ae43f6d330b64d3957615d9da67fdfd13fd3f9e9b85478cc7"
 }
 
 // Input caches and returns input data from a given URL
