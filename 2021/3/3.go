@@ -22,7 +22,7 @@ func part1(in []string) (result int) {
 		if count[1] > count[0] {
 			most = "1"
 		}
-		fmt.Println(count)
+		// fmt.Println(count)
 
 		gamma += most
 	}
@@ -45,7 +45,69 @@ func part1(in []string) (result int) {
 }
 
 func part2(in []string) (result int) {
-	return
+	g := aoc.NewGrid(in)
+	prefix := ""
+	for i := 0; i < g.Width(); i++ {
+		c := g.Column(i)
+
+		mcv := "1"
+		if strings.Count(c, "0") > strings.Count(c, "1") {
+			mcv = "0"
+		}
+		prefix += mcv
+
+		newG := []string{}
+		for y := 0; y < g.Height(); y++ {
+			r := g.Row(y)
+			if strings.Index(r, prefix) == 0 {
+				newG = append(newG, r)
+			}
+		}
+
+		g = aoc.NewGrid(newG)
+
+		if g.Height() == 1 {
+			break
+		}
+	}
+
+	O2 := g.Row(0)
+	println(O2)
+
+	g = aoc.NewGrid(in)
+	prefix = ""
+	for i := 0; i < g.Width(); i++ {
+		c := g.Column(i)
+
+		lcv := "0"
+		if strings.Count(c, "1") < strings.Count(c, "0") {
+			lcv = "1"
+		}
+		prefix += lcv
+
+		newG := []string{}
+		for y := 0; y < g.Height(); y++ {
+			r := g.Row(y)
+			if strings.Index(r, prefix) == 0 {
+				newG = append(newG, r)
+			}
+		}
+
+		g = aoc.NewGrid(newG)
+
+		if g.Height() == 1 {
+			break
+		}
+	}
+
+	CO2 := g.Row(0)
+	println(CO2)
+
+	r1, _ := strconv.ParseUint(O2, 2, 30)
+	r2, _ := strconv.ParseUint(CO2, 2, 30)
+	println(r1, r2)
+
+	return int(r1 * r2)
 }
 
 const day = "https://adventofcode.com/2021/day/3"
@@ -54,10 +116,10 @@ func main() {
 	println(day)
 
 	aoc.Test("test1", part1(aoc.Strings("test")), 198)
-	// aoc.Test("test2", part2(aoc.Strings("test")), 900)
+	aoc.Test("test2", part2(aoc.Strings("test")), 230)
 
 	println("-------")
 
 	aoc.Run("part1", part1(aoc.Strings(day)))
-	// aoc.Run("part2", part2(aoc.Strings(day)))
+	aoc.Run("part2", part2(aoc.Strings(day)))
 }

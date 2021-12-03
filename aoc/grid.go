@@ -177,19 +177,26 @@ func (grid Grid) DrawImage(img draw.Image, scale int, mapping map[string]color.C
 
 		return true
 	})
+}
 
-	// for x := 0; x < grid.Width(); x++ {
-	// 	for y := 0; y < grid.Height(); y++ {
-	// 		c, ok := mapping[grid.At(x, y)]
-	// 		if !ok {
-	// 			continue
-	// 		}
+// Column of values
+func (grid Grid) Column(col int) (column string) {
+	grid.Iterate(func(gx, gy int, s string) bool {
+		if col == gx {
+			column += s
+		}
+		return true
+	})
+	return
+}
 
-	// 		xo := x * scale
-	// 		yo := y * scale
-
-	// 		r := image.Rect(xo, yo, xo+scale, yo+scale)
-	// 		draw.Draw(img, r, &image.Uniform{c}, image.ZP, draw.Src)
-	// 	}
-	// }
+// Row of values
+func (grid Grid) Row(r int) (row string) {
+	grid.Iterate(func(gx, gy int, s string) bool {
+		if r == gy {
+			row += s
+		}
+		return true
+	})
+	return
 }
