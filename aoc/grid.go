@@ -232,3 +232,30 @@ func (grid Grid) Row(r int) (row Row) {
 func (grid Grid) Rows() (rows []Row) {
 	return grid
 }
+
+func (grid Grid) IterateLine(x1, y1, x2, y2 int, f func(x, y int, s string) bool) bool {
+	dx := x2 - x1
+	dy := y2 - y1
+
+	steps := Abs(dy)
+	if Abs(dx) > Abs(dy) {
+		steps = Abs(dx)
+	}
+
+	Xincrement := dx / steps
+	Yincrement := dy / steps
+
+	x := x1
+	y := y1
+
+	for v := 0; v < steps+1; v++ {
+		if !f(x, y, grid.At(x, y)) {
+			return false
+		}
+
+		x += Xincrement
+		y += Yincrement
+	}
+
+	return true
+}
