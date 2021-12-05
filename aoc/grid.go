@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"strings"
 )
 
 // Row is a series of strings along the x-axis
@@ -45,6 +46,16 @@ func (grid Grid) Print() {
 		for _, r := range row {
 			fmt.Print(r)
 		}
+		fmt.Println()
+	}
+}
+
+// PrintSep the grid with separator
+func (grid Grid) PrintSep(sep string) {
+	for _, row := range grid {
+		// for _, r := range row {
+		fmt.Print(strings.Join(row, sep))
+		// }
 		fmt.Println()
 	}
 }
@@ -180,23 +191,44 @@ func (grid Grid) DrawImage(img draw.Image, scale int, mapping map[string]color.C
 }
 
 // Column of values
-func (grid Grid) Column(col int) (column string) {
+func (grid Grid) Column(col int) (column Row) {
 	grid.Iterate(func(gx, gy int, s string) bool {
 		if col == gx {
-			column += s
+			column = append(column, s)
 		}
 		return true
 	})
 	return
 }
 
+// Columns of values
+func (grid Grid) Columns() (columns []Row) {
+	for x := 0; x < grid.Width(); x++ {
+		var column Row
+		grid.Iterate(func(gx, gy int, s string) bool {
+			if x == gx {
+				column = append(column, s)
+			}
+			return true
+		})
+
+		columns = append(columns, column)
+	}
+	return
+}
+
 // Row of values
-func (grid Grid) Row(r int) (row string) {
+func (grid Grid) Row(r int) (row Row) {
 	grid.Iterate(func(gx, gy int, s string) bool {
 		if r == gy {
-			row += s
+			row = append(row, s)
 		}
 		return true
 	})
 	return
+}
+
+// Rows of values
+func (grid Grid) Rows() (rows []Row) {
+	return grid
 }

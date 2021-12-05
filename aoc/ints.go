@@ -5,6 +5,14 @@ import "log"
 // Ints is []int
 type Ints []int
 
+// StringInts returns ints from strings
+func StringInts(ss []string) (ints Ints) {
+	for _, s := range ss {
+		ints = append(ints, AtoI(s))
+	}
+	return
+}
+
 // Sum returns total
 func (ints Ints) Sum() (sum int) {
 	for _, i := range ints {
