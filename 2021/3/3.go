@@ -48,7 +48,7 @@ func part2(in []string) (result int) {
 	g := aoc.NewGrid(in)
 	prefix := ""
 	for i := 0; i < g.Width(); i++ {
-		c := g.Column(i)
+		c := strings.Join(g.Column(i), "")
 
 		mcv := "1"
 		if strings.Count(c, "0") > strings.Count(c, "1") {
@@ -58,7 +58,7 @@ func part2(in []string) (result int) {
 
 		newG := []string{}
 		for y := 0; y < g.Height(); y++ {
-			r := g.Row(y)
+			r := strings.Join(g.Row(y), "")
 			if strings.Index(r, prefix) == 0 {
 				newG = append(newG, r)
 			}
@@ -71,13 +71,13 @@ func part2(in []string) (result int) {
 		}
 	}
 
-	O2 := g.Row(0)
+	O2 := strings.Join(g.Row(0), "")
 	println(O2)
 
 	g = aoc.NewGrid(in)
 	prefix = ""
 	for i := 0; i < g.Width(); i++ {
-		c := g.Column(i)
+		c := strings.Join(g.Column(i), "")
 
 		lcv := "0"
 		if strings.Count(c, "1") < strings.Count(c, "0") {
@@ -87,7 +87,7 @@ func part2(in []string) (result int) {
 
 		newG := []string{}
 		for y := 0; y < g.Height(); y++ {
-			r := g.Row(y)
+			r := strings.Join(g.Row(y), "")
 			if strings.Index(r, prefix) == 0 {
 				newG = append(newG, r)
 			}
@@ -100,7 +100,7 @@ func part2(in []string) (result int) {
 		}
 	}
 
-	CO2 := g.Row(0)
+	CO2 := strings.Join(g.Row(0), "")
 	println(CO2)
 
 	r1, _ := strconv.ParseUint(O2, 2, 30)
