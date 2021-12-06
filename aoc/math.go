@@ -15,6 +15,15 @@ func Sum(in ...int) (sum int) {
 	return
 }
 
+// Sum returns total
+func Sum64(in ...int64) (sum int64) {
+	for _, i := range in {
+		sum += i
+	}
+
+	return
+}
+
 // Product multiplies all the numbers together
 func Product(ints ...int) (p int) {
 	p = 1

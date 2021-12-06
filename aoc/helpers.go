@@ -96,8 +96,22 @@ func Test(label string, result int, expected int) {
 	fmt.Println(label+":\t", result, extra)
 }
 
+// Test64 prints output and compares to expected
+func Test64(label string, result int64, expected int64) {
+	extra := "PASS"
+
+	if result != expected {
+		extra = fmt.Sprint("FAIL, expected: ", expected)
+	}
+
+	fmt.Println(label+":\t", result, extra)
+}
+
 // Run prints output
 func Run(label string, result int) { fmt.Println(label+":\t", result) }
+
+// Run64 prints output
+func Run64(label string, result int64) { fmt.Println(label+":\t", result) }
 
 // TestX prints output and compares results to expected (results..., expected...)
 func TestX(label string, resultExpected ...int) {
