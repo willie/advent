@@ -38,7 +38,7 @@ func part1(in string, days int) (result int) {
 }
 
 func part2(in string, days int) (result int64) {
-	population := make([]int64, days+10)
+	population := make([]int64, days+9)
 	for _, i := range splitInts(in) {
 		population[i]++
 	}
