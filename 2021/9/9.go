@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"image"
+	"image/color"
 	"sort"
 
 	"github.com/willie/advent/aoc"
@@ -63,8 +65,24 @@ func fill(g aoc.Grid, x, y int, points map[image.Point]int) {
 	}
 }
 
+func saveImage(filename string, g aoc.Grid) {
+	colormap := map[string]color.Color{"9": color.RGBA{0, 0, 0, 255}}
+	for i := 0; i < 9; i++ {
+		colormap[fmt.Sprintf("%d", i)] = color.RGBA{0, 0, uint8(255 - (i * (150 / 8))), 255}
+	}
+
+	img := g.NewRGBAImage(2)
+	g.DrawImage(img, 2, colormap)
+
+	aoc.SavePNG(filename, img)
+
+}
+
 func part2(in []string) (result int) {
 	g := aoc.NewGrid(in)
+
+	// visualize
+	saveImage("9.png", g)
 
 	basins := []int{}
 
