@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 
@@ -81,14 +80,12 @@ func part2(in []string) (result int) {
 			continue
 		}
 
-		// complete
-		complete := []string{}
+		// score incomplete lines
 		score := 0
 
 		reverse(stack)
 		for _, c := range stack {
 			idx := strings.Index(open, c)
-			complete = append(complete, string(close[idx]))
 
 			score *= 5
 			score += idx + 1
@@ -97,9 +94,9 @@ func part2(in []string) (result int) {
 		scores = append(scores, score)
 	}
 
-	fmt.Println(scores)
+	// fmt.Println(scores)
 	sort.Ints(scores)
-	fmt.Println(scores)
+	// fmt.Println(scores)
 
 	return scores[len(scores)/2]
 }
