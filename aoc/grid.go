@@ -259,3 +259,15 @@ func (grid Grid) IterateLine(x1, y1, x2, y2 int, f func(x, y int, s string) bool
 
 	return true
 }
+
+func MaxXY(in []image.Point) (x, y int) {
+	for _, i := range in {
+		if i.X > x {
+			x = i.X
+		}
+		if i.Y > y {
+			y = i.Y
+		}
+	}
+	return
+}
