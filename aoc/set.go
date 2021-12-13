@@ -64,6 +64,7 @@ func (s StringSet) Values() (values []string) {
 	for k := range s {
 		values = append(values, k)
 	}
+	sort.Strings(values)
 	return
 }
 
