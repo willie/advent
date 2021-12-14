@@ -7,23 +7,6 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func indexAll(s, substr string) (pos []int) {
-	p := 0
-
-	for {
-		i := strings.Index(s, substr)
-		if i == -1 {
-			return
-		}
-
-		p += i
-		pos = append(pos, p)
-		p += len(substr)
-
-		s = s[i+len(substr):]
-	}
-}
-
 type pair struct {
 	find, insert string
 }
@@ -33,7 +16,7 @@ func part1(in string, iteration int) (result int) {
 	parts := strings.Split(in, "\n\n")
 
 	polymer := parts[0]
-	fmt.Println(polymer)
+	// fmt.Println(polymer)
 	rules := []pair{}
 
 	// parse rules
@@ -44,14 +27,14 @@ func part1(in string, iteration int) (result int) {
 		rules = append(rules, p)
 	}
 
-	fmt.Println(rules)
+	// fmt.Println(rules)
 
 	// find locations before replace
 	for i := 0; i < iteration; i++ {
 		var dest string
 
 		src := strings.Split(polymer, "")
-		fmt.Println(src)
+		// fmt.Println(src)
 		for i := 0; i < len(src)-1; i++ {
 			dest += src[i]
 
@@ -66,7 +49,7 @@ func part1(in string, iteration int) (result int) {
 
 		polymer = dest
 
-		fmt.Println(polymer)
+		// fmt.Println(polymer)
 
 		var min, max string
 		counts := map[string]int{}
@@ -95,7 +78,71 @@ func part1(in string, iteration int) (result int) {
 	return
 }
 
-func part2(in string) (result int) {
+func part2(in string, iteration int) (result int64) {
+	// parse file
+	parts := strings.Split(in, "\n\n")
+
+	polymer := map[string]int64{}
+	// parse into pairs
+	for i := 0; i < len(parts[0])-1; i++ {
+		pair := parts[0][i : i+2]
+		polymer[pair]++
+	}
+
+	// fmt.Println(polymer)
+	rules := map[string]string{}
+
+	// parse rules
+	for _, i := range strings.Split(parts[1], "\n") {
+		var find, insert string
+		fmt.Sscanf(i, "%s -> %s", &find, &insert)
+		rules[find] = insert
+	}
+
+	// fmt.Println(rules)
+
+	// mutate
+	for i := 0; i < iteration; i++ {
+		p2 := map[string]int64{}
+
+		for pair, count := range polymer {
+			if insert, ok := rules[pair]; ok {
+				first, second := pair[:1], pair[1:]
+
+				p2[first+insert] += count
+				p2[insert+second] += count
+			} else {
+				// p2[pair] += count
+			}
+		}
+
+		// fmt.Println(polymer)
+		polymer = p2
+	}
+
+	// fmt.Println(polymer)
+
+	// count
+	letters := map[string]int64{}
+	for pair, count := range polymer {
+		first, second := pair[:1], pair[1:]
+		letters[first] += count
+		letters[second] += count
+	}
+
+	counts := []int64{}
+	for _, count := range letters {
+		counts = append(counts, count)
+	}
+
+	// fmt.Println(letters)
+
+	max, min := aoc.Max64(counts...), aoc.Min64(counts...)
+	result = (max - min) / 2
+	if (max-min)%2 == 1 {
+		result += 1
+	}
+
 	return
 }
 
@@ -105,10 +152,10 @@ func main() {
 	println(day)
 
 	aoc.Test("test1", part1(aoc.String("test"), 10), 1588)
-	// aoc.Test("test2", part2(aoc.Strings("test")), 12)
+	aoc.Test64("test2", part2(aoc.String("test"), 10), 1588)
 
-	// println("-------")
+	println("-------")
 
 	aoc.Run("part1", part1(aoc.String(day), 10))
-	// aoc.Run("part2", part2(aoc.Strings(day)))
+	aoc.Run64("part2", part2(aoc.String(day), 40))
 }
