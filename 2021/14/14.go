@@ -83,7 +83,7 @@ func part2(in string, iteration int) (result int64) {
 	parts := strings.Split(in, "\n\n")
 
 	polymer := map[string]int64{}
-	letters := map[string]int64{parts[0][len(parts[0])-1:]: 1} // add one for last letter -- it never changes
+	letters := map[string]int64{parts[0][:1]: 1} // add one for first letter -- it never changes
 
 	// parse into pairs
 	for i := 0; i < len(parts[0])-1; i++ {
@@ -124,8 +124,7 @@ func part2(in string, iteration int) (result int64) {
 
 	// count
 	for pair, count := range polymer {
-		first := pair[:1]
-		letters[first] += count
+		letters[pair[1:]] += count
 	}
 
 	counts := []int64{}
