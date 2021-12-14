@@ -83,6 +83,8 @@ func part2(in string, iteration int) (result int64) {
 	parts := strings.Split(in, "\n\n")
 
 	polymer := map[string]int64{}
+	letters := map[string]int64{parts[0][len(parts[0])-1:]: 1} // add one for last letter -- it never changes
+
 	// parse into pairs
 	for i := 0; i < len(parts[0])-1; i++ {
 		pair := parts[0][i : i+2]
@@ -111,8 +113,6 @@ func part2(in string, iteration int) (result int64) {
 
 				p2[first+insert] += count
 				p2[insert+second] += count
-			} else {
-				// p2[pair] += count
 			}
 		}
 
@@ -123,11 +123,9 @@ func part2(in string, iteration int) (result int64) {
 	// fmt.Println(polymer)
 
 	// count
-	letters := map[string]int64{}
 	for pair, count := range polymer {
-		first, second := pair[:1], pair[1:]
+		first := pair[:1]
 		letters[first] += count
-		letters[second] += count
 	}
 
 	counts := []int64{}
@@ -138,10 +136,11 @@ func part2(in string, iteration int) (result int64) {
 	// fmt.Println(letters)
 
 	max, min := aoc.Max64(counts...), aoc.Min64(counts...)
-	result = (max - min) / 2
-	if (max-min)%2 == 1 {
-		result += 1
-	}
+	result = max - min
+	// result = (max - min) / 2
+	// if (max-min)%2 == 1 {
+	// 	result += 1
+	// }
 
 	return
 }
