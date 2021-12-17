@@ -13,12 +13,6 @@ func part1(in string) (maxY int, velocityCount int) {
 	var x1, x2, y1, y2 int
 	fmt.Sscanf(in, "%d %d %d %d", &x1, &x2, &y1, &y2)
 
-	target := image.Rect(x1, y1, x2, y2)
-	target.Max.X++
-	target.Max.Y++
-
-	// fmt.Println(target)
-
 	for i := 1; i <= aoc.Max(aoc.Abs(x1), aoc.Abs(x2)); i++ {
 		for j := aoc.Min(y1, y2); j <= aoc.Max(aoc.Abs(y1), aoc.Abs(y2)); j++ {
 			height := 0
@@ -46,7 +40,9 @@ func part1(in string) (maxY int, velocityCount int) {
 				velocity.Y--
 
 				// break
-				if probe.In(target) {
+				// if probe.In(target) {
+				if aoc.Min(x1, x2) <= probe.X && probe.X <= aoc.Max(x1, x2) &&
+					aoc.Min(y1, y2) <= probe.Y && probe.Y <= aoc.Max(y1, y2) {
 					// fmt.Println(i, j)
 					if height > maxY {
 						maxY = height
