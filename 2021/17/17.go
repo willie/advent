@@ -15,16 +15,12 @@ func part1(in string) (maxY int, velocityCount int) {
 
 	for i := 1; i <= aoc.Max(aoc.Abs(x1), aoc.Abs(x2)); i++ {
 		for j := aoc.Min(y1, y2); j <= aoc.Max(aoc.Abs(y1), aoc.Abs(y2)); j++ {
-			height := 0
 
 			probe := image.Pt(0, 0)
 			velocity := image.Pt(i, j)
-
-			// iterate steps
+			height := 0
 
 			for probe.X <= aoc.Max(aoc.Abs(x1), aoc.Abs(x2)) && probe.Y >= aoc.Min(y1, y2) {
-				// fmt.Println(probe, velocity)
-
 				probe = probe.Add(velocity)
 
 				if probe.Y > height {
@@ -39,11 +35,9 @@ func part1(in string) (maxY int, velocityCount int) {
 
 				velocity.Y--
 
-				// break
-				// if probe.In(target) {
+				// is it in the box? we dont use image.Rect because it doesn't test max coords (off by one)
 				if aoc.Min(x1, x2) <= probe.X && probe.X <= aoc.Max(x1, x2) &&
 					aoc.Min(y1, y2) <= probe.Y && probe.Y <= aoc.Max(y1, y2) {
-					// fmt.Println(i, j)
 					if height > maxY {
 						maxY = height
 					}
@@ -53,9 +47,6 @@ func part1(in string) (maxY int, velocityCount int) {
 			}
 		}
 	}
-
-	// fmt.Println(maxY)
-
 	return
 }
 
