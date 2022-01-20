@@ -47,8 +47,9 @@ import (
 */
 
 type wordscore struct {
-	word  string
-	score int
+	word    string
+	score   int
+	letters aoc.StringSet
 }
 
 func process(words []string) {
@@ -74,7 +75,7 @@ func process(words []string) {
 	// print out the words in score order
 	scores := []wordscore{}
 	for word, score := range wordScore {
-		scores = append(scores, wordscore{word, score})
+		scores = append(scores, wordscore{word, score, aoc.NewStringSet(strings.Split(word, "")...)})
 	}
 
 	sort.Slice(scores, func(i, j int) bool {
@@ -86,16 +87,20 @@ func process(words []string) {
 	maxscore := 0
 	maxwords := ""
 	for i, score := range scores {
-		f := aoc.NewStringSet(strings.Split(score.word, "")...)
+		// f := aoc.NewStringSet(strings.Split(score.word, "")...)
+		f := score.letters
+		if len(f) != 5 {
+			continue
+		}
 
 		for _, score2 := range scores[i+1:] {
-			f2 := aoc.NewStringSet(strings.Split(score2.word, "")...)
-
-			if len(f.Values()) != 5 || len(f2.Values()) != 5 {
+			// f2 := aoc.NewStringSet(strings.Split(score2.word, "")...)
+			f2 := score2.letters
+			if len(f2) != 5 {
 				continue
 			}
 
-			if len(f.Subtract(f2).Values()) == 5 {
+			if len(f.Subtract(f2)) == 5 {
 				if score.score+score2.score > maxscore {
 					maxscore = score.score + score2.score
 					maxwords = score.word + " " + score2.word
@@ -106,16 +111,25 @@ func process(words []string) {
 		}
 	}
 
+	// return
+
+	maxscore = 0
+	maxwords = ""
+
 	for i, score := range scores {
-		f := aoc.NewStringSet(strings.Split(score.word, "")...)
-		if len(f.Values()) != 5 {
+		if score.score*3 <= maxscore {
+			continue
+		}
+
+		f := score.letters
+		if len(f) != 5 {
 			continue
 		}
 
 		candidates := scores[i+1:]
 		for j, score2 := range candidates {
-			f2 := aoc.NewStringSet(strings.Split(score2.word, "")...)
-			if len(f2.Values()) != 5 {
+			f2 := score2.letters
+			if len(f2) != 5 {
 				continue
 			}
 
@@ -126,16 +140,16 @@ func process(words []string) {
 
 			candidates2 := candidates[j+1:]
 			for _, score3 := range candidates2 {
-				f3 := aoc.NewStringSet(strings.Split(score3.word, "")...)
-				if len(f3.Values()) != 5 {
-					continue
-				}
+				if score.score+score2.score+score3.score >= maxscore {
+					f3 := aoc.NewStringSet(score3.letters.Values()...)
+					if len(f3) != 5 {
+						continue
+					}
 
-				f3.AddSet(letters)
-				if len(f3.Values()) == 15 {
-					if score.score+score2.score+score3.score > maxscore {
+					f3.AddSet(letters)
+					if len(f3) == 15 {
 						maxscore = score.score + score2.score + score3.score
-						maxwords = score.word + " " + score2.word + " " + score3.word
+						maxwords = fmt.Sprintf("%s %d, %s %d, %s %d", score.word, score.score, score2.word, score2.score, score3.word, score3.score)
 						fmt.Println(maxwords, maxscore)
 						continue
 					}
