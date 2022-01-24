@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"sort"
 	"strings"
 
@@ -65,45 +66,102 @@ func process(words []string) {
 		}
 	}
 
+	// vowels := aoc.NewStringSet("a", "e", "i", "o", "u")
+
+	multiplier := make(map[string]map[int]int)
+
+	for c, letterCount := range letterCounts {
+
+		lowCount := math.MaxInt
+		maxCount := 0
+		for _, count := range letterCount {
+			if count > maxCount {
+				maxCount = count
+			}
+
+			if count < lowCount {
+				lowCount = count
+			}
+		}
+
+		rangeCount := (maxCount - lowCount) + 1
+		rangeCount = int(float64(rangeCount) * 0.5)
+		total := 0
+
+		multiplier[c] = make(map[int]int)
+		for i, count := range letterCount {
+			factor := 1
+			// if count > (rangeCount / 2) {
+			// 	factor = 2
+			// }
+
+			// factor := 1
+			// if count == maxCount && !vowels.Contains(c) {
+			// 	factor = 2
+			// }
+
+			multiplier[c][i] = factor
+			total += count
+		}
+
+		fmt.Println(c, lowCount, maxCount, rangeCount, letterCount, ",", total)
+
+	}
+
 	wordScore := make(map[string]int)
 	for _, word := range words {
 		for i, c := range strings.Split(word, "") {
-			wordScore[word] += letterCounts[c][i]
+			// if vowels.Contains(c) {
+			// 	continue
+			// }
+
+			// wordScore[word] += letterCounts[c][i] * multiplier[c][i]
+			lc := letterCounts[c][i]
+			// lc *= lc * lc
+			// lc *= lc * multiplier[c][i]
+
+			wordScore[word] += lc
 		}
 	}
 
 	// print out the words in score order
 	scores := []wordscore{}
 	for word, score := range wordScore {
-		scores = append(scores, wordscore{word, score, aoc.NewStringSet(strings.Split(word, "")...)})
+		letters := aoc.NewStringSet(strings.Split(word, "")...)
+		// no dupes
+		if len(letters) != 5 {
+			continue
+		}
+
+		scores = append(scores, wordscore{word, score, letters})
 	}
 
 	sort.Slice(scores, func(i, j int) bool {
 		return scores[i].score > scores[j].score
 	})
 
-	// fmt.Println(scores)
+	for i := 0; i < 10; i++ {
+		fmt.Println(scores[i].word, scores[i].score)
+	}
 
 	maxscore := 0
 	maxwords := ""
 	for i, score := range scores {
-		// f := aoc.NewStringSet(strings.Split(score.word, "")...)
 		f := score.letters
 		if len(f) != 5 {
 			continue
 		}
 
 		for _, score2 := range scores[i+1:] {
-			// f2 := aoc.NewStringSet(strings.Split(score2.word, "")...)
 			f2 := score2.letters
 			if len(f2) != 5 {
 				continue
 			}
 
-			if len(f.Subtract(f2)) == 5 {
+			if len(f.Subtract(f2)) == len(f2) {
 				if score.score+score2.score > maxscore {
 					maxscore = score.score + score2.score
-					maxwords = score.word + " " + score2.word
+					maxwords = fmt.Sprintf("%s %d, %s %d", score.word, score.score, score2.word, score2.score)
 					fmt.Println(maxwords, maxscore)
 					continue
 				}

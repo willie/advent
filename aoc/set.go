@@ -59,6 +59,16 @@ func (s StringSet) ContainsAll(values []string) bool {
 	return true
 }
 
+// ContainsAny returns if any of the values are in the set
+func (s StringSet) ContainsAny(values []string) bool {
+	for _, v := range values {
+		if s.Contains(v) {
+			return true
+		}
+	}
+	return false
+}
+
 // Values returns the values in set
 func (s StringSet) Values() (values []string) {
 	for k := range s {
