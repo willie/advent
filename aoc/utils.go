@@ -14,6 +14,7 @@ func bodyFromURL(url string, sessionCookie string) (body []byte) {
 	}
 
 	req.AddCookie(&http.Cookie{Name: "session", Value: sessionCookie})
+	req.Header.Add("User-Agent", "willie@pobox.com")
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
