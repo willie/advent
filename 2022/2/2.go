@@ -40,12 +40,9 @@ func part1(name string) {
 	}
 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-
-	// Keep track of the total score
 	var totalScore int
 
-	// Read each line of the input
+	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
 		fields := strings.Split(line, " ")
@@ -76,10 +73,9 @@ func part2(name string) {
 	}
 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-
 	var totalScore int
 
+	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
 		fields := strings.Split(line, " ")

@@ -7,6 +7,8 @@ import (
 	"strconv"
 )
 
+// coded by instructing ChatGPT
+
 func main() {
 	file, _ := os.Open("input.txt")
 	scanner := bufio.NewScanner(file)

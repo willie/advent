@@ -8,6 +8,8 @@ import (
 	"strconv"
 )
 
+// coded by instructing ChatGPT
+
 type Elf struct {
 	ID       int
 	Calories int

@@ -18,13 +18,10 @@ func part1(in []string) int {
 		elves[i] = elves[i] + aoc.AtoI(s)
 	}
 
-	// elf := 0
 	most := 0
-	// for e, c := range elves {
 	for _, c := range elves {
 		if c > most {
 			most = c
-			// elf = e
 		}
 	}
 
@@ -44,9 +41,6 @@ func part2(in []string) int {
 	}
 
 	calories := []int{}
-	// elf := 0
-	// most := 0
-	// for e, c := range elves {
 	for _, c := range elves {
 		calories = append(calories, c)
 	}
