@@ -17,6 +17,22 @@ var moves = map[string]int{
 	"Z": 3,
 }
 
+func lose(x int) (y int) {
+	y = x - 1
+	if y == 0 {
+		y = 3
+	}
+	return
+}
+
+func win(x int) (y int) {
+	y = x + 1
+	if y == 4 {
+		y = 1
+	}
+	return
+}
+
 func part1(name string) {
 	file, err := os.Open(name)
 	if err != nil {
@@ -34,14 +50,14 @@ func part1(name string) {
 		line := scanner.Text()
 		fields := strings.Split(line, " ")
 
-		opponentMove := fields[0]
-		yourMove := fields[1]
-		score := moves[yourMove]
+		opponentMove := moves[fields[0]]
+		yourMove := moves[fields[1]]
+		score := yourMove
 
 		switch {
-		case moves[opponentMove] == moves[yourMove]:
+		case opponentMove == yourMove:
 			score += 3
-		case (opponentMove == "A" && yourMove == "Z") || (opponentMove == "B" && yourMove == "X") || (opponentMove == "C" && yourMove == "Y"):
+		case lose(opponentMove) == yourMove:
 			score += 0
 		default:
 			score += 6
@@ -51,22 +67,6 @@ func part1(name string) {
 	}
 
 	fmt.Println(totalScore)
-}
-
-func lose(x int) (y int) {
-	y = x - 1
-	if y == 0 {
-		y = 3
-	}
-	return
-}
-
-func win(x int) (y int) {
-	y = x + 1
-	if y == 4 {
-		y = 1
-	}
-	return
 }
 
 func part2(name string) {
@@ -84,18 +84,17 @@ func part2(name string) {
 		line := scanner.Text()
 		fields := strings.Split(line, " ")
 
-		opponentMove := fields[0]
+		opponentMove := moves[fields[0]]
 		endState := fields[1]
-
-		var score int
+		score := 0
 
 		switch moves[endState] {
 		case 1: // lose
-			score = lose(moves[opponentMove]) + 0
+			score = lose(opponentMove) + 0
 		case 2: // draw
-			score = moves[opponentMove] + 3
+			score = opponentMove + 3
 		case 3: // win
-			score = win(moves[opponentMove]) + 6
+			score = win(opponentMove) + 6
 		}
 
 		totalScore += score
