@@ -51,12 +51,10 @@ func part1(name string) {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		s := scanner.Text()
-		commonItems := findCommonRunes([]string{s[:len(s)/2], s[len(s)/2:]})
 
-		for _, c := range commonItems {
+		for _, c := range findCommonRunes([]string{s[:len(s)/2], s[len(s)/2:]}) {
 			total += score(c)
 		}
-
 	}
 
 	fmt.Println(total)
@@ -69,7 +67,6 @@ func part2(name string) {
 	}
 	defer file.Close()
 
-	total := 0
 	rucksacks := []string{}
 
 	scanner := bufio.NewScanner(file)
@@ -77,12 +74,10 @@ func part2(name string) {
 		rucksacks = append(rucksacks, scanner.Text())
 	}
 
-	for i := 0; i < len(rucksacks); i += 3 {
-		group := rucksacks[i : i+3]
-		// badgeItems := findBadgeItems(group)
-		badgeItems := findCommonRunes(group)
+	total := 0
 
-		for _, c := range badgeItems {
+	for i := 0; i < len(rucksacks); i += 3 {
+		for _, c := range findCommonRunes(rucksacks[i : i+3]) {
 			total += score(c)
 		}
 	}
