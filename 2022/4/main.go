@@ -6,21 +6,6 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-type Range struct {
-	start int
-	end   int
-}
-
-// Contains returns true if r1 FULLY contains r2
-func (r1 Range) Contains(r2 Range) bool {
-	return r1.start <= r2.start && r1.end >= r2.end
-}
-
-// Overlaps returns true if r1 overlaps ANY with r2
-func (r1 Range) Overlaps(r2 Range) bool {
-	return r1.start <= r2.end && r2.start <= r1.end
-}
-
 func part1and2(name string) {
 	var count, overlap int
 
