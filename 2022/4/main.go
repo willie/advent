@@ -1,12 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
-	"strconv"
-	"strings"
+
+	"github.com/willie/advent/aoc"
 )
 
 type Range struct {
@@ -14,52 +11,30 @@ type Range struct {
 	end   int
 }
 
-// Parses a string of the form "a-b" into a Range
-func parseRange(s string) Range {
-	parts := strings.Split(s, "-")
-	start, _ := strconv.Atoi(parts[0])
-	end, _ := strconv.Atoi(parts[1])
-	return Range{start: start, end: end}
-}
-
-// fullyContains returns true if r1 fully contains r2, false otherwise
-func fullyContains(r1, r2 Range) bool {
+// Contains returns true if r1 FULLY contains r2
+func (r1 Range) Contains(r2 Range) bool {
 	return r1.start <= r2.start && r1.end >= r2.end
 }
 
-func rangesOverlap(r1, r2 Range) bool {
+// Overlaps returns true if r1 overlaps ANY with r2
+func (r1 Range) Overlaps(r2 Range) bool {
 	return r1.start <= r2.end && r2.start <= r1.end
 }
 
-func compareRanges(r1, r2 Range) (count int, overlap int) {
-	if fullyContains(r1, r2) || fullyContains(r2, r1) {
-		count++
-	}
-
-	if rangesOverlap(r1, r2) {
-		overlap++
-	}
-
-	return
-}
-
 func part1and2(name string) {
-	file, err := os.Open(name)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer file.Close()
+	var count, overlap int
 
-	var count int
-	var overlap int
+	for _, s := range aoc.Strings(name) {
+		var r1, r2 Range
+		fmt.Sscanf(s, "%d-%d,%d-%d", &r1.start, &r1.end, &r2.start, &r2.end)
 
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		elves := strings.Split(scanner.Text(), ",")
+		if r1.Contains(r2) || r2.Contains(r1) {
+			count++
+		}
 
-		c, o := compareRanges(parseRange(elves[0]), parseRange(elves[1]))
-		count += c
-		overlap += o
+		if r1.Overlaps(r2) {
+			overlap++
+		}
 	}
 
 	fmt.Println(count, overlap)
