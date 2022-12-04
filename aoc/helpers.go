@@ -27,7 +27,9 @@ func Input(url string) (input []byte) {
 	}
 
 	_, filename := path.Split(url)
-	filename += ".txt"
+	if path.Ext(url) == "" {
+		filename += ".txt"
+	}
 
 	// local?
 	input, err := ioutil.ReadFile(filename)
