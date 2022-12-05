@@ -6,8 +6,91 @@ import (
 
 var exists = struct{}{}
 
-// StringSet is a set of strings
-type StringSet map[string]struct{}
+type Set[T comparable] map[T]struct{}
+
+// NewSet[T] returns a new Set[T]
+func NewSet[T comparable](values ...T) Set[T] {
+	s := Set[T]{}
+	s.AddMany(values)
+	return s
+}
+
+// Add values to the set
+func (s Set[T]) Add(values ...T) Set[T] { return s.AddMany(values) }
+
+// AddMany values to the set
+func (s Set[T]) AddMany(values []T) Set[T] {
+	for _, value := range values {
+		s[value] = exists
+	}
+	return s
+}
+
+// AddSet to the set
+func (s Set[T]) AddSet(set Set[T]) Set[T] {
+	for key := range set {
+		s[key] = exists
+	}
+	return s
+}
+
+// Remove values from set
+func (s Set[T]) Remove(values ...T) Set[T] {
+	for _, value := range values {
+		delete(s, value)
+	}
+	return s
+}
+
+// Contains returns if a value is in the set
+func (s Set[T]) Contains(value T) bool {
+	_, c := s[value]
+	return c
+}
+
+// ContainsAll returns if all values are in the set
+func (s Set[T]) ContainsAll(values []T) bool {
+	for _, v := range values {
+		if !s.Contains(v) {
+			return false
+		}
+	}
+	return true
+}
+
+// ContainsAny returns if any of the values are in the set
+func (s Set[T]) ContainsAny(values []T) bool {
+	for _, v := range values {
+		if s.Contains(v) {
+			return true
+		}
+	}
+	return false
+}
+
+// Values returns the values in set
+func (s Set[T]) Values() (values []T) {
+	for k := range s {
+		values = append(values, k)
+	}
+	sort.Slice(values, func(i, j int) bool { return i < j })
+	return
+}
+
+// Subtract returns the differences
+func (s Set[T]) Subtract(x Set[T]) (difference Set[T]) {
+	difference = Set[T]{}
+
+	for k := range s {
+		if !x.Contains(k) {
+			difference.Add(k)
+		}
+	}
+	return
+}
+
+// StringSet is a set of strings, here for historical reasons
+type StringSet Set[string]
 
 // NewStringSet returns a new StringSet
 func NewStringSet(values ...string) StringSet {
@@ -90,8 +173,10 @@ func (s StringSet) Subtract(x StringSet) (difference StringSet) {
 	return
 }
 
-// IntSet is a set of ints
-type IntSet map[int]struct{}
+// IntSet is a set of ints, here for historical reasons.
+type IntSet Set[int]
+
+// type IntSet map[int]struct{}
 
 // NewIntSet returns a new IntSet
 func NewIntSet(values ...int) IntSet {

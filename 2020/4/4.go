@@ -8,8 +8,8 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-var passportFields = aoc.NewStringSet("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
-var eyeColor = aoc.NewStringSet("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
+var passportFields = aoc.NewSet("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
+var eyeColor = aoc.NewSet("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
 
 func parse(in string) (passports []map[string]string) {
 	for _, p := range strings.Split(strings.TrimSpace(in), "\n\n") {

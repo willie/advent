@@ -87,7 +87,7 @@ func StringsSplit(url string, delimiter string) (out [][]string) {
 func LoadGrid(url string) (grid Grid) { return NewGrid(Strings(url)) }
 
 // Test prints output and compares to expected
-func Test(label string, result int, expected int) {
+func Test[T comparable](label string, result T, expected T) {
 	extra := "PASS"
 
 	if result != expected {
@@ -109,13 +109,10 @@ func Test64(label string, result int64, expected int64) {
 }
 
 // Run prints output
-func Run(label string, result int) { fmt.Println(label+":\t", result) }
-
-// Run64 prints output
-func Run64(label string, result int64) { fmt.Println(label+":\t", result) }
+func Run[T any](label string, result T) { fmt.Println(label+":\t", result) }
 
 // TestX prints output and compares results to expected (results..., expected...)
-func TestX(label string, resultExpected ...int) {
+func TestX[T comparable](label string, resultExpected ...T) {
 	if len(resultExpected)%2 != 0 {
 		log.Fatalln(len(resultExpected), "resultedExpected is results, expected")
 	}
@@ -127,7 +124,7 @@ func TestX(label string, resultExpected ...int) {
 }
 
 // RunX prints output
-func RunX(label string, results ...int) {
+func RunX[T any](label string, results ...T) {
 	for i, result := range results {
 		Run(fmt.Sprint(label, i+1), result)
 	}

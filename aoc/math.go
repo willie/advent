@@ -4,53 +4,29 @@ import (
 	"image"
 	"log"
 	"math"
+
+	"golang.org/x/exp/constraints"
 )
 
 // Sum returns total
-func Sum(in ...int) (sum int) {
+func Sum[T constraints.Integer](in ...T) (sum T) {
 	for _, i := range in {
 		sum += i
 	}
-
-	return
-}
-
-// Sum returns total
-func Sum64(in ...int64) (sum int64) {
-	for _, i := range in {
-		sum += i
-	}
-
 	return
 }
 
 // Product multiplies all the numbers together
-func Product(ints ...int) (p int) {
+func Product[T constraints.Integer](in ...T) (p T) {
 	p = 1
-	for _, i := range ints {
+	for _, i := range in {
 		p = p * i
 	}
 	return
 }
 
 // Min returns smallest value
-func Min(in ...int) (min int) {
-	if len(in) == 0 {
-		log.Fatalln("no values in array")
-	}
-
-	min = in[0]
-	for i := 1; i < len(in); i++ {
-		if in[i] < min {
-			min = in[i]
-		}
-	}
-
-	return
-}
-
-// Min returns smallest value
-func Min64(in ...int64) (min int64) {
+func Min[T constraints.Integer](in ...T) (min T) {
 	if len(in) == 0 {
 		log.Fatalln("no values in array")
 	}
@@ -66,23 +42,7 @@ func Min64(in ...int64) (min int64) {
 }
 
 // Max returns largest value
-func Max(in ...int) (max int) {
-	if len(in) == 0 {
-		log.Fatalln("no values in array")
-	}
-
-	max = in[0]
-	for i := 1; i < len(in); i++ {
-		if max < in[i] {
-			max = in[i]
-		}
-	}
-
-	return
-}
-
-// Max returns largest value
-func Max64(in ...int64) (max int64) {
+func Max[T constraints.Integer](in ...T) (max T) {
 	if len(in) == 0 {
 		log.Fatalln("no values in array")
 	}
@@ -119,7 +79,7 @@ func LCM(a, b int64, integers ...int64) int64 {
 }
 
 // Abs return absolute value
-func Abs(x int) int {
+func Abs[T constraints.Signed](x T) T {
 	if x < 0 {
 		return -x
 	}
@@ -132,6 +92,29 @@ func ManhattanDistance(x, y, x1, y1 int) (distance int) {
 	return Abs(x-x1) + Abs(y-y1)
 }
 
+// Permutations returns all the permutations, written with help from ChatGPT
+func Permutations[T any](in []T) [][]T {
+	if len(in) == 0 {
+		return [][]T{}
+	}
+
+	if len(in) == 1 {
+		return [][]T{in}
+	}
+
+	var out [][]T
+	for i, x := range in {
+		rest := make([]T, len(in)-1)
+		copy(rest, in[:i])
+		copy(rest[i:], in[i+1:])
+		for _, p := range Permutations(rest) {
+			out = append(out, append([]T{x}, p...))
+		}
+	}
+	return out
+}
+
+/*
 // Permutations returns all the permutations
 func Permutations(arr []int) [][]int {
 	var helper func([]int, int)
@@ -160,6 +143,7 @@ func Permutations(arr []int) [][]int {
 	helper(arr, len(arr))
 	return res
 }
+*/
 
 // PermutationsString returns all the permutations
 func PermutationsString(arr []string) [][]string {

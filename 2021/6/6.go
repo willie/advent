@@ -51,7 +51,7 @@ func part2(in string, days int) (result int64) {
 		population[8] = newPopulation
 	}
 
-	return aoc.Sum64(population...)
+	return aoc.Sum(population...)
 }
 
 const day = "https://adventofcode.com/2021/day/6"
@@ -66,5 +66,5 @@ func main() {
 	println("-------")
 
 	aoc.Run("part1", part1(aoc.String(day), 80))
-	aoc.Run64("part2", part2(aoc.String(day), 256))
+	aoc.Run("part2", part2(aoc.String(day), 256))
 }

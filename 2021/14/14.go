@@ -134,7 +134,7 @@ func part2(in string, iteration int) (result int64) {
 
 	// fmt.Println(letters)
 
-	max, min := aoc.Max64(counts...), aoc.Min64(counts...)
+	max, min := aoc.Max(counts...), aoc.Min(counts...)
 	result = max - min
 	// result = (max - min) / 2
 	// if (max-min)%2 == 1 {
@@ -155,5 +155,5 @@ func main() {
 	println("-------")
 
 	aoc.Run("part1", part1(aoc.String(day), 10))
-	aoc.Run64("part2", part2(aoc.String(day), 40))
+	aoc.Run("part2", part2(aoc.String(day), 40))
 }
