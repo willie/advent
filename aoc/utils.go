@@ -1,7 +1,7 @@
 package aoc
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -21,7 +21,7 @@ func bodyFromURL(url string, sessionCookie string) (body []byte) {
 		log.Fatal(err)
 	}
 
-	body, err = ioutil.ReadAll(res.Body)
+	body, err = io.ReadAll(res.Body)
 
 	res.Body.Close()
 	if err != nil {

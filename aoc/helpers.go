@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -32,7 +31,7 @@ func Input(url string) (input []byte) {
 	}
 
 	// local?
-	input, err := ioutil.ReadFile(filename)
+	input, err := os.ReadFile(filename)
 	if err == nil {
 		// println("file:", filename)
 		return
@@ -42,7 +41,7 @@ func Input(url string) (input []byte) {
 	input = bodyFromURL(url, SessionCookie())
 
 	// cache it.
-	err = ioutil.WriteFile(filename, input, 0644)
+	err = os.WriteFile(filename, input, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

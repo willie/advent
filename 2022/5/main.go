@@ -8,19 +8,19 @@ import (
 )
 
 func part2(name string) {
-	stacks := map[int]*stack[string]{}
+	stacks := map[int]*aoc.Stack[string]{}
 
 	for _, s := range aoc.Strings(name) {
 		if strings.Contains(s, "[") {
 			c := 1
 			for i := 1; i < len(s); i += 4 {
 				if stacks[c] == nil {
-					stacks[c] = &stack[string]{}
+					stacks[c] = &aoc.Stack[string]{}
 				}
 
 				value := s[i : i+1]
 				if value != " " {
-					stacks[c].pushBottom(value)
+					stacks[c].PushBottom(value)
 				}
 				c++
 			}
@@ -28,31 +28,31 @@ func part2(name string) {
 			var count, from, to int
 			fmt.Sscanf(s, "move %d from %d to %d", &count, &from, &to)
 
-			crates := stacks[from].popN(count)
-			stacks[to].push(crates...)
+			crates := stacks[from].PopN(count)
+			stacks[to].Push(crates...)
 		}
 	}
 
 	for i := 1; i <= len(stacks); i++ {
-		fmt.Print(stacks[i].top())
+		fmt.Print(stacks[i].Top())
 	}
 	fmt.Println()
 }
 
 func part1(name string) {
-	stacks := map[int]*stack[string]{}
+	stacks := map[int]*aoc.Stack[string]{}
 
 	for _, s := range aoc.Strings(name) {
 		if strings.Contains(s, "[") {
 			c := 1
 			for i := 1; i < len(s); i += 4 {
 				if stacks[c] == nil {
-					stacks[c] = &stack[string]{}
+					stacks[c] = &aoc.Stack[string]{}
 				}
 
 				value := s[i : i+1]
 				if value != " " {
-					stacks[c].pushBottom(value)
+					stacks[c].PushBottom(value)
 				}
 				c++
 			}
@@ -61,15 +61,15 @@ func part1(name string) {
 			fmt.Sscanf(s, "move %d from %d to %d", &count, &from, &to)
 
 			for i := 0; i < count; i++ {
-				x := stacks[from].pop()
-				stacks[to].push(x)
+				x := stacks[from].Pop()
+				stacks[to].Push(x)
 			}
 		}
 
 	}
 
 	for i := 1; i <= len(stacks); i++ {
-		fmt.Print(stacks[i].top())
+		fmt.Print(stacks[i].Top())
 	}
 	fmt.Println()
 }
