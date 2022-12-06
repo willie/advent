@@ -9,7 +9,7 @@ import (
 func firstMarker(s string, uniqueN int) int {
 	for i := range s {
 		marker := aoc.NewSet([]rune(s[i : i+uniqueN])...)
-		if len(marker.Values()) == uniqueN {
+		if len(marker) == uniqueN {
 			return i + uniqueN
 		}
 	}
