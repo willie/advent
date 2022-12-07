@@ -3,17 +3,24 @@ package aoc
 type Node[T any] struct {
 	Data     T
 	Children []*Node[T]
+	Parent   *Node[T]
 }
 
 func NewNode[T any](data T) *Node[T] {
 	return &Node[T]{
 		Data:     data,
 		Children: []*Node[T]{},
+		Parent:   nil,
 	}
 }
 
 func (n *Node[T]) AddNode(data T) (child *Node[T]) {
-	child = NewNode(data)
+	child = &Node[T]{
+		Data:     data,
+		Children: []*Node[T]{},
+		Parent:   n,
+	}
+
 	n.Children = append(n.Children, child)
 	return
 }
