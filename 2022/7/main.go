@@ -53,31 +53,27 @@ func (n *node) Dirs() (nodes []*node) {
 func part1(name string) {
 	input := aoc.Strings(name)
 
-	// dirs := map[string]*node{}
 	root := NewNode("/")
-	// dirs["/"] = root
 
 	workingDir := aoc.Stack[*node]{}
+	workingDir.Push(root)
+
 	for i := 0; i < len(input); i++ {
 		s := input[i]
 
 		switch {
 		case strings.Index(s, "$ cd /") == 0:
-			workingDir.Push(root)
 
 		case strings.Index(s, "$ cd ..") == 0:
 			workingDir.Pop()
 
 		case strings.Index(s, "$ cd ") == 0:
 			dirName := s[len("$ cd "):]
-
-			n := NewNode(dirName)
-			// dirs[dirName] = n
-
-			workingDir.Top().dirs = append(workingDir.Top().dirs, n)
+			n := workingDir.Top().AddNode(dirName)
 			workingDir.Push(n)
 
 		case strings.Index(s, "$ ls") == 0:
+
 		case strings.Index(s, "dir") == 0:
 
 		default:
