@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"path"
 	"strings"
 
 	"github.com/willie/advent/aoc"
@@ -50,16 +51,13 @@ func (n *node) Dirs() (nodes []*node) {
 	return
 }
 
-func part1(name string) {
-	input := aoc.Strings(name)
+func useTree(name string) {
+	workingDir := aoc.Stack[*node]{}
 
 	root := NewNode("/")
-
-	workingDir := aoc.Stack[*node]{}
 	workingDir.Push(root)
 
-	for i := 0; i < len(input); i++ {
-		s := input[i]
+	for _, s := range aoc.Strings(name) {
 
 		switch {
 		case strings.Index(s, "$ cd /") == 0:
@@ -103,7 +101,52 @@ func part1(name string) {
 	println(p1, p2)
 }
 
+func usePath(name string) {
+	workingDir := ""
+	dirSizes := map[string]int{}
+
+	for _, s := range aoc.Strings(name) {
+		switch {
+		case strings.Index(s, "$ cd ") == 0:
+			dirName := s[len("$ cd "):]
+			workingDir = path.Join(workingDir, dirName)
+
+		default:
+			var size int
+			if parsed, _ := fmt.Sscanf(s, "%d", &size); parsed == 0 {
+				continue
+			}
+
+			for dir := workingDir; dir != "/"; dir = path.Dir(dir) {
+				dirSizes[dir] += size
+			}
+
+			dirSizes["/"] += size
+		}
+	}
+
+	free := 70000000 - dirSizes["/"]
+
+	p1, p2 := 0, dirSizes["/"]
+	for _, size := range dirSizes {
+		if size <= 100000 {
+			p1 += size
+		}
+
+		if size < p2 && (size+free >= 30000000) {
+			p2 = size
+		}
+	}
+
+	println(p1, p2)
+}
+
 func main() {
-	part1("test.txt")
-	part1("input.txt")
+	useTree("test.txt")
+	useTree("input.txt")
+
+	fmt.Println("------")
+
+	usePath("test.txt")
+	usePath("input.txt")
 }
