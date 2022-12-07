@@ -58,7 +58,6 @@ func useTree(name string) {
 	workingDir.Push(root)
 
 	for _, s := range aoc.Strings(name) {
-
 		switch {
 		case strings.Index(s, "$ cd /") == 0:
 
