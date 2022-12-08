@@ -1,21 +1,8 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/willie/advent/aoc"
 )
-
-func firstMarker(s string, uniqueN int) int {
-	for i := range s {
-		marker := aoc.NewSet([]rune(s[i : i+uniqueN])...)
-		if len(marker) == uniqueN {
-			return i + uniqueN
-		}
-	}
-
-	return 0
-}
 
 func part1(name string) {
 	g := aoc.LoadGrid(name)
@@ -87,18 +74,12 @@ func part1(name string) {
 	println(count)
 }
 
-func part2(name string) {
-	for _, s := range aoc.Strings(name) {
-		fmt.Println(firstMarker(s, 14))
-	}
-}
-
 func main() {
 	part1("test.txt")
 	part1("input.txt")
 
-	// fmt.Println("------")
+	println("------")
 
-	// part2("test.txt")
-	// part2("input.txt")
+	part2("test.txt")
+	part2("input.txt")
 }
