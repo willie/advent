@@ -1,6 +1,8 @@
 package main
 
 import (
+	"image"
+
 	"github.com/willie/advent/aoc"
 )
 
@@ -72,6 +74,37 @@ func part1(name string) {
 	})
 
 	println(count)
+}
+
+var slopes = []image.Point{{-1, 0}, {1, 0}, {0, 1}, {0, -1}}
+
+func part2(name string) {
+	g := aoc.LoadGrid(name)
+
+	var score int
+
+	g.Iterate(func(x, y int, s string) bool {
+		scenic := 1
+
+		for _, d := range slopes {
+			var view int
+
+			g.SlopeIterate(x, y, d.X, d.Y, func(gx, gy int, v string) bool {
+				view++
+				return aoc.AtoI(v) < aoc.AtoI(s)
+			})
+
+			scenic *= view
+		}
+
+		if scenic > score {
+			score = scenic
+		}
+
+		return true
+	})
+
+	println(score)
 }
 
 func main() {
