@@ -9,52 +9,26 @@ func part2(name string) {
 	g.Iterate(func(x, y int, s string) bool {
 		ss := aoc.AtoI(s)
 
-		left := 0
+		var left, right, up, down int
+
 		g.SlopeIterate(x, y, -1, 0, func(gx, gy int, v string) bool {
-			n := aoc.AtoI(v)
-
 			left++
-			if n >= ss {
-				return false
-			}
-
-			return true
+			return aoc.AtoI(v) < ss
 		})
 
-		right := 0
 		g.SlopeIterate(x, y, 1, 0, func(gx, gy int, v string) bool {
-			n := aoc.AtoI(v)
-
 			right++
-			if n >= ss {
-				return false
-			}
-
-			return true
+			return aoc.AtoI(v) < ss
 		})
 
-		down := 0
 		g.SlopeIterate(x, y, 0, -1, func(gx, gy int, v string) bool {
-			n := aoc.AtoI(v)
-
 			down++
-			if n >= ss {
-				return false
-			}
-
-			return true
+			return aoc.AtoI(v) < ss
 		})
 
-		// up
-		up := 0
 		g.SlopeIterate(x, y, 0, 1, func(gx, gy int, v string) bool {
-			n := aoc.AtoI(v)
-
 			up++
-			if n >= ss {
-				return false
-			}
-			return true
+			return aoc.AtoI(v) < ss
 		})
 
 		scenic := left * right * up * down
