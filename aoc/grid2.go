@@ -52,6 +52,21 @@ func (grid Grid2[T]) Bounds() (bounds image.Rectangle) {
 	return Bounds(maps.Keys(grid))
 }
 
+// Print the grid
+func (grid Grid2[T]) Print(empty string) {
+	bounds := grid.Bounds()
+	for y := bounds.Max.Y; y >= bounds.Min.Y; y-- {
+		for x := bounds.Min.X; x <= bounds.Max.X; x++ {
+			if value, ok := grid[image.Pt(x, y)]; ok {
+				print(value)
+			} else {
+				print(empty)
+			}
+		}
+		println()
+	}
+}
+
 func Bounds(points []image.Point) (bounds image.Rectangle) {
 	for _, point := range points {
 		if point.X < bounds.Min.X {
