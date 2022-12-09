@@ -61,7 +61,6 @@ func part1(name string) {
 		delta := directions[dir]
 		for i := 0; i < steps; i++ {
 			head = head.Add(delta)
-			// fmt.Println("head", head, "tail", tail)
 
 			// current := aoc.Grid2[string]{image.Pt(0, 0): "s", tail: "T", head: "H"}
 			// current.Print(".")
@@ -69,7 +68,7 @@ func part1(name string) {
 
 			touching := false
 			for _, a := range adjacent {
-				if tail.Add(a) == head { // we are touching
+				if tail.Add(a) == head {
 					touching = true
 				}
 			}
@@ -105,7 +104,6 @@ func part2(name string) {
 		delta := directions[dir]
 		for i := 0; i < steps; i++ {
 			head = head.Add(delta)
-			// fmt.Println("head", head, "tail", tail)
 
 			next := head
 			for t := 0; t < len(tails); t++ {
@@ -150,6 +148,7 @@ func part2(name string) {
 	fmt.Println(len(visited))
 }
 
+// don't know how I feel about this
 func Map[T any, V any](in []T, f func(T) V) (out []V) {
 	out = make([]V, len(in))
 	for i, v := range in {
