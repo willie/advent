@@ -101,7 +101,6 @@ func part2(name string) {
 		var steps int
 
 		fmt.Sscanf(s, "%s %d", &dir, &steps)
-		fmt.Println(dir, steps)
 
 		delta := directions[dir]
 		for i := 0; i < steps; i++ {
@@ -119,11 +118,13 @@ func part2(name string) {
 				}
 
 				if !touching {
-					candidates := []image.Point{}
-					for _, n := range surrounding {
-						candidates = append(candidates, tails[t].Add(n))
-					}
-					tails[t] = closestCandidate(next, candidates)
+					// candidates := []image.Point{}
+					// for _, n := range surrounding {
+					// 	candidates = append(candidates, tails[t].Add(n))
+					// }
+					// tails[t] = closestCandidate(next, candidates)
+
+					tails[t] = closestCandidate(next, Map(surrounding, func(n image.Point) image.Point { return tails[t].Add(n) }))
 
 					if t == len(tails)-1 {
 						visited[tails[t]] = "#"
@@ -145,8 +146,16 @@ func part2(name string) {
 		}
 	}
 
-	visited.Print(".")
+	// visited.Print(".")
 	fmt.Println(len(visited))
+}
+
+func Map[T any, V any](in []T, f func(T) V) (out []V) {
+	out = make([]V, len(in))
+	for i, v := range in {
+		out[i] = f(v)
+	}
+	return
 }
 
 func main() {
