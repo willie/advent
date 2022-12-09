@@ -27,21 +27,16 @@ var adjacent = []image.Point{
 	{-1, -1}, {0, -1}, {1, -1},
 }
 
-// Returns the closest candidate to A in the candidates slice.
-func closestCandidate(A image.Point, candidates []image.Point) image.Point {
-	// Set the closest candidate to the first candidate in the slice.
-	closest := candidates[0]
+func closestCandidate(A image.Point, candidates []image.Point) (closest image.Point) {
+	closest = candidates[0]
 
-	// Iterate over the remaining candidates.
 	for _, candidate := range candidates[1:] {
-		// If the current candidate is closer to A than the current closest candidate,
-		// set the current candidate as the new closest candidate.
 		if distance(A, candidate) < distance(A, closest) {
 			closest = candidate
 		}
 	}
 
-	return closest
+	return
 }
 
 // Returns the Euclidean distance between two image.Points, p and q.
@@ -61,7 +56,7 @@ func part1(name string) {
 		var steps int
 
 		fmt.Sscanf(s, "%s %d", &dir, &steps)
-		fmt.Println(dir, steps)
+		// fmt.Println(dir, steps)
 
 		delta := directions[dir]
 		for i := 0; i < steps; i++ {
@@ -86,9 +81,67 @@ func part1(name string) {
 				}
 				tail = closestCandidate(head, candidates)
 
-				fmt.Println()
 				visited[tail] = "#"
 			}
+		}
+	}
+
+	// visited.Print(".")
+	fmt.Println(len(visited))
+}
+
+func part2(name string) {
+	var head image.Point
+	tails := make([]image.Point, 9)
+
+	visited := aoc.Grid2[string]{image.Pt(0, 0): "#"}
+
+	for _, s := range aoc.Strings(name) {
+		var dir string
+		var steps int
+
+		fmt.Sscanf(s, "%s %d", &dir, &steps)
+		fmt.Println(dir, steps)
+
+		delta := directions[dir]
+		for i := 0; i < steps; i++ {
+			head = head.Add(delta)
+			// fmt.Println("head", head, "tail", tail)
+
+			next := head
+			for t := 0; t < len(tails); t++ {
+
+				touching := false
+				for _, a := range adjacent {
+					if tails[t].Add(a) == next { // we are touching
+						touching = true
+					}
+				}
+
+				if !touching {
+					candidates := []image.Point{}
+					for _, n := range surrounding {
+						candidates = append(candidates, tails[t].Add(n))
+					}
+					tails[t] = closestCandidate(next, candidates)
+
+					if t == len(tails)-1 {
+						visited[tails[t]] = "#"
+					}
+				}
+
+				next = tails[t]
+			}
+
+			// current := aoc.Grid2[string]{image.Pt(0, 0): "s"}
+			// for a := len(tails) - 1; a >= 0; a++ {
+			// 	current[tails[a]] = fmt.Sprint(i)
+			// }
+
+			// current[head] = "H"
+			// current.Print(".")
+			// println()
+
 		}
 	}
 
@@ -100,8 +153,8 @@ func main() {
 	part1("test.txt")
 	part1("input.txt")
 
-	// println("------")
+	println("------")
 
-	// part2("test.txt")
-	// part2("input.txt")
+	part2("test2.txt")
+	part2("input.txt")
 }
