@@ -74,11 +74,7 @@ func part1(name string) {
 			}
 
 			if !touching {
-				candidates := []image.Point{}
-				for _, n := range surrounding {
-					candidates = append(candidates, tail.Add(n))
-				}
-				tail = closestCandidate(head, candidates)
+				tail = closestCandidate(head, aoc.Map(tail.Add, surrounding))
 
 				visited[tail] = "#"
 			}
@@ -116,13 +112,7 @@ func part2(name string) {
 				}
 
 				if !touching {
-					// candidates := []image.Point{}
-					// for _, n := range surrounding {
-					// 	candidates = append(candidates, tails[t].Add(n))
-					// }
-					// tails[t] = closestCandidate(next, candidates)
-
-					tails[t] = closestCandidate(next, Map(surrounding, func(n image.Point) image.Point { return tails[t].Add(n) }))
+					tails[t] = closestCandidate(next, aoc.Map(tails[t].Add, surrounding))
 
 					if t == len(tails)-1 {
 						visited[tails[t]] = "#"
@@ -146,15 +136,6 @@ func part2(name string) {
 
 	// visited.Print(".")
 	fmt.Println(len(visited))
-}
-
-// don't know how I feel about this
-func Map[T any, V any](in []T, f func(T) V) (out []V) {
-	out = make([]V, len(in))
-	for i, v := range in {
-		out[i] = f(v)
-	}
-	return
 }
 
 func main() {
