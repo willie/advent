@@ -188,3 +188,9 @@ func AngleDistance(a, b image.Point) (angle, distance float64) {
 
 	return angle, distance
 }
+
+// Distance returns the Euclidean distance between 2 points
+func Distance(p, q image.Point) float64 {
+	dx, dy := p.X-q.X, p.Y-q.Y
+	return math.Sqrt(float64(dx*dx + dy*dy))
+}

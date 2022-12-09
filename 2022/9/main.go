@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"image"
-	"math"
 
 	"github.com/willie/advent/aoc"
 )
@@ -31,19 +30,12 @@ func closestCandidate(A image.Point, candidates []image.Point) (closest image.Po
 	closest = candidates[0]
 
 	for _, candidate := range candidates[1:] {
-		if distance(A, candidate) < distance(A, closest) {
+		if aoc.Distance(A, candidate) < aoc.Distance(A, closest) {
 			closest = candidate
 		}
 	}
 
 	return
-}
-
-// Returns the Euclidean distance between two image.Points, p and q.
-func distance(p, q image.Point) float64 {
-	dx := p.X - q.X
-	dy := p.Y - q.Y
-	return math.Sqrt(float64(dx*dx + dy*dy))
 }
 
 func part1(name string) {
@@ -61,10 +53,6 @@ func part1(name string) {
 		delta := directions[dir]
 		for i := 0; i < steps; i++ {
 			head = head.Add(delta)
-
-			// current := aoc.Grid2[string]{image.Pt(0, 0): "s", tail: "T", head: "H"}
-			// current.Print(".")
-			// println()
 
 			touching := false
 			for _, a := range adjacent {
@@ -106,7 +94,7 @@ func part2(name string) {
 
 				touching := false
 				for _, a := range adjacent {
-					if tails[t].Add(a) == next { // we are touching
+					if tails[t].Add(a) == next {
 						touching = true
 					}
 				}
@@ -121,16 +109,6 @@ func part2(name string) {
 
 				next = tails[t]
 			}
-
-			// current := aoc.Grid2[string]{image.Pt(0, 0): "s"}
-			// for a := len(tails) - 1; a >= 0; a++ {
-			// 	current[tails[a]] = fmt.Sprint(i)
-			// }
-
-			// current[head] = "H"
-			// current.Print(".")
-			// println()
-
 		}
 	}
 
