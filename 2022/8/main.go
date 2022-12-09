@@ -76,8 +76,6 @@ func part1(name string) {
 	println(count)
 }
 
-var slopes = []image.Point{{-1, 0}, {1, 0}, {0, 1}, {0, -1}}
-
 func part2(name string) {
 	g := aoc.LoadGrid(name)
 
@@ -86,7 +84,7 @@ func part2(name string) {
 	g.Iterate(func(x, y int, s string) bool {
 		scenic := 1
 
-		for _, d := range slopes {
+		for _, d := range []image.Point{{-1, 0}, {1, 0}, {0, 1}, {0, -1}} {
 			var view int
 
 			g.SlopeIterate(x, y, d.X, d.Y, func(gx, gy int, v string) bool {
