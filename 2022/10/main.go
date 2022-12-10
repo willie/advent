@@ -7,53 +7,43 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-type instruction struct {
-	op  string
-	arg int
-}
-
 var intervals = aoc.NewSet(20, 60, 100, 140, 180, 220)
 
 func part1(name string) {
-	instructions := []instruction{}
+	values := []int{}
 	for _, s := range aoc.Strings(name) {
-		var i instruction
-		fmt.Sscanf(s, "%s %d", &i.op, &i.arg)
-
-		if i.op == "addx" {
-			instructions = append(instructions, instruction{op: "noop"})
+		op, arg := "", 0
+		fmt.Sscanf(s, "%s %d", &op, &arg)
+		if op == "addx" {
+			values = append(values, 0) // noop
 		}
-		instructions = append(instructions, i)
+		values = append(values, arg)
 	}
 
 	cycle, X, strength := 1, 1, 0
 	screen := aoc.NewBlankGrid(40, 6, " ")
 	current := image.Pt(0, 0)
 
-	for _, i := range instructions {
-		if current.X >= 40 {
-			current.X = 0
-			current.Y++
-		}
-
+	for _, arg := range values {
 		if (current.X-1 == X) || (current.X == X) || (current.X+1 == X) {
 			screen.Set(current.X, current.Y, "█")
 		}
 
 		if intervals.Contains(cycle) {
 			strength += cycle * X
-			println(cycle, X)
 		}
 
-		if i.op == "addx" {
-			X += i.arg
-		}
-
+		X += arg
 		cycle++
+
 		current.X++
+		if current.X >= 40 {
+			current.X = 0
+			current.Y++
+		}
 	}
 
-	fmt.Println(name, X, strength)
+	fmt.Println(strength)
 	screen.Print()
 	fmt.Println()
 }
