@@ -25,12 +25,12 @@ func part1(name string) {
 	current := image.Pt(0, 0)
 
 	for _, arg := range values {
-		if (current.X-1 == X) || (current.X == X) || (current.X+1 == X) {
-			screen.Set(current.X, current.Y, "█")
-		}
-
 		if intervals.Contains(cycle) {
 			strength += cycle * X
+		}
+
+		if (current.X-1 == X) || (current.X == X) || (current.X+1 == X) {
+			screen.Set(current.X, current.Y, "█")
 		}
 
 		X += arg
