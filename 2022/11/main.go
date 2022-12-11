@@ -2,21 +2,23 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/willie/advent/aoc"
 )
 
 type Monkey struct {
-	items []int
-	op    func(old int) int
-	test  func(item int) bool
-	throw map[bool]int
+	items       []int
+	op          func(old int) int
+	test        func(item int) bool
+	throw       map[bool]int
+	inspections int
 }
 
 func part1(name string) {
 
-	monkeys := []Monkey{}
+	monkeys := []*Monkey{}
 
 	for _, desc := range strings.Split(string(aoc.Input(name)), "\n\n") {
 		record := strings.Split(desc, "\n")[1:]
@@ -24,7 +26,7 @@ func part1(name string) {
 			record[i] = strings.TrimSpace(strings.SplitAfter(s, ": ")[1])
 		}
 
-		m := Monkey{
+		m := &Monkey{
 			items: aoc.Map(aoc.AtoI, strings.Split(record[0], ", ")),
 		}
 
@@ -53,17 +55,36 @@ func part1(name string) {
 		fmt.Println(len(record), record)
 	}
 
-	// for _, s := range aoc.Strings(name) {
+	for i := 0; i < 20; i++ {
+		for _, monkey := range monkeys {
+			for _, item := range monkey.items {
+				worry := monkey.op(item) / 3
 
-	// }
+				dest := monkey.throw[monkey.test(worry)]
+				fmt.Println(item, worry, worry, dest)
 
-	fmt.Println(monkeys)
+				monkeys[dest].items = append(monkeys[dest].items, worry)
+				monkey.inspections++
+			}
+			monkey.items = []int{}
+		}
+	}
+
+	inspections := []int{}
+	for i, m := range monkeys {
+		fmt.Println("Monkey", i, ":", m.items, m.inspections)
+		inspections = append(inspections, m.inspections)
+	}
+
+	sort.Sort(sort.Reverse(sort.IntSlice(inspections)))
+
+	fmt.Println(inspections[0] * inspections[1])
 }
 
 func main() {
 	part1("test.txt")
 	// part1("test2.txt")
-	// part1("input.txt")
+	part1("input.txt")
 
 	// println("------")
 
