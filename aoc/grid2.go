@@ -67,6 +67,24 @@ func (grid Grid2[T]) Print(empty string) {
 	}
 }
 
+func (grid Grid2[T]) Exists(in []image.Point) (pts []image.Point) {
+	for _, i := range in {
+		if _, ok := grid[i]; ok {
+			pts = append(pts, i)
+		}
+	}
+	return
+}
+
+func Contains[T comparable](grid Grid2[T], value T) (pts []image.Point) {
+	for pt, v := range grid {
+		if v == value {
+			pts = append(pts, pt)
+		}
+	}
+	return
+}
+
 func Bounds(points []image.Point) (bounds image.Rectangle) {
 	for _, point := range points {
 		if point.X < bounds.Min.X {

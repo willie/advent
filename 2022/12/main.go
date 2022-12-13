@@ -3,56 +3,121 @@ package main
 import (
 	"fmt"
 	"image"
-	"log"
+	"math"
 
-	"github.com/dominikbraun/graph"
+	"github.com/beefsack/go-astar"
 	"github.com/willie/advent/aoc"
 )
 
-var adjacent = []image.Point{{0, 1}, {-1, 0}, {1, 0}, {0, -1}}
+var adjacent = []image.Point{{-1, 0}, {0, 1}, {0, -1}, {1, 0}}
+
+type location struct {
+	pt   image.Point
+	grid aoc.Grid2[string]
+}
+
+func (src location) PathNeighbors() (neighbors []astar.Pather) {
+	for _, adj := range aoc.Map(src.pt.Add, adjacent) {
+		if b, ok := src.grid[adj]; ok {
+			if b[0] <= src.grid[src.pt][0]+1 {
+				neighbors = append(neighbors, location{pt: adj, grid: src.grid})
+			}
+		}
+	}
+	return
+}
+
+func (l location) PathNeighborCost(to astar.Pather) (cost float64) {
+	t := to.(location)
+	if _, ok := l.grid[t.pt]; !ok {
+		return 1
+	}
+	return
+}
+
+func (l location) PathEstimatedCost(to astar.Pather) (cost float64) {
+	t := to.(location)
+	dist := aoc.ManhattanDistance(l.pt.X, l.pt.Y, t.pt.X, t.pt.Y)
+	return float64(dist)
+}
 
 func part1(name string) {
 	grid := aoc.LoadStringGrid(aoc.Strings(name))
 
-	g := graph.New(graph.StringHash)
-
-	var S, E image.Point
+	var start, end image.Point
 
 	// set up the points
 	for pt, v := range grid { // iterate grid
-		g.AddVertex(pt.String())
 		if v == "S" {
-			S = pt
+			start = pt
 			grid[pt] = "a"
 		} else if v == "E" {
-			E = pt
-			grid[pt] = "z"
+			end = pt
+			grid[pt] = "{"
 		}
 	}
 
-	for pt1, val1 := range grid { // iterate grid
-		for _, pt2 := range aoc.Map(pt1.Add, adjacent) { // get all adjacent
-			if val2, ok := grid[pt2]; ok { // draw an edge
-				if val2[0] <= val1[0]+1 {
-					fmt.Println(val1, val2)
-
-					g.AddEdge(pt1.String(), pt2.String())
+	path := aoc.BFS(start, end, func(in image.Point) (neighbors []image.Point) {
+		for _, dest := range aoc.Map(in.Add, adjacent) {
+			if destVal, ok := grid[dest]; ok {
+				if destVal[0] <= grid[in][0]+1 {
+					neighbors = append(neighbors, dest)
 				}
 			}
 		}
+
+		return
+	})
+
+	shortest := math.MaxInt
+	for _, a := range aoc.Contains(grid, "a") {
+		path := aoc.BFS(a, end, func(in image.Point) (neighbors []image.Point) {
+			for _, dest := range aoc.Map(in.Add, adjacent) {
+				if destVal, ok := grid[dest]; ok {
+					if destVal[0] <= grid[in][0]+1 {
+						neighbors = append(neighbors, dest)
+					}
+				}
+			}
+
+			return
+		})
+
+		length := len(path) - 1
+		if length != 0 && length < shortest {
+			shortest = length
+		}
 	}
 
-	path, err := graph.ShortestPath(g, S.String(), E.String())
-	if err != nil {
-		log.Fatalln(err)
-	}
+	// for src, v1 := range grid { // iterate grid
+	// 	for _, dest := range aoc.Map(src.Add, adjacent) { // get all adjacent
+	// 		if v2, ok := grid[dest]; ok { // draw an edge
+	// 			if v2[0] <= v1[0]+1 {
+	// 				// fmt.Println(val1, val2)
 
-	fmt.Println(len(path), path)
+	// 				// g.AddEdge(pt1.String(), pt2.String())
+	// 				g.AddBoth(pt1.String(), pt2.String())
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// g, _ = graph.TransitiveReduction(g)
+
+	// path, err := graph.ShortestPath(g, S.String(), E.String())
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+
+	// file, _ := os.Create("./mygraph.gv")
+	// _ = draw.DOT(g, file)
+
+	fmt.Println(len(path)-1, shortest)
 }
 
 func main() {
 	part1("test.txt")
-	// part1("input.txt")
+	part1("input.txt")
 
 	// println("------")
 
