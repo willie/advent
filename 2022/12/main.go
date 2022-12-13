@@ -42,6 +42,7 @@ func (l location) PathEstimatedCost(to astar.Pather) (cost float64) {
 }
 
 func part1(name string) {
+	// grid := aoc.LoadStringGrid(aoc.Strings(name))
 	grid := aoc.LoadStringGrid(aoc.Strings(name))
 
 	var start, end image.Point
@@ -58,28 +59,29 @@ func part1(name string) {
 	}
 
 	path := aoc.BFS(start, end, func(in image.Point) (neighbors []image.Point) {
-		for _, dest := range aoc.Map(in.Add, adjacent) {
-			if destVal, ok := grid[dest]; ok {
-				if destVal[0] <= grid[in][0]+1 {
-					neighbors = append(neighbors, dest)
-				}
+		for _, dest := range grid.Exists(aoc.Map(in.Add, adjacent)) {
+			if grid[dest][0] <= grid[in][0]+1 {
+				neighbors = append(neighbors, dest)
 			}
 		}
-
+		// for _, dest := range aoc.Map(in.Add, adjacent) {
+		// 	if destVal, ok := grid[dest]; ok {
+		// 		if destVal[0] <= grid[in][0]+1 {
+		// 			neighbors = append(neighbors, dest)
+		// 		}
+		// 	}
+		// }
 		return
 	})
 
 	shortest := math.MaxInt
 	for _, a := range aoc.Contains(grid, "a") {
 		path := aoc.BFS(a, end, func(in image.Point) (neighbors []image.Point) {
-			for _, dest := range aoc.Map(in.Add, adjacent) {
-				if destVal, ok := grid[dest]; ok {
-					if destVal[0] <= grid[in][0]+1 {
-						neighbors = append(neighbors, dest)
-					}
+			for _, dest := range grid.Exists(aoc.Map(in.Add, adjacent)) {
+				if grid[dest][0] <= grid[in][0]+1 {
+					neighbors = append(neighbors, dest)
 				}
 			}
-
 			return
 		})
 

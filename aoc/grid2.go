@@ -16,6 +16,10 @@ func LoadStringGrid(in []string) (g Grid2[string]) {
 	return LoadGrid2(func(r rune) string { return string(r) }, in)
 }
 
+func LoadRuneGrid(in []string) (g Grid2[rune]) {
+	return LoadGrid2(func(r rune) rune { return r }, in)
+}
+
 func LoadGrid2[T any](f func(rune) T, in []string) (g Grid2[T]) {
 	g = make(Grid2[T])
 
