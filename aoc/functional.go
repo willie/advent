@@ -8,8 +8,6 @@ func Map[T, V any](f func(T) V, in []T) (out []V) {
 	return
 }
 
-/*
-
 func Filter[T any](f func(T) bool, in []T) (out []T) {
 	for _, v := range in {
 		if f(v) {
@@ -19,6 +17,7 @@ func Filter[T any](f func(T) bool, in []T) (out []T) {
 	return
 }
 
+/*
 func Reduce[E1, E2 any](f func(E2, E1) E2, in []E1, init E2) E2 {
 	r := init
 	for _, v := range in {

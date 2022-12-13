@@ -6,7 +6,7 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-type Grid2[T any] map[image.Point]T
+type Grid2[T comparable] map[image.Point]T
 
 func LoadIntGrid(in []string) (g Grid2[int]) {
 	return LoadGrid2(func(r rune) int { return int(r - '0') }, in)
@@ -20,7 +20,7 @@ func LoadRuneGrid(in []string) (g Grid2[rune]) {
 	return LoadGrid2(func(r rune) rune { return r }, in)
 }
 
-func LoadGrid2[T any](f func(rune) T, in []string) (g Grid2[T]) {
+func LoadGrid2[T comparable](f func(rune) T, in []string) (g Grid2[T]) {
 	g = make(Grid2[T])
 
 	for y, row := range in {
@@ -80,6 +80,17 @@ func (grid Grid2[T]) Exists(in []image.Point) (pts []image.Point) {
 	return
 }
 
+func (grid Grid2[T]) FourWayAdjacent(in image.Point) (pts []image.Point) {
+	return grid.Exists(Map(in.Add, []image.Point{{-1, 0}, {0, 1}, {0, -1}, {1, 0}}))
+}
+
+func (grid Grid2[T]) EightWayAdjacent(in image.Point) (pts []image.Point) {
+	return grid.Exists(Map(in.Add, []image.Point{
+		{-1, 1}, {0, 1}, {1, 1},
+		{-1, 0} /*{0,0}*/, {1, 0},
+		{-1, -1}, {0, -1}, {1, -1}}))
+}
+
 func Contains[T comparable](grid Grid2[T], value T) (pts []image.Point) {
 	for pt, v := range grid {
 		if v == value {
@@ -87,6 +98,10 @@ func Contains[T comparable](grid Grid2[T], value T) (pts []image.Point) {
 		}
 	}
 	return
+}
+
+func (grid Grid2[T]) Contains(value T) (pts []image.Point) {
+	return Contains(grid, value)
 }
 
 func Bounds(points []image.Point) (bounds image.Rectangle) {

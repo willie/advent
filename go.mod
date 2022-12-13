@@ -7,9 +7,4 @@ require (
 	golang.org/x/exp v0.0.0-20221204150635-6dcec336b2bb
 )
 
-require github.com/yourbasic/graph v0.0.0-20210606180040-8ecfec1c2869 // indirect
-
-require (
-	github.com/dominikbraun/graph v0.15.0
-	github.com/zyedidia/generic v1.2.0 // indirect
-)
+require github.com/zyedidia/generic v1.2.0
