@@ -48,33 +48,3 @@ func BtoI(b bool) int {
 	}
 	return 0
 }
-
-// byte to int
-func byteToInt(c byte) (val uint8) {
-	switch c {
-	case '0':
-		val = 0
-	case '1':
-		val = 1
-	case '2':
-		val = 2
-	case '3':
-		val = 3
-	case '4':
-		val = 4
-	case '5':
-		val = 5
-	case '6':
-		val = 6
-	case '7':
-		val = 7
-	case '8':
-		val = 8
-	case '9':
-		val = 9
-
-	default:
-		log.Fatal("what?")
-	}
-	return
-}
