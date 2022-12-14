@@ -1,7 +1,9 @@
 package aoc
 
 import (
+	"fmt"
 	"image"
+	"math"
 
 	"golang.org/x/exp/maps"
 )
@@ -57,14 +59,14 @@ func (grid Grid2[T]) Bounds() (bounds image.Rectangle) {
 }
 
 // Print the grid
-func (grid Grid2[T]) Print(empty string) {
+func (grid Grid2[T]) Print(empty T) {
 	bounds := grid.Bounds()
 	for y := bounds.Max.Y; y >= bounds.Min.Y; y-- {
 		for x := bounds.Min.X; x <= bounds.Max.X; x++ {
 			if value, ok := grid[image.Pt(x, y)]; ok {
-				print(value)
+				fmt.Print(value)
 			} else {
-				print(empty)
+				fmt.Print(empty)
 			}
 		}
 		println()
@@ -105,6 +107,9 @@ func (grid Grid2[T]) Contains(value T) (pts []image.Point) {
 }
 
 func Bounds(points []image.Point) (bounds image.Rectangle) {
+	bounds.Max.X, bounds.Max.Y = math.MinInt, math.MinInt
+	bounds.Min.X, bounds.Min.Y = math.MaxInt, math.MaxInt
+
 	for _, point := range points {
 		if point.X < bounds.Min.X {
 			bounds.Min.X = point.X
@@ -119,4 +124,26 @@ func Bounds(points []image.Point) (bounds image.Rectangle) {
 		}
 	}
 	return
+}
+
+func (grid Grid2[T]) IterateLine(start, end image.Point, f func(pt image.Point, v T) bool) bool {
+	d := end.Sub(start)
+
+	steps := Abs(d.Y)
+	if Abs(d.X) > Abs(d.Y) {
+		steps = Abs(d.X)
+	}
+
+	delta := d.Div(steps)
+	cursor := start
+
+	for v := 0; v < steps+1; v++ {
+		if !f(cursor, grid[cursor]) {
+			return false
+		}
+
+		cursor = cursor.Add(delta)
+	}
+
+	return true
 }

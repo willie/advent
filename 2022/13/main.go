@@ -28,8 +28,8 @@ func part1(name string) {
 	}
 
 	dividers := []any{[]any{[]any{float64(2)}}, []any{[]any{float64(6)}}} // either this or more unmarshalling
-
 	packets = append(packets, dividers...)
+
 	sort.Slice(packets, func(i, j int) bool {
 		return compare(packets[i], packets[j]) < 0
 	})
