@@ -73,6 +73,29 @@ func (grid Grid2[T]) Print(empty T) {
 	}
 }
 
+// Print the grid
+func (grid Grid2[T]) PrintYFlipped(empty T) {
+	bounds := grid.Bounds()
+	for y := bounds.Min.Y; y <= bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x <= bounds.Max.X; x++ {
+			if value, ok := grid[image.Pt(x, y)]; ok {
+				fmt.Print(value)
+			} else {
+				fmt.Print(empty)
+			}
+		}
+		println()
+	}
+}
+
+func (grid Grid2[T]) Get(in image.Point, empty T) (value T) {
+	value = empty
+	if v, ok := grid[in]; ok {
+		value = v
+	}
+	return
+}
+
 func (grid Grid2[T]) Exists(in []image.Point) (pts []image.Point) {
 	for _, i := range in {
 		if _, ok := grid[i]; ok {
