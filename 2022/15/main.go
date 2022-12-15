@@ -7,14 +7,14 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func drawSensor(grid aoc.Grid2[string], origin image.Point, distance int) {
+func drawSensor(grid aoc.Grid2[rune], origin image.Point, distance int) {
 	for x := -distance; x <= distance; x++ {
 		for y := -distance; y <= distance; y++ {
 			dest := origin.Add(image.Pt(x, y))
 
 			if aoc.ManhattanDistancePt(origin, dest) <= distance {
 				if _, ok := grid[dest]; !ok {
-					grid[dest] = "#"
+					grid[dest] = '#'
 				}
 			}
 		}
@@ -22,13 +22,13 @@ func drawSensor(grid aoc.Grid2[string], origin image.Point, distance int) {
 }
 
 func part1(name string, row int) {
-	grid := aoc.Grid2[string]{}
+	grid := aoc.Grid2[rune]{}
 
 	for _, s := range aoc.Strings(name) {
 		var sensor, beacon image.Point
 		fmt.Sscanf(s, "Sensor at x=%d, y=%d: closest beacon is at x=%d, y=%d", &sensor.X, &sensor.Y, &beacon.X, &beacon.Y)
 
-		grid[sensor], grid[beacon] = "S", "B"
+		grid[sensor], grid[beacon] = 'S', 'B'
 		distance := aoc.ManhattanDistancePt(sensor, beacon)
 		if (sensor.Y-distance <= row) && (row <= sensor.Y+distance) {
 			drawSensor(grid, sensor, distance)
@@ -41,7 +41,7 @@ func part1(name string, row int) {
 	notBeacon := 0
 	bounds := grid.Bounds()
 	for x := bounds.Min.X; x <= bounds.Max.X; x++ {
-		if grid.Get(image.Pt(x, row), " ") == "#" {
+		if grid.Get(image.Pt(x, row), ' ') == '#' {
 			notBeacon++
 		}
 	}
