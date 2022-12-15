@@ -77,6 +77,8 @@ func (grid Grid2[T]) Print(empty T) {
 func (grid Grid2[T]) PrintYFlipped(empty T) {
 	bounds := grid.Bounds()
 	for y := bounds.Min.Y; y <= bounds.Max.Y; y++ {
+		fmt.Print(y, " ")
+
 		for x := bounds.Min.X; x <= bounds.Max.X; x++ {
 			if value, ok := grid[image.Pt(x, y)]; ok {
 				fmt.Print(value)
