@@ -170,3 +170,7 @@ func (grid Grid2[T]) IterateLine(start, end image.Point, f func(pt image.Point, 
 
 	return true
 }
+
+func ManhattanDistancePt(p, p1 image.Point) (distance int) {
+	return Abs(p.X-p1.X) + Abs(p.Y-p1.Y)
+}
