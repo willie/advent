@@ -174,3 +174,12 @@ func (grid Grid2[T]) IterateLine(start, end image.Point, f func(pt image.Point, 
 func ManhattanDistancePt(p, p1 image.Point) (distance int) {
 	return Abs(p.X-p1.X) + Abs(p.Y-p1.Y)
 }
+
+// func rotate45ccw(i image.Point) image.Point { return image.Point{i.X - i.Y, i.X + i.Y} }
+// func rotate45cw(i image.Point) image.Point  { return image.Point{i.X - i.Y, i.X + i.Y} }
+
+func rotate90cw(i image.Point) image.Point   { return image.Point{i.Y, -i.X} }
+func rotate90ccw(i image.Point) image.Point  { return image.Point{-i.Y, i.X} }
+func rotate180(i image.Point) image.Point    { return image.Point{-i.X, -i.Y} }
+func rotate270ccw(i image.Point) image.Point { return rotate90cw(i) }
+func rotate270cw(i image.Point) image.Point  { return rotate90ccw(i) }
