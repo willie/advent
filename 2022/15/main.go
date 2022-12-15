@@ -7,10 +7,14 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func drawSensor(grid aoc.Grid2[rune], origin image.Point, distance int) {
+func drawSensor(grid aoc.Grid2[rune], origin image.Point, distance int, row int) {
 	for x := -distance; x <= distance; x++ {
 		for y := -distance; y <= distance; y++ {
 			dest := origin.Add(image.Pt(x, y))
+
+			if dest.Y != row {
+				continue
+			}
 
 			if aoc.ManhattanDistancePt(origin, dest) <= distance {
 				if _, ok := grid[dest]; !ok {
@@ -31,7 +35,7 @@ func part1(name string, row int) {
 		grid[sensor], grid[beacon] = 'S', 'B'
 		distance := aoc.ManhattanDistancePt(sensor, beacon)
 		if (sensor.Y-distance <= row) && (row <= sensor.Y+distance) {
-			drawSensor(grid, sensor, distance)
+			drawSensor(grid, sensor, distance, row)
 		}
 
 	}
