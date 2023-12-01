@@ -12,9 +12,10 @@ import (
 
 // SessionCookie returns a session cookie for AoC
 func SessionCookie() string {
-	value, exists := os.LookupEnv("AOC_SESSSION_COOKIE")
+	value, exists := os.LookupEnv("AOC_SESSION_COOKIE")
+	fmt.Println("AOC_SESSION_COOKIE:", exists)
 	if !exists {
-		log.Fatal("no AOC_SESSSION_COOKIE defined")
+		log.Fatal("no AOC_SESSION_COOKIE defined")
 	}
 	return value
 }
