@@ -11,7 +11,6 @@ import (
 func part1(in []string) (total int) {
 	limit := map[string]int{"red": 12, "green": 13, "blue": 14}
 
-	games := []int{}
 	for _, s := range in {
 		line := strings.Split(s, ": ")
 		var gameID int
@@ -28,26 +27,21 @@ func part1(in []string) (total int) {
 				if amount > limit[color] {
 					overLimit = true
 				}
-
-				// fmt.Printf("%d: %d %s\n", gameID, amount, color)
 			}
 		}
 
 		if !overLimit {
-			games = append(games, gameID)
+			total += gameID
 		}
 	}
 
-	return aoc.Sum(games...)
+	return
 }
 
 func part2(in []string) (total int) {
 
 	for _, s := range in {
 		line := strings.Split(s, ": ")
-		var gameID int
-		fmt.Sscanf(line[0], "Game %d:", &gameID)
-
 		cubesNeeded := make(map[string]int)
 
 		for _, subs := range strings.Split(line[1], "; ") {
