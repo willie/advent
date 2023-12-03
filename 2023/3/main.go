@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"strings"
 
@@ -60,8 +59,13 @@ func part1(grid aoc.Grid2[string]) (total int) {
 	return
 }
 
+type Part struct {
+	value int
+	pts   []image.Point
+}
+
 func part2(grid aoc.Grid2[string]) (total int) {
-	parts := make(map[image.Rectangle]int)
+	parts := []Part{}
 
 	bounds := grid.Bounds()
 	for y := bounds.Max.Y; y >= bounds.Min.Y; y-- {
@@ -75,9 +79,9 @@ func part2(grid aoc.Grid2[string]) (total int) {
 
 			} else {
 				if len(part) > 0 {
-					fmt.Println(part)
-					b := aoc.Bounds(pts)
-					parts[b] = aoc.AtoI(part)
+					// fmt.Println(part)
+
+					parts = append(parts, Part{aoc.AtoI(part), pts})
 					part = ""
 					pts = nil
 				}
@@ -85,38 +89,32 @@ func part2(grid aoc.Grid2[string]) (total int) {
 		}
 
 		if len(part) > 0 {
-			fmt.Println(part)
-			b := aoc.Bounds(pts)
-			parts[b] = aoc.AtoI(part)
+			// fmt.Println(part)
+
+			parts = append(parts, Part{aoc.AtoI(part), pts})
 			part = ""
 			pts = nil
 		}
 
 	}
 
-	fmt.Println(parts)
+	// fmt.Println(parts)
 
 	gears := grid.Contains("*")
-	fmt.Println(gears)
+	// fmt.Println(gears)
 	for _, gear := range gears {
 		var intersect []int
 
-		for bounds, part := range parts {
-			// if slices.Contains[image.Point](grid.EightWayAdjacent(gear), bounds) {
-			// 	intersect = append(intersect, part)
-			// }
+		for _, part := range parts {
+			adjacent := aoc.NewSet(grid.EightWayAdjacent(gear)...)
+			p := aoc.NewSet(part.pts...)
 
-			for _, adj := range grid.EightWayAdjacent(gear) {
-				fmt.Println(grid.Get(adj, ""))
-
-				if PtInRect(adj, bounds) {
-					intersect = append(intersect, part)
-					break
-				}
+			if adjacent.ContainsAny(p.Values()) {
+				intersect = append(intersect, part.value)
 			}
 		}
 
-		fmt.Println(intersect)
+		// fmt.Println(intersect)
 		if len(intersect) == 2 {
 			total += aoc.Product(intersect...)
 		}
@@ -136,7 +134,7 @@ func main() {
 
 	println("-------")
 
-	// aoc.Run("part1", part1(aoc.LoadStringGrid(aoc.Strings(day))))
-	// aoc.Run("part2", part2(aoc.LoadStringGrid(aoc.Strings(day))))
+	aoc.Run("part1", part1(aoc.LoadStringGrid(aoc.Strings(day))))
+	aoc.Run("part2", part2(aoc.LoadStringGrid(aoc.Strings(day))))
 	// aoc.Run("part2", part2(aoc.Strings(day)))
 }
