@@ -72,6 +72,6 @@ func main() {
 
 	println("-------")
 
-	aoc.Run("part1", part1(aoc.Strings(day)))
-	aoc.Run("part2", part2(aoc.Strings(day)))
+	// aoc.Run("part1", part1(aoc.Strings(day)))
+	// aoc.Run("part2", part2(aoc.Strings(day)))
 }
