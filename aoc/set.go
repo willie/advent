@@ -74,6 +74,7 @@ func (s Set[T]) Values() (values []T) {
 		values = append(values, k)
 	}
 	sort.Slice(values, func(i, j int) bool { return i < j })
+	// slices.Sort(values)
 	return
 }
 
