@@ -14,7 +14,7 @@ func part1(in []string) (total int) {
 		card := aoc.StringInts(strings.Fields(line[1]))
 
 		losers := aoc.NewSet(card...).Subtract(aoc.NewSet(winners...))
-		diff := len(card) - len(losers.Values())
+		diff := len(card) - len(losers)
 
 		score := 0
 		for i := 0; i < diff; i++ {
