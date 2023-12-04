@@ -7,17 +7,20 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-// includes boundaries
-func PtInRect(p image.Point, r image.Rectangle) bool {
-	return r.Min.X <= p.X && p.X <= r.Max.X &&
-		r.Min.Y <= p.Y && p.Y <= r.Max.Y
-}
-
 func part1(grid aoc.Grid2[string]) (total int) {
 	bounds := grid.Bounds()
 	for y := bounds.Max.Y; y >= bounds.Min.Y; y-- {
 		var part string
 		adjacent := false
+
+		checkPart := func() {
+			if len(part) > 0 {
+				if adjacent {
+					total += aoc.AtoI(part)
+				}
+				part, adjacent = "", false
+			}
+		}
 
 		for x := bounds.Min.X; x <= bounds.Max.X; x++ {
 			if value, ok := grid[image.Pt(x, y)]; ok && strings.ContainsAny(value, "0123456789") {
@@ -31,29 +34,11 @@ func part1(grid aoc.Grid2[string]) (total int) {
 				}
 
 			} else {
-				if len(part) > 0 {
-
-					if adjacent {
-						// fmt.Println(part)
-						total += aoc.AtoI(part)
-					}
-					part = ""
-					adjacent = false
-				}
+				checkPart()
 			}
 		}
 
-		if len(part) > 0 {
-
-			if adjacent {
-				// fmt.Println(part)
-
-				total += aoc.AtoI(part)
-			}
-			part = ""
-			adjacent = false
-		}
-
+		checkPart()
 	}
 
 	return
@@ -103,13 +88,11 @@ func part2(grid aoc.Grid2[string]) (total int) {
 	gears := grid.Contains("*")
 	// fmt.Println(gears)
 	for _, gear := range gears {
+		adjacent := aoc.NewSet(grid.EightWayAdjacent(gear)...)
+
 		var intersect []int
-
 		for _, part := range parts {
-			adjacent := aoc.NewSet(grid.EightWayAdjacent(gear)...)
-			p := aoc.NewSet(part.pts...)
-
-			if adjacent.ContainsAny(p.Values()) {
+			if adjacent.ContainsAny(part.pts) {
 				intersect = append(intersect, part.value)
 			}
 		}
@@ -124,7 +107,7 @@ func part2(grid aoc.Grid2[string]) (total int) {
 	return
 }
 
-const day = "https://adventofcode.com/2023/day/3"
+const day = "https://adventofcode.com/2023/day/4"
 
 func main() {
 	println(day)
