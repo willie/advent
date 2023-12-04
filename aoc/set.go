@@ -4,8 +4,6 @@ import (
 	"sort"
 )
 
-var exists = struct{}{}
-
 type Set[T comparable] map[T]struct{}
 
 // NewSet[T] returns a new Set[T]
@@ -21,7 +19,7 @@ func (s Set[T]) Add(values ...T) Set[T] { return s.AddMany(values) }
 // AddSlice to the set
 func (s Set[T]) AddSlice(values []T) Set[T] {
 	for _, value := range values {
-		s[value] = exists
+		s[value] = struct{}{}
 	}
 	return s
 }
@@ -32,7 +30,7 @@ func (s Set[T]) AddMany(values []T) Set[T] { return s.AddSlice(values) }
 // AddSet to the set
 func (s Set[T]) AddSet(set Set[T]) Set[T] {
 	for key := range set {
-		s[key] = exists
+		s[key] = struct{}{}
 	}
 	return s
 }
@@ -125,7 +123,7 @@ func (s StringSet) Add(values ...string) StringSet { return s.AddMany(values) }
 // AddMany values to the set
 func (s StringSet) AddMany(values []string) StringSet {
 	for _, value := range values {
-		s[value] = exists
+		s[value] = struct{}{}
 	}
 	return s
 }
@@ -133,7 +131,7 @@ func (s StringSet) AddMany(values []string) StringSet {
 // AddSet to the set
 func (s StringSet) AddSet(set StringSet) StringSet {
 	for key := range set {
-		s[key] = exists
+		s[key] = struct{}{}
 	}
 	return s
 }
@@ -211,7 +209,7 @@ func (s IntSet) Add(values ...int) IntSet { return s.AddMany(values) }
 // AddMany values to the set
 func (s IntSet) AddMany(values []int) IntSet {
 	for _, value := range values {
-		s[value] = exists
+		s[value] = struct{}{}
 	}
 	return s
 }
