@@ -89,6 +89,18 @@ func (s Set[T]) Subtract(x Set[T]) (difference Set[T]) {
 	return
 }
 
+// Intersect returns the differences
+func (s Set[T]) Intersect(x Set[T]) (intersection Set[T]) {
+	intersection = Set[T]{}
+
+	for k := range s {
+		if x.Contains(k) {
+			intersection.Add(k)
+		}
+	}
+	return
+}
+
 // StringSet is a set of strings, here for historical reasons
 type StringSet Set[string]
 

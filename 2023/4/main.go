@@ -40,10 +40,9 @@ func part2(in []string) (total int) {
 		winners := aoc.StringInts(strings.Fields(line[0]))
 		card := aoc.StringInts(strings.Fields(line[1]))
 
-		losers := aoc.NewSet(card...).Subtract(aoc.NewSet(winners...))
-		won := len(card) - len(losers.Values())
+		won := aoc.NewSet(card...).Intersect(aoc.NewSet(winners...))
 
-		cardWins = append(cardWins, won)
+		cardWins = append(cardWins, len(won))
 	}
 
 	cards := make([]int, len(cardWins))
