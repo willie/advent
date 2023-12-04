@@ -18,13 +18,16 @@ func NewSet[T comparable](values ...T) Set[T] {
 // Add values to the set
 func (s Set[T]) Add(values ...T) Set[T] { return s.AddMany(values) }
 
-// AddMany values to the set
-func (s Set[T]) AddMany(values []T) Set[T] {
+// AddSlice to the set
+func (s Set[T]) AddSlice(values []T) Set[T] {
 	for _, value := range values {
 		s[value] = exists
 	}
 	return s
 }
+
+// AddMany values to the set
+func (s Set[T]) AddMany(values []T) Set[T] { return s.AddSlice(values) }
 
 // AddSet to the set
 func (s Set[T]) AddSet(set Set[T]) Set[T] {
@@ -73,15 +76,12 @@ func (s Set[T]) Values() (values []T) {
 	for k := range s {
 		values = append(values, k)
 	}
-	sort.Slice(values, func(i, j int) bool { return i < j })
-	// slices.Sort(values)
 	return
 }
 
 // Subtract returns the differences
 func (s Set[T]) Subtract(x Set[T]) (difference Set[T]) {
 	difference = Set[T]{}
-
 	for k := range s {
 		if !x.Contains(k) {
 			difference.Add(k)
@@ -93,12 +93,19 @@ func (s Set[T]) Subtract(x Set[T]) (difference Set[T]) {
 // Intersect returns the differences
 func (s Set[T]) Intersect(x Set[T]) (intersection Set[T]) {
 	intersection = Set[T]{}
-
 	for k := range s {
 		if x.Contains(k) {
 			intersection.Add(k)
 		}
 	}
+	return
+}
+
+// Union returns the combination of two sets
+func (s Set[T]) Union(x Set[T]) (union Set[T]) {
+	union = Set[T]{}
+	union.AddSet(s)
+	union.AddSet(x)
 	return
 }
 
