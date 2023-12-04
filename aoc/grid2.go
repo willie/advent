@@ -180,8 +180,8 @@ func ManhattanDistancePt(p, p1 image.Point) (distance int) {
 // func rotate45ccw(i image.Point) image.Point { return image.Point{i.X - i.Y, i.X + i.Y} }
 // func rotate45cw(i image.Point) image.Point  { return image.Point{i.X - i.Y, i.X + i.Y} }
 
-func rotate90cw(i image.Point) image.Point   { return image.Point{i.Y, -i.X} }
-func rotate90ccw(i image.Point) image.Point  { return image.Point{-i.Y, i.X} }
-func rotate180(i image.Point) image.Point    { return image.Point{-i.X, -i.Y} }
-func rotate270ccw(i image.Point) image.Point { return rotate90cw(i) }
-func rotate270cw(i image.Point) image.Point  { return rotate90ccw(i) }
+func Rotate90cw(i image.Point) image.Point   { return image.Point{i.Y, -i.X} }
+func Rotate90ccw(i image.Point) image.Point  { return image.Point{-i.Y, i.X} }
+func Rotate180(i image.Point) image.Point    { return image.Point{-i.X, -i.Y} }
+func Rotate270ccw(i image.Point) image.Point { return Rotate90cw(i) }
+func Rotate270cw(i image.Point) image.Point  { return Rotate90ccw(i) }
