@@ -9,12 +9,12 @@ type Set[T comparable] map[T]struct{}
 // NewSet[T] returns a new Set[T]
 func NewSet[T comparable](values ...T) Set[T] {
 	s := Set[T]{}
-	s.AddMany(values)
+	s.AddSlice(values)
 	return s
 }
 
 // Add values to the set
-func (s Set[T]) Add(values ...T) Set[T] { return s.AddMany(values) }
+func (s Set[T]) Add(values ...T) Set[T] { return s.AddSlice(values) }
 
 // AddSlice to the set
 func (s Set[T]) AddSlice(values []T) Set[T] {
@@ -23,9 +23,6 @@ func (s Set[T]) AddSlice(values []T) Set[T] {
 	}
 	return s
 }
-
-// AddMany values to the set
-func (s Set[T]) AddMany(values []T) Set[T] { return s.AddSlice(values) }
 
 // AddSet to the set
 func (s Set[T]) AddSet(set Set[T]) Set[T] {
@@ -67,14 +64,6 @@ func (s Set[T]) ContainsAny(values []T) bool {
 		}
 	}
 	return false
-}
-
-// Values returns the values in set
-func (s Set[T]) Values() (values []T) {
-	for k := range s {
-		values = append(values, k)
-	}
-	return
 }
 
 // Subtract returns the differences

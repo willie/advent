@@ -149,7 +149,7 @@ func part1geometry(name string, row float64) {
 		deltas = []image.Point{{-distance, 0}, {0, distance}, {distance, 0}, {0, -distance}, {-distance, 0}}
 		for d := 0; d < len(deltas)-1; d++ {
 			start, end := sensor.Add(deltas[d]), sensor.Add(deltas[d+1])
-			testPts.AddMany(aoc.Map(geometryPoint, PointsOnLine(start, end)))
+			testPts.AddSlice(aoc.Map(geometryPoint, PointsOnLine(start, end)))
 		}
 	}
 
@@ -214,7 +214,7 @@ func part1geometry(name string, row float64) {
 		fmt.Println(searchArea)
 
 		// testPts.Add(geometry.Point{14, 11})
-		for _, pt := range testPts.Values() {
+		for pt := range testPts {
 			if !searchArea.ContainsPoint(pt) {
 				continue
 			}
