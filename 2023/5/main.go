@@ -94,7 +94,8 @@ func part2(in []string) (total int) {
 	mappings := []mapping{}
 	for _, s := range in[2:] {
 		if m := strings.Split(s, " map:"); len(m) > 1 { // reset
-			fmt.Println(name, seeds)
+			// fmt.Println(name, seeds)
+			fmt.Println(name)
 
 			name = strings.Split(m[0], "-")[2]
 			// mapping = map[int]int{}
@@ -105,7 +106,7 @@ func part2(in []string) (total int) {
 			dest, source, length := m[0], m[1], m[2]
 
 			mappings = append(mappings, mapping{source, dest, length})
-			fmt.Println(dest, source, length)
+			// fmt.Println(dest, source, length)
 			continue
 		}
 
@@ -136,11 +137,11 @@ func part2(in []string) (total int) {
 				break
 			}
 		}
-		fmt.Println(seeds)
-		fmt.Println()
+		// fmt.Println(seeds)
+		// fmt.Println()
 	}
 
-	fmt.Println(seeds)
+	// fmt.Println(seeds)
 	return aoc.Min(seeds...)
 }
 
