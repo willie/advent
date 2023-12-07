@@ -124,50 +124,52 @@ func handType2(hand string) (score int) {
 	cardinality := cardinality(hand)
 
 	wild := 0
-	if w, ok := cardinality["J"]; ok {
+	if w, ok := cardinality["J"]; ok && w != 5 {
 		wild = w
-		fmt.Println(wild, cardinality)
 		delete(cardinality, "J")
-		fmt.Println(wild, cardinality)
 	}
 
-	most := aoc.Max(maps.Values(cardinality)...)
-	for i, v := range cardinality {
-		if v == most {
-			cardinality[i] += wild
-			break
-		}
+	values := maps.Values(cardinality)
+	slices.Sort(values)
+	slices.Reverse(values)
+
+	fmt.Println("what:", values, wild)
+
+	most := values[0]
+	second := 0
+	if len(values) > 1 {
+		second = values[1]
 	}
+
+	// for i, v := range cardinality {
+	// 	if v == most {
+	// 		cardinality[i] += wild
+	// 		break
+	// 	}
+	// }
+
+	most += wild
 
 	// fmt.Println(wild, cardinality)
 
-	switch len(cardinality) {
-	case 1:
-		return FiveOfAKind
-	case 2:
-		// either FourOfAKind or FullHouse
-		for _, v := range cardinality {
-			if v == 4 {
-				return FourOfAKind
-			}
-		}
-
-		return FullHouse
-	case 3:
-		// either ThreeOfAKind or TwoPair
-		for _, v := range cardinality {
-			if v == 3 {
-				return ThreeOfAKind
-			}
-		}
-		return TwoPair
-	case 4:
-		return OnePair
+	switch most {
 	case 5:
-		return HighCard
-
-	case 0:
 		return FiveOfAKind
+	case 4:
+		return FourOfAKind
+	case 3:
+		if second == 2 {
+			return FullHouse
+		}
+		return ThreeOfAKind
+
+	case 2:
+		if second == 2 {
+			return TwoPair
+		}
+		return OnePair
+	case 1:
+		return HighCard
 	}
 
 	return 0
@@ -207,7 +209,7 @@ func part2(in []string) (total int) {
 		hands = append(hands, hand)
 	}
 
-	fmt.Println(handType2("JAAJJ"), handType2("8JJJJ"), handType2("J3JJA"))
+	fmt.Println(handType2("JAAJJ"), handType2("8JJJJ"), handType2("J3JJA"), handType2("TTJTT"))
 
 	fmt.Println(hands)
 	slices.SortFunc(hands, CompareHands2)
@@ -215,7 +217,7 @@ func part2(in []string) (total int) {
 	// 	fmt.Println(hand, handType2(hand.cards))
 	// }
 
-	fmt.Println(hands)
+	// fmt.Println(hands)
 	for i, hand := range hands {
 		total += hand.bid * (i + 1)
 	}
@@ -228,12 +230,12 @@ const day = "https://adventofcode.com/2023/day/7"
 func main() {
 	println(day)
 
-	aoc.Test("test1", part1(aoc.Strings("test")), 6440)
+	// aoc.Test("test1", part1(aoc.Strings("test")), 6440)
 	aoc.Test("test2", part2(aoc.Strings("test")), 5905)
 
 	println("-------")
 
-	aoc.Run("part1", part1(aoc.Strings(day)))
+	// aoc.Run("part1", part1(aoc.Strings(day)))
 	aoc.Run("part2", part2(aoc.Strings(day)))
 	// aoc.Run("part2", part2(aoc.Strings(day)))
 }
