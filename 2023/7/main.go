@@ -9,18 +9,6 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-const strength = "23456789TJQKA"
-
-// Every hand is exactly one type. From strongest to weakest, they are:
-
-// Five of a kind, where all five cards have the same label: AAAAA
-// Four of a kind, where four cards have the same label and one card has a different label: AA8AA
-// Full house, where three cards have the same label, and the remaining two cards share a different label: 23332
-// Three of a kind, where three cards have the same label, and the remaining two cards are each different from any other card in the hand: TTT98
-// Two pair, where two cards share one label, two other cards share a second label, and the remaining card has a third label: 23432
-// One pair, where two cards share one label, and the other three cards have a different label from the pair and each other: A23A4
-// High card, where all cards' labels are distinct: 23456
-
 const (
 	HighCard = iota + 1
 	OnePair
@@ -42,29 +30,32 @@ func cardinality(hand string) (cardinality map[string]int) {
 func handType(hand string) (score int) {
 	cardinality := cardinality(hand)
 
-	switch len(cardinality) {
-	case 1:
-		return FiveOfAKind
-	case 2:
-		// either FourOfAKind or FullHouse
-		for _, v := range cardinality {
-			if v == 4 {
-				return FourOfAKind
-			}
-		}
+	values := maps.Values(cardinality)
+	slices.Sort(values)
+	slices.Reverse(values)
 
-		return FullHouse
-	case 3:
-		// either ThreeOfAKind or TwoPair
-		for _, v := range cardinality {
-			if v == 3 {
-				return ThreeOfAKind
-			}
-		}
-		return TwoPair
-	case 4:
-		return OnePair
+	most := values[0]
+	second := 0
+	if len(values) > 1 {
+		second = values[1]
+	}
+
+	switch most {
 	case 5:
+		return FiveOfAKind
+	case 4:
+		return FourOfAKind
+	case 3:
+		if second == 2 {
+			return FullHouse
+		}
+		return ThreeOfAKind
+	case 2:
+		if second == 2 {
+			return TwoPair
+		}
+		return OnePair
+	case 1:
 		return HighCard
 	}
 
@@ -86,6 +77,8 @@ func CompareHands(a, b Hand) int {
 		return 1
 	} else {
 		for i := 0; i < len(a.cards); i++ {
+			const strength = "23456789TJQKA"
+
 			aa := strings.IndexByte(strength, a.cards[i])
 			bb := strings.IndexByte(strength, b.cards[i])
 
@@ -133,24 +126,11 @@ func handType2(hand string) (score int) {
 	slices.Sort(values)
 	slices.Reverse(values)
 
-	fmt.Println("what:", values, wild)
-
-	most := values[0]
+	most := values[0] + wild
 	second := 0
 	if len(values) > 1 {
 		second = values[1]
 	}
-
-	// for i, v := range cardinality {
-	// 	if v == most {
-	// 		cardinality[i] += wild
-	// 		break
-	// 	}
-	// }
-
-	most += wild
-
-	// fmt.Println(wild, cardinality)
 
 	switch most {
 	case 5:
@@ -162,7 +142,6 @@ func handType2(hand string) (score int) {
 			return FullHouse
 		}
 		return ThreeOfAKind
-
 	case 2:
 		if second == 2 {
 			return TwoPair
@@ -175,8 +154,6 @@ func handType2(hand string) (score int) {
 	return 0
 }
 
-const strength2 = "J23456789TQKA"
-
 func CompareHands2(a, b Hand) int {
 	if a.HandType2() < b.HandType2() {
 		return -1
@@ -184,6 +161,8 @@ func CompareHands2(a, b Hand) int {
 		return 1
 	} else {
 		for i := 0; i < len(a.cards); i++ {
+			const strength2 = "J23456789TQKA"
+
 			aa := strings.IndexByte(strength2, a.cards[i])
 			bb := strings.IndexByte(strength2, b.cards[i])
 
@@ -209,15 +188,8 @@ func part2(in []string) (total int) {
 		hands = append(hands, hand)
 	}
 
-	fmt.Println(handType2("JAAJJ"), handType2("8JJJJ"), handType2("J3JJA"), handType2("TTJTT"))
-
-	fmt.Println(hands)
 	slices.SortFunc(hands, CompareHands2)
-	// for _, hand := range hands {
-	// 	fmt.Println(hand, handType2(hand.cards))
-	// }
 
-	// fmt.Println(hands)
 	for i, hand := range hands {
 		total += hand.bid * (i + 1)
 	}
@@ -230,12 +202,13 @@ const day = "https://adventofcode.com/2023/day/7"
 func main() {
 	println(day)
 
-	// aoc.Test("test1", part1(aoc.Strings("test")), 6440)
+	// fmt.Println(handType2("JAAJJ"), handType2("8JJJJ"), handType2("J3JJA"), handType2("TTJTT"))
+
+	aoc.Test("test1", part1(aoc.Strings("test")), 6440)
 	aoc.Test("test2", part2(aoc.Strings("test")), 5905)
 
 	println("-------")
 
-	// aoc.Run("part1", part1(aoc.Strings(day)))
+	aoc.Run("part1", part1(aoc.Strings(day)))
 	aoc.Run("part2", part2(aoc.Strings(day)))
-	// aoc.Run("part2", part2(aoc.Strings(day)))
 }
