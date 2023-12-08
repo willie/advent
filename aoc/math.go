@@ -58,24 +58,24 @@ func Max[T constraints.Integer](in ...T) (max T) {
 }
 
 // GCD returns the greatest common divisor (GCD) via Euclidean algorithm
-func GCD(a, b int64) int64 {
-	for b != 0 {
-		t := b
-		b = a % b
-		a = t
+func GCD[T constraints.Integer](a, b T) T {
+	for b > 0 {
+		a, b = b, a%b
 	}
 	return a
 }
 
 // LCM returns Least Common Multiple (LCM) via GCD
-func LCM(a, b int64, integers ...int64) int64 {
-	result := a * b / GCD(a, b)
-
-	for i := 0; i < len(integers); i++ {
-		result = LCM(result, integers[i])
+func LCM[T constraints.Integer](nums ...T) (lcm T) {
+	if len(nums) == 0 {
+		return
 	}
 
-	return result
+	lcm = nums[0]
+	for _, num := range nums[1:] {
+		lcm = lcm * num / GCD(lcm, num)
+	}
+	return
 }
 
 // Abs return absolute value
