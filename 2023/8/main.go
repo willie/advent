@@ -74,13 +74,15 @@ func part2(in []string) (total int) {
 
 				if current[2] == 'Z' {
 					steps = append(steps, step)
+					fmt.Println(current, step)
 					break
 				}
 			}
 		}
 	}
 
-	return aoc.LCM2(steps...)
+	fmt.Println(steps)
+	return aoc.LCM(steps...)
 }
 
 const day = "https://adventofcode.com/2023/day/8"
@@ -91,7 +93,7 @@ func main() {
 	aoc.Test("test1", part1(aoc.Strings("test")), 2)
 	aoc.Test("test2", part1(aoc.Strings("test2")), 6)
 	aoc.Test("test3", part2(aoc.Strings("test3")), 6)
-	aoc.Test("test3", part2(aoc.Strings("test3")), 6)
+	aoc.Test("test4", part2(aoc.Strings("test4")), 23)
 
 	println("-------")
 
