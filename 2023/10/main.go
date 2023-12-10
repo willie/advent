@@ -221,19 +221,31 @@ func part2(in []string) (total int) {
 		// for x := bounds.Min.X; x <= bounds.Max.X; x++ {
 
 		borderCount := 0
+		inside := false
 
+		prev := ""
 		for x := aoc.Min(visitedInRow...); x < aoc.Max(visitedInRow...); x++ {
 			pt := image.Pt(x, y)
 			v := grid[pt]
 
 			if _, ok := visited[pt]; ok {
-				borderCount++
-			} else if v == "." {
-				if borderCount%2 == 1 {
+				if v == "|" ||
+					(prev == "F" && v == "J") ||
+					(prev == "L" && v == "7") {
+					inside = !inside
+					borderCount++
+				} else if v == "-" {
+					continue
+				}
+
+				prev = v
+
+			} else {
+				if inside {
 					total++
-					grid[pt] = "I"
-				} else if borderCount > 0 {
-					grid[pt] = "O"
+					grid[pt] = " "
+				} else {
+					grid[pt] = "."
 				}
 			}
 		}
@@ -257,11 +269,12 @@ func main() {
 	aoc.Test("test1", part1(aoc.Strings("test")), 8)
 	aoc.Test("test2", part2(aoc.Strings("test2")), 4)
 	aoc.Test("test3", part2(aoc.Strings("test3")), 8)
+	aoc.Test("test4", part2(aoc.Strings("test4")), 10)
 
 	println("-------")
 
 	// aoc.Run("part1", part1(aoc.Strings(day)))
-	// aoc.Run("part2", part2(aoc.Strings(day)))
+	aoc.Run("part2", part2(aoc.Strings(day)))
 }
 
 // The pipes are arranged in a two-dimensional grid of tiles:
