@@ -138,13 +138,17 @@ func Bounds(points []image.Point) (bounds image.Rectangle) {
 	for _, point := range points {
 		if point.X < bounds.Min.X {
 			bounds.Min.X = point.X
-		} else if point.X > bounds.Max.X {
+		}
+
+		if point.X > bounds.Max.X {
 			bounds.Max.X = point.X
 		}
 
 		if point.Y < bounds.Min.Y {
 			bounds.Min.Y = point.Y
-		} else if point.Y > bounds.Max.Y {
+		}
+
+		if point.Y > bounds.Max.Y {
 			bounds.Max.Y = point.Y
 		}
 	}

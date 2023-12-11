@@ -17,6 +17,16 @@ func Filter[T any](f func(T) bool, in []T) (out []T) {
 	return
 }
 
+func FilterMap[K comparable, V any](m map[K]V, predicate func(K, V) bool) map[K]V {
+	result := make(map[K]V)
+	for k, v := range m {
+		if predicate(k, v) {
+			result[k] = v
+		}
+	}
+	return result
+}
+
 /*
 func Reduce[E1, E2 any](f func(E2, E1) E2, in []E1, init E2) E2 {
 	r := init

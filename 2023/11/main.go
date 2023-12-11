@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"image"
+	"slices"
 
 	"github.com/willie/advent/aoc"
+	"golang.org/x/exp/maps"
 )
 
 // The researcher has collected a bunch of data and compiled the data into a single giant image (your puzzle input). The image includes empty space (.) and galaxies (#). For example:
@@ -88,37 +90,127 @@ import (
 // Between galaxy 8 and galaxy 9: 5
 // In this example, after expanding the universe, the sum of the shortest path between all 36 pairs of galaxies is 374.
 
-func part1(in []string) (total int) {
+func part1(in []string, expansion int) (total int) {
+	// load it
 	g := aoc.LoadStringGrid(in)
-
-	g.PrintYFlipped(".")
+	g.PrintYFlipped(" ")
 	fmt.Println()
+	fmt.Println("number of galaxies", len(g))
 
-	// expand the grid on empty rows and columns
-	g.Bounds()
-	for y := g.Bounds().Min.Y; y <= g.Bounds().Max.Y; y++ {
+	// keep only galaxies
+	g = aoc.FilterMap(g, func(pt image.Point, v string) bool { return v == "#" })
+	g.PrintYFlipped(" ")
+	fmt.Println()
+	fmt.Println("number of galaxies", len(g))
 
+	// number the galaxies
+	counter := 0
+	bounds := g.Bounds()
+
+	for y := bounds.Min.Y; y <= bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x <= bounds.Max.X; x++ {
+			if _, ok := g[image.Pt(x, y)]; ok {
+				counter++
+				g[image.Pt(x, y)] = fmt.Sprintf("%d", counter)
+			}
+		}
+	}
+	g.PrintYFlipped(" ")
+
+	// find all the empty rows and columns
+	emptyRows := []int{}
+	for y := bounds.Min.Y; y <= bounds.Max.Y; y++ {
 		rowEmpty := true
-		for x := g.Bounds().Min.X; x <= g.Bounds().Max.X; x++ {
-			if g[image.Pt(x, y)] == "#" {
+		for x := bounds.Min.X; x <= bounds.Max.X; x++ {
+			if _, ok := g[image.Pt(x, y)]; ok {
 				rowEmpty = false
 				break
 			}
 		}
-
 		if rowEmpty {
-			old := g.Bounds().Max.Y
-			for y2 := y; y2 <= old+1; y2++ {
-
-				for x := g.Bounds().Min.X; x <= g.Bounds().Max.X; x++ {
-					g[image.Pt(x, y2+1)] = g[image.Pt(x, y2)]
-					g[image.Pt(x, y2)] = "."
-				}
-			}
+			emptyRows = append(emptyRows, y)
 		}
 	}
 
-	g.PrintYFlipped(".")
+	emptyColumns := []int{}
+	for x := bounds.Min.X; x <= bounds.Max.X; x++ {
+		colEmpty := true
+		for y := bounds.Min.Y; y <= bounds.Max.Y; y++ {
+			if _, ok := g[image.Pt(x, y)]; ok {
+				colEmpty = false
+				break
+			}
+		}
+		if colEmpty {
+			emptyColumns = append(emptyColumns, x)
+		}
+	}
+
+	// fmt.Println(emptyRows, emptyColumns)
+	fmt.Println("number of galaxies", len(g))
+
+	galaxies := maps.Keys(g)
+	// fmt.Println(galaxies)
+	slices.SortFunc(galaxies, aoc.ComparePoints)
+	// fmt.Println(galaxies)
+
+	// paths :=
+	paths2 := uniquePointPairs(galaxies)
+	slices.SortFunc(paths2, func(a, b Points) int {
+		if a.start == b.start {
+			return aoc.ComparePoints(a.end, b.end)
+		}
+		return aoc.ComparePoints(a.start, b.start)
+	})
+
+	// fmt.Println("unique:", uniquePairs(galaxies), len(paths2))
+
+	// iterate over the galaxies, find the manhattan distance to all the others
+	for _, path := range paths2 {
+		src, dest := path.start, path.end
+
+		diff := 0
+
+		for _, row := range emptyRows {
+			// if row >= src.Y && row <= dest.Y {
+			if NumIsBetween(row, src.Y, dest.Y) {
+				diff += expansion
+			}
+		}
+		for _, col := range emptyColumns {
+			// if col >= src.X && col <= dest.X {
+			if NumIsBetween(col, src.X, dest.X) {
+				diff += expansion
+			}
+		}
+
+		dist := aoc.ManhattanDistance(src.X, src.Y, dest.X, dest.Y)
+
+		// fmt.Println(src, dest, g[src], "->", g[dest], dist, dist+diff)
+		total += (dist + diff)
+	}
+
+	// for _, path := range paths {
+	// 	src, dest := path.First, path.Second
+
+	// 	dist := aoc.ManhattanDistance(src.X, src.Y, dest.X, dest.Y)
+	// 	fmt.Println(src, dest, g[src], g[dest], dist)
+
+	// 	for _, row := range emptyRows {
+	// 		if row >= src.Y && row <= dest.Y {
+	// 			fmt.Println("row", row, src, dest)
+	// 			dist++
+	// 		}
+	// 	}
+	// 	for _, col := range emptyColumns {
+	// 		if col >= src.X && col <= dest.X {
+	// 			fmt.Println("col", col, src, dest)
+	// 			dist++
+	// 		}
+	// 	}
+	// 	fmt.Println(src, dest, g[src], "->", g[dest], dist)
+	// 	total += dist
+	// }
 
 	return
 }
@@ -132,13 +224,59 @@ const day = "https://adventofcode.com/2023/day/11"
 func main() {
 	println(day)
 
-	aoc.Test("test1", part1(aoc.Strings("test")), 8)
-	// aoc.Test("test2", part2(aoc.Strings("test2")), 4)
+	aoc.Test("test1", part1(aoc.Strings("test"), 1), 374)
+	aoc.Test("test1", part1(aoc.Strings("test"), 100-1), 8410)
 	// aoc.Test("test3", part2(aoc.Strings("test3")), 8)
 	// aoc.Test("test4", part2(aoc.Strings("test4")), 10)
 
 	println("-------")
 
-	// aoc.Run("part1", part1(aoc.Strings(day)))
-	// aoc.Run("part2", part2(aoc.Strings(day)))
+	aoc.Run("part1", part1(aoc.Strings(day), 1))
+	aoc.Run("part2", part1(aoc.Strings(day), 1000000-1))
+}
+
+type PointPair struct {
+	First, Second image.Point
+}
+
+func uniquePairs(points []image.Point) (pairs []PointPair) {
+	n := len(points)
+
+	for i := 0; i < n; i++ {
+		for j := i + 1; j < n; j++ {
+			pairs = append(pairs, PointPair{First: points[i], Second: points[j]})
+		}
+	}
+
+	return
+}
+
+type Points struct {
+	start, end image.Point
+}
+
+func uniquePointPairs(points []image.Point) (pairs []Points) {
+	rects := map[Points]struct{}{}
+
+	slices.SortFunc(points, aoc.ComparePoints)
+
+	for _, p := range points {
+		for _, q := range points {
+			if aoc.ComparePoints(p, q) == -1 {
+				rects[Points{p, q}] = struct{}{}
+
+			}
+
+		}
+	}
+
+	return maps.Keys(rects)
+}
+
+func NumIsBetween(num, a, b int) bool {
+	low, high := a, b
+	if a > b {
+		low, high = b, a
+	}
+	return num >= low && num <= high
 }

@@ -194,3 +194,28 @@ func Distance(p, q image.Point) float64 {
 	dx, dy := p.X-q.X, p.Y-q.Y
 	return math.Sqrt(float64(dx*dx + dy*dy))
 }
+
+func ComparePoints(a, b image.Point) int {
+	if a.Y < b.Y {
+		return -1
+	}
+	if a.Y > b.Y {
+		return 1
+	}
+
+	if a.X < b.X {
+		return -1
+	}
+	if a.X > b.X {
+		return 1
+	}
+	return 0
+}
+
+// LessThan returns true if a point is less than another point
+func LessThan(a, b image.Point) bool {
+	if a.X < b.X {
+		return true
+	}
+	return a.Y < b.Y
+}
