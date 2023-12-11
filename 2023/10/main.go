@@ -95,7 +95,7 @@ func part2(in []string) (total int) {
 		}
 	}
 
-	fmt.Println(potential)
+	// fmt.Println(potential)
 
 	// iterate over the paths of adjacent points, finding ones that have are adjacent to the current point, but not traversed yet, starting with potential[0] and ending with potential[1] and avoiding s
 
