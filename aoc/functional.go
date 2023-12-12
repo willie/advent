@@ -35,5 +35,4 @@ func Reduce[E1, E2 any](f func(E2, E1) E2, in []E1, init E2) E2 {
 	}
 	return r
 }
-
 */

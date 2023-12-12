@@ -213,9 +213,4 @@ func ComparePoints(a, b image.Point) int {
 }
 
 // LessThan returns true if a point is less than another point
-func LessThan(a, b image.Point) bool {
-	if a.X < b.X {
-		return true
-	}
-	return a.Y < b.Y
-}
+func LessThan(a, b image.Point) bool { return ComparePoints(a, b) == -1 }

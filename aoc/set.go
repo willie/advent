@@ -2,6 +2,8 @@ package aoc
 
 import (
 	"sort"
+
+	"golang.org/x/exp/maps"
 )
 
 type Set[T comparable] map[T]struct{}
@@ -76,6 +78,9 @@ func (s Set[T]) Subtract(x Set[T]) (difference Set[T]) {
 	}
 	return
 }
+
+// Values returns the values in set
+func (s Set[T]) Values() (values []T) { return maps.Keys(s) }
 
 // Intersect returns the differences
 func (s Set[T]) Intersect(x Set[T]) (intersection Set[T]) {
@@ -175,6 +180,17 @@ func (s StringSet) Subtract(x StringSet) (difference StringSet) {
 	for k := range s {
 		if !x.Contains(k) {
 			difference.Add(k)
+		}
+	}
+	return
+}
+
+// Intersection returns the union
+func (s StringSet) Intersection(x StringSet) (intersection StringSet) {
+	intersection = StringSet{}
+	for k := range s {
+		if x.Contains(k) {
+			intersection.Add(k)
 		}
 	}
 	return
