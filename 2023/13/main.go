@@ -44,19 +44,25 @@ func reflection(in []string) (reflected int) {
 			l, r = l[:m], r[:m]
 
 			if l == r {
-				fmt.Println(l, r)
+				// fmt.Println(l, r)
 				reflections[i]++
 			}
 		}
 	}
 
-	fmt.Println(reflections)
+	// fmt.Println(reflections)
 	// max := aoc.Max(maps.Values(reflections)...)
 
+	wtf := []int{}
 	for k, v := range reflections {
 		if v == len(in) {
-			return k
+			// return k
+			wtf = append(wtf, k)
 		}
+	}
+	if len(wtf) > 0 {
+		// fmt.Println("wtf", wtf)
+		return wtf[0]
 	}
 
 	return
@@ -100,19 +106,95 @@ func part1(in []string) (total int) {
 	return
 }
 
+func part2(in []string) (total int) {
+	grids := loadGrids(in)
+	for _, g := range grids {
+		g.Print()
+		fmt.Println()
+	}
+	fmt.Println(len(grids))
+
+	var rowR, colR int
+
+	for _, g := range grids {
+		// find a perfect reflection across either a horizontal line between two rows or across a vertical line between two columns.
+		rr, cc := -1, -1
+
+		rows := []string{}
+		for _, row := range g.Rows() {
+			rows = append(rows, strings.Join(row, ""))
+		}
+		rr = reflection(rows)
+
+		if rr == -1 {
+			cols := []string{}
+			for _, col := range g.Columns() {
+				cols = append(cols, strings.Join(col, ""))
+			}
+			cc = reflection(cols)
+		}
+
+		pixels := g.Width() * g.Height()
+		for xy := 0; xy < pixels; xy++ {
+			n := g.Copy()
+			x, y := xy%n.Width(), xy/n.Width()
+			if n.At(x, y) == "#" {
+				n.Set(x, y, ".")
+			} else {
+				n.Set(x, y, "#")
+			}
+
+			rows := []string{}
+			for _, row := range n.Rows() {
+				rows = append(rows, strings.Join(row, ""))
+			}
+			nrr := reflection(rows)
+			if nrr != -1 && nrr != rr {
+				rowR += nrr
+				fmt.Println("row", rowR)
+				n.Print()
+
+				break
+			}
+
+			cols := []string{}
+			for _, col := range n.Columns() {
+				cols = append(cols, strings.Join(col, ""))
+			}
+			ncc := reflection(cols)
+			if ncc != -1 && ncc != cc {
+				colR += ncc
+				fmt.Println("col", colR)
+				n.Print()
+
+				break
+			}
+		}
+		// }
+
+	}
+
+	total = rowR + colR*100
+
+	return
+}
+
 const day = "https://adventofcode.com/2023/day/13"
 
 func main() {
 	println(day)
 
 	aoc.Test("test", part1(aoc.Strings("test")), 405)
+	// aoc.Test("test", part2(aoc.Strings("test")), 400)
+	aoc.Test("test2", part1(aoc.Strings("test3")), 405)
+	aoc.Test("test2", part2(aoc.Strings("test3")), 405)
 	// aoc.Test("test1", part1(aoc.Strings("test1")), 405)
 	// aoc.Test("test2", part1(aoc.Strings("test2")), 405)
 
 	println("-------")
 
-	aoc.Run("part1", part1(aoc.Strings(day)))
-	// aoc.Run("part2", part1(aoc.Strings(day), 1000000-1))
+	// aoc.Run("part1", part1(aoc.Strings(day)))
+	// aoc.Run("part2", part2(aoc.Strings(day)))
 }
 
 // You note down the patterns of ash (.) and rocks (#) that you see as you walk (your puzzle input); perhaps by carefully analyzing these patterns, you can figure out where the mirrors are!
