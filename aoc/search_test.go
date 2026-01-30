@@ -96,14 +96,9 @@ func TestBFSNoPath(t *testing.T) {
 
 	path := BFS(1, 5, neighbors)
 
-	// No path exists - current implementation returns [goal] even if unreachable
-	// This documents the current (incorrect) behavior
-	if path[0] != 5 {
-		t.Errorf("BFS no path: expected [5] (current behavior), got %v", path)
+	if path != nil {
+		t.Errorf("BFS no path: expected nil, got %v", path)
 	}
-
-	// Note: A proper implementation should return empty path or error
-	t.Log("Note: BFS returns [goal] even when no path exists - should return empty")
 }
 
 func TestBFSWithCycles(t *testing.T) {
@@ -199,12 +194,9 @@ func TestDFSNoPath(t *testing.T) {
 
 	path := DFS(1, 99, neighbors)
 
-	// Current implementation returns [goal] even when unreachable
-	if path[0] != 99 {
-		t.Errorf("DFS no path: expected [99] (current behavior), got %v", path)
+	if path != nil {
+		t.Errorf("DFS no path: expected nil, got %v", path)
 	}
-
-	t.Log("Note: DFS returns [goal] even when no path exists - should return empty")
 }
 
 // =============================================================================
