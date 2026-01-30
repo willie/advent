@@ -66,12 +66,14 @@ func Strings(url string) (strings []string) {
 	return
 }
 
-// LoadInts returns each line in input as a int array
-func LoadInts(url string) (ints Ints) {
-	for _, s := range Strings(url) {
-		ints = append(ints, AtoI(s))
+// LoadInts returns each line in input as an int slice.
+func LoadInts(url string) []int {
+	lines := Strings(url)
+	ints := make([]int, len(lines))
+	for i, s := range lines {
+		ints[i] = AtoI(s)
 	}
-	return
+	return ints
 }
 
 // StringsSplit returns each line in input separated by a delimiter as an [][]string
