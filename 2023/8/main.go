@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"maps"
+	"slices"
 	"strings"
 
 	"github.com/willie/advent/aoc"
-	"golang.org/x/exp/maps"
 )
 
 type direction struct {
@@ -52,7 +53,7 @@ func part2(in []string) (total int) {
 	}
 
 	starts := []string{}
-	for _, dir := range maps.Keys(directions) {
+	for _, dir := range slices.Collect(maps.Keys(directions)) {
 		if dir[2] == 'A' {
 			starts = append(starts, dir)
 		}

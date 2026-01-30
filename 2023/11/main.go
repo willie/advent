@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"image"
+	"maps"
 	"slices"
 
 	"github.com/willie/advent/aoc"
-	"golang.org/x/exp/maps"
 )
 
 func part1(in []string, expansion int) (total int) {
@@ -68,7 +68,7 @@ func part1(in []string, expansion int) (total int) {
 	fmt.Println("number of galaxies", len(g))
 
 	// iterate over the galaxies, find the manhattan distance to all the others
-	for _, path := range uniquePointPairs(maps.Keys(g)) {
+	for _, path := range uniquePointPairs(slices.Collect(maps.Keys(g))) {
 		src, dest := path.start, path.end
 
 		diff := 0
@@ -120,7 +120,7 @@ func uniquePointPairs(points []image.Point) (pairs []Points) {
 		}
 	}
 
-	pairs = maps.Keys(rects)
+	pairs = slices.Collect(maps.Keys(rects))
 
 	slices.SortFunc(pairs, func(a, b Points) int {
 		if a.start == b.start {
