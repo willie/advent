@@ -159,19 +159,6 @@ func Flatten[T any](s [][]T) []T {
 	return result
 }
 
-// Zip combines two slices into pairs. Stops at the shorter slice.
-func Zip[T, U any](a []T, b []U) [][2]any {
-	n := len(a)
-	if len(b) < n {
-		n = len(b)
-	}
-	result := make([][2]any, n)
-	for i := 0; i < n; i++ {
-		result[i] = [2]any{a[i], b[i]}
-	}
-	return result
-}
-
 // Reduce applies a function to accumulate values.
 func Reduce[T, U any](s []T, initial U, f func(U, T) U) U {
 	result := initial

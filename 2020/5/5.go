@@ -82,7 +82,7 @@ func main() {
 
 	fmt.Println("------- binary solution after some sleep, damnit")
 
-	seatIDs := aoc.Ints{}
+	seatIDs := []int{}
 
 	// for _, pass := range aoc.Strings("test") {
 	for _, pass := range aoc.Strings(day) {
@@ -109,9 +109,5 @@ exit:
 	//  sum version
 	println("------- sum version")
 	fmt.Println("part2", aoc.Sum(aoc.Series(aoc.Min(seatIDs...), aoc.Max(seatIDs...))...)-aoc.Sum(seatIDs...))
-
-	// test Ints
-	println("------- sum Ints version")
-	fmt.Println("part2", aoc.Sum(aoc.Series(seatIDs.Min(), seatIDs.Max())...)-seatIDs.Sum())
 
 }

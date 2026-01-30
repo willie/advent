@@ -6,7 +6,7 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func combined(in aoc.Ints) (first, second int) {
+func combined(in []int) (first, second int) {
 	sort.Ints(in)
 
 	last := 0

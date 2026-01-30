@@ -7,13 +7,13 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func parseTickets(in string) (tickets []aoc.Ints) {
+func parseTickets(in string) (tickets [][]int) {
 	for _, tix := range strings.Split(in, "\n")[1:] {
 		if tix == "" {
 			continue
 		}
 
-		ticket := aoc.Ints{}
+		ticket := []int{}
 		for _, v := range strings.Split(tix, ",") {
 			if strings.Contains(v, ":") || (v == "") {
 				continue
@@ -54,7 +54,7 @@ func part1(in string) (result [2]int) {
 	var first int
 
 	nearbyTickets := parseTickets(parts[2])
-	var validTickets []aoc.Ints
+	var validTickets [][]int
 
 	// check invalid fields
 	for _, ticket := range nearbyTickets {

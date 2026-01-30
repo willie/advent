@@ -4,7 +4,7 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func combined(in aoc.Ints, window int) (first, second int) {
+func combined(in []int, window int) (first, second int) {
 	for i, next := range in[window:] {
 		preamble := in[i : i+window]
 
@@ -31,8 +31,8 @@ func combined(in aoc.Ints, window int) (first, second int) {
 	for start := 0; start < len(in); start++ {
 		for end := start + 1; end < len(in); end++ {
 			candidate := in[start:end]
-			if first == candidate.Sum() {
-				second = candidate.Min() + candidate.Max()
+			if first == aoc.Sum(candidate...) {
+				second = aoc.Min(candidate...) + aoc.Max(candidate...)
 				return
 			}
 		}

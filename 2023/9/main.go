@@ -31,7 +31,7 @@ func generateSequence(in []int) (out []int) {
 
 func oasis(in string) (total int) {
 	history := [][]int{}
-	history = append(history, aoc.StringInts(strings.Fields(in)))
+	history = append(history, aoc.Map(aoc.AtoI, strings.Fields(in)))
 
 	for next := history[0]; aoc.Sum(next...) != 0; {
 		next = generateSequence(next)
@@ -56,7 +56,7 @@ func oasis(in string) (total int) {
 
 func oasis2(in string) (total int) {
 	history := [][]int{}
-	history = append(history, aoc.StringInts(strings.Fields(in)))
+	history = append(history, aoc.Map(aoc.AtoI, strings.Fields(in)))
 
 	for next := history[0]; aoc.Sum(next...) != 0; {
 		next = generateSequence(next)
