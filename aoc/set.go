@@ -1,10 +1,16 @@
 package aoc
 
-import (
-	"sort"
+import "sort"
 
-	"golang.org/x/exp/maps"
-)
+// MapKeys returns all keys from a map as a slice.
+// Note: In Go 1.23+, use maps.Keys from stdlib instead.
+func MapKeys[K comparable, V any](m map[K]V) []K {
+	keys := make([]K, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	return keys
+}
 
 type Set[T comparable] map[T]struct{}
 
@@ -80,7 +86,7 @@ func (s Set[T]) Subtract(x Set[T]) (difference Set[T]) {
 }
 
 // Values returns the values in set
-func (s Set[T]) Values() (values []T) { return maps.Keys(s) }
+func (s Set[T]) Values() (values []T) { return MapKeys(s) }
 
 // Intersect returns the differences
 func (s Set[T]) Intersect(x Set[T]) (intersection Set[T]) {

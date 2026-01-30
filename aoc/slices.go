@@ -1,19 +1,19 @@
 package aoc
 
+import "slices"
+
 // Reverse returns a new slice with elements in reverse order.
+// Note: For in-place reversal, use slices.Reverse from stdlib.
 func Reverse[T any](s []T) []T {
-	result := make([]T, len(s))
-	for i, v := range s {
-		result[len(s)-1-i] = v
-	}
+	result := slices.Clone(s)
+	slices.Reverse(result)
 	return result
 }
 
 // ReverseInPlace reverses a slice in place.
+// Deprecated: Use slices.Reverse from stdlib instead.
 func ReverseInPlace[T any](s []T) {
-	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
-		s[i], s[j] = s[j], s[i]
-	}
+	slices.Reverse(s)
 }
 
 // Chunk splits a slice into chunks of size n.

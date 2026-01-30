@@ -1,10 +1,15 @@
 package aoc
 
-import "log"
+import (
+	"log"
+	"slices"
+)
 
 // Ints is []int with convenience methods.
-// Note: The generic functions Sum[T], Min[T], Max[T] in math.go are preferred
-// for new code as they work with any integer type.
+// Note: For new code, consider using:
+//   - slices.Min, slices.Max from stdlib
+//   - slices.Index, slices.Contains from stdlib
+//   - Sum[T], Product[T] from math.go
 type Ints []int
 
 // StringInts returns ints from strings
@@ -33,36 +38,22 @@ func (ints Ints) Product() (p int) {
 	return
 }
 
-// Min returns smallest value
-func (ints Ints) Min() (min int) {
+// Min returns smallest value.
+// Note: slices.Min from stdlib is preferred for new code.
+func (ints Ints) Min() int {
 	if len(ints) == 0 {
 		log.Fatalln("no values in array")
 	}
-
-	min = ints[0]
-	for i := 1; i < len(ints); i++ {
-		if ints[i] < min {
-			min = ints[i]
-		}
-	}
-
-	return
+	return slices.Min(ints)
 }
 
-// Max returns largest value
-func (ints Ints) Max() (max int) {
+// Max returns largest value.
+// Note: slices.Max from stdlib is preferred for new code.
+func (ints Ints) Max() int {
 	if len(ints) == 0 {
 		log.Fatalln("no values in array")
 	}
-
-	max = ints[0]
-	for i := 1; i < len(ints); i++ {
-		if max < ints[i] {
-			max = ints[i]
-		}
-	}
-
-	return
+	return slices.Max(ints)
 }
 
 // Last returns last value
@@ -74,15 +65,10 @@ func (ints Ints) Last() (last int) {
 	return ints[len(ints)-1]
 }
 
-// Index the first index where i is
-func (ints Ints) Index(in int) (idx int) {
-	for i, c := range ints {
-		if c == in {
-			return i
-		}
-	}
-
-	return -1
+// Index returns the first index where value is found, or -1 if not found.
+// Note: slices.Index from stdlib is preferred for new code.
+func (ints Ints) Index(in int) int {
+	return slices.Index(ints, in)
 }
 
 // LastIndex where i is

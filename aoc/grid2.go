@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"image"
 	"math"
-
-	"golang.org/x/exp/maps"
 )
 
 type Grid2[T comparable] map[image.Point]T
@@ -55,7 +53,7 @@ func (grid Grid2[T]) SlopeIterate(origin image.Point, delta image.Point, f func(
 }
 
 func (grid Grid2[T]) Bounds() (bounds image.Rectangle) {
-	return Bounds(maps.Keys(grid))
+	return Bounds(MapKeys(grid))
 }
 
 // Print the grid

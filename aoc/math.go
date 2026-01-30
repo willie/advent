@@ -1,23 +1,30 @@
 package aoc
 
 import (
+	"cmp"
 	"image"
 	"log"
 	"math"
-
-	"golang.org/x/exp/constraints"
+	"slices"
 )
 
-// Sum returns total
-func Sum[T constraints.Integer](in ...T) (sum T) {
+// Integer is a constraint for integer types.
+// Note: cmp.Ordered from stdlib is more general (includes floats/strings).
+type Integer interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 |
+		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
+
+// Sum returns total of all values.
+func Sum[T Integer](in ...T) (sum T) {
 	for _, i := range in {
 		sum += i
 	}
 	return
 }
 
-// Product multiplies all the numbers together
-func Product[T constraints.Integer](in ...T) (p T) {
+// Product multiplies all values together.
+func Product[T Integer](in ...T) (p T) {
 	p = 1
 	for _, i := range in {
 		p = p * i
@@ -25,48 +32,34 @@ func Product[T constraints.Integer](in ...T) (p T) {
 	return
 }
 
-// Min returns smallest value
-func Min[T constraints.Integer](in ...T) (min T) {
+// Min returns smallest value. Panics if empty.
+// Note: For slices, use slices.Min from stdlib directly.
+func Min[T cmp.Ordered](in ...T) T {
 	if len(in) == 0 {
 		log.Fatalln("no values in array")
 	}
-
-	min = in[0]
-	for i := 1; i < len(in); i++ {
-		if in[i] < min {
-			min = in[i]
-		}
-	}
-
-	return
+	return slices.Min(in)
 }
 
-// Max returns largest value
-func Max[T constraints.Integer](in ...T) (max T) {
+// Max returns largest value. Panics if empty.
+// Note: For slices, use slices.Max from stdlib directly.
+func Max[T cmp.Ordered](in ...T) T {
 	if len(in) == 0 {
 		log.Fatalln("no values in array")
 	}
-
-	max = in[0]
-	for i := 1; i < len(in); i++ {
-		if max < in[i] {
-			max = in[i]
-		}
-	}
-
-	return
+	return slices.Max(in)
 }
 
-// GCD returns the greatest common divisor (GCD) via Euclidean algorithm
-func GCD[T constraints.Integer](a, b T) T {
+// GCD returns the greatest common divisor (GCD) via Euclidean algorithm.
+func GCD[T Integer](a, b T) T {
 	for b > 0 {
 		a, b = b, a%b
 	}
 	return a
 }
 
-// LCM returns Least Common Multiple (LCM) via GCD
-func LCM[T constraints.Integer](nums ...T) (lcm T) {
+// LCM returns Least Common Multiple (LCM) via GCD.
+func LCM[T Integer](nums ...T) (lcm T) {
 	if len(nums) == 0 {
 		return
 	}
@@ -78,8 +71,13 @@ func LCM[T constraints.Integer](nums ...T) (lcm T) {
 	return
 }
 
-// Abs return absolute value
-func Abs[T constraints.Signed](x T) T {
+// Signed is a constraint for signed integer types.
+type Signed interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64
+}
+
+// Abs returns absolute value.
+func Abs[T Signed](x T) T {
 	if x < 0 {
 		return -x
 	}
