@@ -7,7 +7,7 @@ import (
 )
 
 // =============================================================================
-// Grid2 Creation Tests
+// SparseGrid Creation Tests
 // =============================================================================
 
 func TestLoadIntGrid(t *testing.T) {
@@ -43,20 +43,20 @@ func TestLoadRuneGrid(t *testing.T) {
 	}
 }
 
-func TestLoadGrid2Custom(t *testing.T) {
+func TestLoadSparseGridCustom(t *testing.T) {
 	input := []string{"ab", "cd"}
-	grid := LoadGrid2(func(r rune) int { return int(r) }, input)
+	grid := LoadSparseGrid(func(r rune) int { return int(r) }, input)
 
 	if grid[image.Pt(0, 0)] != int('a') {
-		t.Errorf("LoadGrid2 custom: expected %d, got %d", int('a'), grid[image.Pt(0, 0)])
+		t.Errorf("LoadSparseGrid custom: expected %d, got %d", int('a'), grid[image.Pt(0, 0)])
 	}
 }
 
 // =============================================================================
-// Grid2 Bounds Tests
+// SparseGrid Bounds Tests
 // =============================================================================
 
-func TestGrid2Bounds(t *testing.T) {
+func TestSparseGridBounds(t *testing.T) {
 	grid := LoadStringGrid([]string{"abc", "def"})
 	bounds := grid.Bounds()
 
@@ -68,8 +68,8 @@ func TestGrid2Bounds(t *testing.T) {
 	}
 }
 
-func TestGrid2BoundsNegative(t *testing.T) {
-	grid := make(Grid2[int])
+func TestSparseGridBoundsNegative(t *testing.T) {
+	grid := make(SparseGrid[int])
 	grid[image.Pt(-5, -3)] = 1
 	grid[image.Pt(5, 3)] = 2
 
@@ -83,10 +83,10 @@ func TestGrid2BoundsNegative(t *testing.T) {
 }
 
 // =============================================================================
-// Grid2 Get/Exists Tests
+// SparseGrid Get/Exists Tests
 // =============================================================================
 
-func TestGrid2Get(t *testing.T) {
+func TestSparseGridGet(t *testing.T) {
 	grid := LoadStringGrid([]string{"ab", "cd"})
 
 	if grid.Get(image.Pt(0, 0), "X") != "a" {
@@ -97,7 +97,7 @@ func TestGrid2Get(t *testing.T) {
 	}
 }
 
-func TestGrid2Exists(t *testing.T) {
+func TestSparseGridExists(t *testing.T) {
 	grid := LoadStringGrid([]string{"ab", "cd"})
 
 	points := []image.Point{{0, 0}, {99, 99}, {1, 1}}
@@ -109,10 +109,10 @@ func TestGrid2Exists(t *testing.T) {
 }
 
 // =============================================================================
-// Grid2 Adjacent Tests
+// SparseGrid Adjacent Tests
 // =============================================================================
 
-func TestGrid2FourWayAdjacent(t *testing.T) {
+func TestSparseGridFourWayAdjacent(t *testing.T) {
 	grid := LoadStringGrid([]string{
 		"abc",
 		"def",
@@ -141,7 +141,7 @@ func TestGrid2FourWayAdjacent(t *testing.T) {
 	}
 }
 
-func TestGrid2FourWayAdjacentCorner(t *testing.T) {
+func TestSparseGridFourWayAdjacentCorner(t *testing.T) {
 	grid := LoadStringGrid([]string{
 		"ab",
 		"cd",
@@ -154,7 +154,7 @@ func TestGrid2FourWayAdjacentCorner(t *testing.T) {
 	}
 }
 
-func TestGrid2EightWayAdjacent(t *testing.T) {
+func TestSparseGridEightWayAdjacent(t *testing.T) {
 	grid := LoadStringGrid([]string{
 		"abc",
 		"def",
@@ -168,7 +168,7 @@ func TestGrid2EightWayAdjacent(t *testing.T) {
 	}
 }
 
-func TestGrid2EightWayAdjacentCorner(t *testing.T) {
+func TestSparseGridEightWayAdjacentCorner(t *testing.T) {
 	grid := LoadStringGrid([]string{
 		"ab",
 		"cd",
@@ -182,10 +182,10 @@ func TestGrid2EightWayAdjacentCorner(t *testing.T) {
 }
 
 // =============================================================================
-// Grid2 Contains Tests
+// SparseGrid Contains Tests
 // =============================================================================
 
-func TestGrid2Contains(t *testing.T) {
+func TestSparseGridContains(t *testing.T) {
 	grid := LoadStringGrid([]string{
 		"a.a",
 		".a.",
@@ -209,10 +209,10 @@ func TestGrid2Contains(t *testing.T) {
 }
 
 // =============================================================================
-// Grid2 SlopeIterate Tests
+// SparseGrid SlopeIterate Tests
 // =============================================================================
 
-func TestGrid2SlopeIterate(t *testing.T) {
+func TestSparseGridSlopeIterate(t *testing.T) {
 	// Note: Bounds() returns max point, but image.Rectangle.In() treats max as exclusive
 	// So for a 3x3 grid, bounds is (0,0)-(2,2) and (2,2) is NOT "in" bounds
 	// Use a larger grid to test the iteration properly
@@ -242,7 +242,7 @@ func TestGrid2SlopeIterate(t *testing.T) {
 	}
 }
 
-func TestGrid2SlopeIterateHorizontal(t *testing.T) {
+func TestSparseGridSlopeIterateHorizontal(t *testing.T) {
 	// Note: Bounds() returns max as the actual max point, but image.Rectangle.In()
 	// treats max as exclusive. For a single-row grid, this means no points are "in" bounds.
 	// Use a 2-row grid to test horizontal iteration properly.
@@ -265,10 +265,10 @@ func TestGrid2SlopeIterateHorizontal(t *testing.T) {
 }
 
 // =============================================================================
-// Grid2 IterateLine Tests
+// SparseGrid IterateLine Tests
 // =============================================================================
 
-func TestGrid2IterateLine(t *testing.T) {
+func TestSparseGridIterateLine(t *testing.T) {
 	grid := LoadStringGrid([]string{
 		"abc",
 		"def",
@@ -294,7 +294,7 @@ func TestGrid2IterateLine(t *testing.T) {
 	}
 }
 
-func TestGrid2IterateLineHorizontal(t *testing.T) {
+func TestSparseGridIterateLineHorizontal(t *testing.T) {
 	grid := LoadStringGrid([]string{"abcde"})
 
 	var visited []string
@@ -313,11 +313,11 @@ func TestGrid2IterateLineHorizontal(t *testing.T) {
 }
 
 // =============================================================================
-// Grid2 Sparse Tests
+// SparseGrid Sparse Tests
 // =============================================================================
 
-func TestGrid2Sparse(t *testing.T) {
-	grid := make(Grid2[int])
+func TestSparseGridSparse(t *testing.T) {
+	grid := make(SparseGrid[int])
 	grid[image.Pt(0, 0)] = 1
 	grid[image.Pt(1000, 1000)] = 2
 
@@ -477,7 +477,7 @@ func TestContainsFunction(t *testing.T) {
 }
 
 // =============================================================================
-// Map Function Tests (from functional.go, used by Grid2)
+// Map Function Tests (from functional.go, used by SparseGrid)
 // =============================================================================
 
 func TestMapWithPoints(t *testing.T) {

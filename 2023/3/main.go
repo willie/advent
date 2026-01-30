@@ -7,7 +7,7 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func part1(grid aoc.Grid2[string]) (total int) {
+func part1(grid aoc.SparseGrid[string]) (total int) {
 	bounds := grid.Bounds()
 	for y := bounds.Max.Y; y >= bounds.Min.Y; y-- {
 		var part string
@@ -49,7 +49,7 @@ type Part struct {
 	pts   []image.Point
 }
 
-func part2(grid aoc.Grid2[string]) (total int) {
+func part2(grid aoc.SparseGrid[string]) (total int) {
 	parts := []Part{}
 
 	bounds := grid.Bounds()

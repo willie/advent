@@ -9,7 +9,7 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func nextPoints(grid aoc.Grid2[string], c image.Point) (next []image.Point) {
+func nextPoints(grid aoc.SparseGrid[string], c image.Point) (next []image.Point) {
 	var (
 		north = c.Add(image.Point{0, -1})
 		south = c.Add(image.Point{0, 1})
@@ -35,7 +35,7 @@ func nextPoints(grid aoc.Grid2[string], c image.Point) (next []image.Point) {
 	return
 }
 
-func nextPoint(grid aoc.Grid2[string], c image.Point, previous image.Point) (next image.Point) {
+func nextPoint(grid aoc.SparseGrid[string], c image.Point, previous image.Point) (next image.Point) {
 	for _, n := range nextPoints(grid, c) {
 		if n != previous {
 			return n

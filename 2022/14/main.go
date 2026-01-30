@@ -9,7 +9,7 @@ import (
 )
 
 func part1(name string) {
-	grid := aoc.Grid2[string]{}
+	grid := aoc.SparseGrid[string]{}
 	grid[image.Pt(500, -1)] = "+"
 
 	cursor := image.Point{}
@@ -66,7 +66,7 @@ func part1(name string) {
 }
 
 func part2(name string) {
-	grid := aoc.Grid2[string]{}
+	grid := aoc.SparseGrid[string]{}
 	grid[image.Pt(500, -1)] = "+"
 
 	cursor := image.Point{}
