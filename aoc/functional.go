@@ -27,12 +27,4 @@ func FilterMap[K comparable, V any](m map[K]V, predicate func(K, V) bool) map[K]
 	return result
 }
 
-/*
-func Reduce[E1, E2 any](f func(E2, E1) E2, in []E1, init E2) E2 {
-	r := init
-	for _, v := range in {
-		r = f(r, v)
-	}
-	return r
-}
-*/
+// Note: Reduce is now available in slices.go

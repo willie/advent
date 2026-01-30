@@ -2,7 +2,9 @@ package aoc
 
 import "log"
 
-// Ints is []int
+// Ints is []int with convenience methods.
+// Note: The generic functions Sum[T], Min[T], Max[T] in math.go are preferred
+// for new code as they work with any integer type.
 type Ints []int
 
 // StringInts returns ints from strings

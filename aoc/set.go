@@ -101,7 +101,8 @@ func (s Set[T]) Union(x Set[T]) (union Set[T]) {
 	return
 }
 
-// StringSet is a set of strings, here for historical reasons
+// StringSet is a set of strings.
+// Deprecated: Use Set[string] instead. This type exists for backwards compatibility.
 type StringSet Set[string]
 
 // NewStringSet returns a new StringSet
@@ -196,7 +197,8 @@ func (s StringSet) Intersection(x StringSet) (intersection StringSet) {
 	return
 }
 
-// IntSet is a set of ints, here for historical reasons.
+// IntSet is a set of ints.
+// Deprecated: Use Set[int] instead. This type exists for backwards compatibility.
 type IntSet Set[int]
 
 // type IntSet map[int]struct{}

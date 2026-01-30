@@ -115,10 +115,10 @@ func (grid Grid) Equal(in Grid) (equal bool) {
 	})
 }
 
-// At returns the string at (x,y). Conveinence wrapper since grid is y-coordinate first.
+// At returns the string at (x,y). Convenience wrapper since grid is y-coordinate first.
 func (grid Grid) At(x, y int) string { return grid[y][x] }
 
-// Set the string at (x,y). Conveinence wrapper since grid is y-coordinate first.
+// Set the string at (x,y). Convenience wrapper since grid is y-coordinate first.
 func (grid Grid) Set(x, y int, s string) { grid[y][x] = s }
 
 // Get the string at (x,y). Returns default if out of bounds
@@ -158,11 +158,19 @@ func (grid Grid) Count(t string) (total int) {
 	return
 }
 
-// Height of the grid
+// Height of the grid (0 if empty)
 func (grid Grid) Height() int { return len(grid) }
 
-// Width of the grid
-func (grid Grid) Width() int { return len(grid[0]) }
+// Width of the grid (0 if empty)
+func (grid Grid) Width() int {
+	if len(grid) == 0 {
+		return 0
+	}
+	return len(grid[0])
+}
+
+// IsEmpty returns true if the grid has no cells
+func (grid Grid) IsEmpty() bool { return len(grid) == 0 }
 
 // Bounds of the grid (0, 0, width, height)
 func (grid Grid) Bounds() image.Rectangle { return image.Rect(0, 0, grid.Width(), grid.Height()) }
