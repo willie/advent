@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -108,6 +109,6 @@ exit:
 
 	//  sum version
 	println("------- sum version")
-	fmt.Println("part2", aoc.Sum(aoc.Series(aoc.Min(seatIDs...), aoc.Max(seatIDs...))...)-aoc.Sum(seatIDs...))
+	fmt.Println("part2", aoc.Sum(aoc.Series(slices.Min(seatIDs), slices.Max(seatIDs))...)-aoc.Sum(seatIDs...))
 
 }

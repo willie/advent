@@ -61,7 +61,7 @@ func main() {
 
 	aoc.Test("test1", part1(aoc.String("test"), 18), 26)
 	aoc.Test("test1", part1(aoc.String("test"), 80), 5934)
-	aoc.Test64("test2", part2(aoc.String("test"), 256), 26984457539)
+	aoc.Test("test2", part2(aoc.String("test"), 256), int64(26984457539))
 
 	println("-------")
 

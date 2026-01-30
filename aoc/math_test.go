@@ -50,34 +50,6 @@ func TestProduct(t *testing.T) {
 }
 
 // =============================================================================
-// Min/Max Tests
-// =============================================================================
-
-func TestMin(t *testing.T) {
-	if Min(5, 2, 8, 1, 9) != 1 {
-		t.Error("Min: should be 1")
-	}
-	if Min(42) != 42 {
-		t.Error("Min single: should be 42")
-	}
-	if Min(-5, -2, -8) != -8 {
-		t.Error("Min negative: should be -8")
-	}
-}
-
-func TestMax(t *testing.T) {
-	if Max(5, 2, 8, 1, 9) != 9 {
-		t.Error("Max: should be 9")
-	}
-	if Max(42) != 42 {
-		t.Error("Max single: should be 42")
-	}
-	if Max(-5, -2, -8) != -2 {
-		t.Error("Max negative: should be -2")
-	}
-}
-
-// =============================================================================
 // GCD Tests
 // =============================================================================
 

@@ -29,12 +29,6 @@ func ParseInt64s(s string) []int64 {
 	return result
 }
 
-// MustInt parses a string to int, panics on error.
-// Alias for AtoI for clarity.
-func MustInt(s string) int {
-	return AtoI(s)
-}
-
 // MustInt64 parses a string to int64, panics on error.
 func MustInt64(s string) int64 {
 	n, err := strconv.ParseInt(s, 10, 64)

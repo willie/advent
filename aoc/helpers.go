@@ -99,17 +99,6 @@ func Test[T comparable](label string, result T, expected T) {
 	fmt.Println(label+":\t", result, extra)
 }
 
-// Test64 prints output and compares to expected
-func Test64(label string, result int64, expected int64) {
-	extra := "PASS"
-
-	if result != expected {
-		extra = fmt.Sprint("FAIL, expected: ", expected)
-	}
-
-	fmt.Println(label+":\t", result, extra)
-}
-
 // Run prints output
 func Run[T any](label string, result T) { fmt.Println(label+":\t", result) }
 

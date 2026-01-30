@@ -147,9 +147,9 @@ func TestParsingNumbers(t *testing.T) {
 func TestTestFunction(t *testing.T) {
 	// The Test function prints output, we can't easily test it
 	// but we can verify it doesn't panic
-	Test("test", 42, 42)     // Should print PASS
-	Test("test", 42, 99)     // Should print FAIL
-	Test64("test", 42, 42)   // int64 version
+	Test("test", 42, 42)   // Should print PASS
+	Test("test", 42, 99)   // Should print FAIL
+	Test("test", int64(42), int64(42)) // int64 version
 }
 
 func TestRunFunction(t *testing.T) {

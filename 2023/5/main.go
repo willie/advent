@@ -69,7 +69,7 @@ func part1(in []string) (total int) {
 	}
 
 	fmt.Println(seeds)
-	return aoc.Min(seeds...)
+	return slices.Min(seeds)
 }
 
 func part2(in []string) (total int) {
@@ -142,7 +142,7 @@ func part2(in []string) (total int) {
 	}
 
 	// fmt.Println(seeds)
-	return aoc.Min(seeds...)
+	return slices.Min(seeds)
 }
 
 const day = "https://adventofcode.com/2023/day/5"

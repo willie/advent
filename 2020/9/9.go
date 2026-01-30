@@ -1,6 +1,8 @@
 package main
 
 import (
+	"slices"
+
 	"github.com/willie/advent/aoc"
 )
 
@@ -32,7 +34,7 @@ func combined(in []int, window int) (first, second int) {
 		for end := start + 1; end < len(in); end++ {
 			candidate := in[start:end]
 			if first == aoc.Sum(candidate...) {
-				second = aoc.Min(candidate...) + aoc.Max(candidate...)
+				second = slices.Min(candidate) + slices.Max(candidate)
 				return
 			}
 		}

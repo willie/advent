@@ -1,6 +1,8 @@
 package main
 
 import (
+	"slices"
+
 	"github.com/willie/advent/aoc"
 )
 
@@ -133,10 +135,10 @@ func (p *packet) Value() (out int) {
 		out = aoc.Product(p.Values()...)
 
 	case minimumType:
-		out = aoc.Min(p.Values()...)
+		out = slices.Min(p.Values())
 
 	case maximumType:
-		out = aoc.Max(p.Values()...)
+		out = slices.Max(p.Values())
 
 	case lessThanType:
 		if p.subpackets[0].Value() < p.subpackets[1].Value() {

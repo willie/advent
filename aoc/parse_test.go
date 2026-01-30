@@ -76,12 +76,6 @@ func TestWords(t *testing.T) {
 	}
 }
 
-func TestMustInt(t *testing.T) {
-	if MustInt("42") != 42 {
-		t.Error("MustInt: wrong result")
-	}
-}
-
 func TestMustInt64(t *testing.T) {
 	if MustInt64("9999999999999") != 9999999999999 {
 		t.Error("MustInt64: wrong result")

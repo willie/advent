@@ -76,7 +76,7 @@ func part1(in []string) (total int) {
 	}
 
 	// fmt.Println(visited)
-	return aoc.Max(slices.Collect(maps.Values(visited))...)/2 + 1
+	return slices.Max(slices.Collect(maps.Values(visited)))/2 + 1
 }
 
 func part2(in []string) (total int) {
@@ -127,7 +127,7 @@ func part2(in []string) (total int) {
 		inside := false
 		prev := ""
 
-		for x := aoc.Min(visitedInRow...); x < aoc.Max(visitedInRow...); x++ {
+		for x := slices.Min(visitedInRow); x < slices.Max(visitedInRow); x++ {
 			pt := image.Pt(x, y)
 			v := grid[pt]
 

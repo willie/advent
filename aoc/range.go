@@ -26,5 +26,5 @@ func (r Range) Intersection(r2 Range) Range {
 		return Range{0, 0}
 	}
 
-	return Range{Max(r.Start, r2.Start), Min(r.End, r2.End)}
+	return Range{max(r.Start, r2.Start), min(r.End, r2.End)}
 }

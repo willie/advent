@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/willie/advent/aoc"
@@ -134,7 +135,7 @@ func part2(in string, iteration int) (result int64) {
 
 	// fmt.Println(letters)
 
-	max, min := aoc.Max(counts...), aoc.Min(counts...)
+	max, min := slices.Max(counts), slices.Min(counts)
 	result = max - min
 	// result = (max - min) / 2
 	// if (max-min)%2 == 1 {
@@ -150,7 +151,7 @@ func main() {
 	println(day)
 
 	aoc.Test("test1", part1(aoc.String("test"), 10), 1588)
-	aoc.Test64("test2", part2(aoc.String("test"), 10), 1588)
+	aoc.Test("test2", part2(aoc.String("test"), 10), int64(1588))
 
 	println("-------")
 

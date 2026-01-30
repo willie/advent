@@ -1,11 +1,8 @@
 package aoc
 
 import (
-	"cmp"
 	"image"
-	"log"
 	"math"
-	"slices"
 )
 
 // Integer is a constraint for integer types.
@@ -30,24 +27,6 @@ func Product[T Integer](in ...T) (p T) {
 		p = p * i
 	}
 	return
-}
-
-// Min returns smallest value. Panics if empty.
-// Note: For slices, use slices.Min from stdlib directly.
-func Min[T cmp.Ordered](in ...T) T {
-	if len(in) == 0 {
-		log.Fatalln("no values in array")
-	}
-	return slices.Min(in)
-}
-
-// Max returns largest value. Panics if empty.
-// Note: For slices, use slices.Max from stdlib directly.
-func Max[T cmp.Ordered](in ...T) T {
-	if len(in) == 0 {
-		log.Fatalln("no values in array")
-	}
-	return slices.Max(in)
 }
 
 // GCD returns the greatest common divisor (GCD) via Euclidean algorithm.
