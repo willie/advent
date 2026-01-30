@@ -34,21 +34,21 @@ func LoadGrid2[T comparable](f func(rune) T, in []string) (g Grid2[T]) {
 	return
 }
 
-// SlopeIterate from origin
+// SlopeIterate from origin, stepping by delta each iteration
 func (grid Grid2[T]) SlopeIterate(origin image.Point, delta image.Point, f func(pt image.Point, v T) bool) {
 	bounds := grid.Bounds()
 
 	for {
-		current := origin.Add(delta)
+		origin = origin.Add(delta)
 
-		if !current.In(bounds) {
+		if !origin.In(bounds) {
 			return
 		}
 
 		// since Grid2 is sparse, only callback if it exists
-		if value, ok := grid[current]; !ok {
+		if value, ok := grid[origin]; !ok {
 			continue
-		} else if !f(current, value) {
+		} else if !f(origin, value) {
 			return
 		}
 	}

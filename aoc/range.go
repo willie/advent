@@ -17,7 +17,7 @@ func (r1 Range) Overlaps(r2 Range) bool {
 
 // Equal returns true if r1 == r2
 func (r1 Range) Equal(r2 Range) bool {
-	return r1.Start == r2.Start && r1.Start == r2.End
+	return r1.Start == r2.Start && r1.End == r2.End
 }
 
 // a little extra
