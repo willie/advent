@@ -96,14 +96,14 @@ func (ints Ints) AllIndex(in int) (idx []int) {
 	return
 }
 
-// Series returns array of low including high
-func Series(low, high int) (series Ints) {
-	series = make(Ints, (high-low)+1)
-
-	x := 0
-	for i := low; i <= high; i++ {
-		series[x] = i
-		x++
+// Series returns a slice of integers from low to high (inclusive).
+func Series(low, high int) []int {
+	if high < low {
+		return nil
 	}
-	return
+	series := make([]int, high-low+1)
+	for i := range series {
+		series[i] = low + i
+	}
+	return series
 }

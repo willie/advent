@@ -112,6 +112,6 @@ exit:
 
 	// test Ints
 	println("------- sum Ints version")
-	fmt.Println("part2", aoc.Series(seatIDs.Min(), seatIDs.Max()).Sum()-seatIDs.Sum())
+	fmt.Println("part2", aoc.Sum(aoc.Series(seatIDs.Min(), seatIDs.Max())...)-seatIDs.Sum())
 
 }
