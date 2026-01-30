@@ -2,18 +2,43 @@ package aoc
 
 import "slices"
 
+// Map applies a function to each element of a slice.
+func Map[T, V any](f func(T) V, in []T) []V {
+	out := make([]V, len(in))
+	for i, v := range in {
+		out[i] = f(v)
+	}
+	return out
+}
+
+// Filter returns elements matching the predicate.
+func Filter[T any](f func(T) bool, in []T) []T {
+	var out []T
+	for _, v := range in {
+		if f(v) {
+			out = append(out, v)
+		}
+	}
+	return out
+}
+
+// FilterMap filters a map based on a predicate.
+func FilterMap[K comparable, V any](m map[K]V, predicate func(K, V) bool) map[K]V {
+	result := make(map[K]V)
+	for k, v := range m {
+		if predicate(k, v) {
+			result[k] = v
+		}
+	}
+	return result
+}
+
 // Reverse returns a new slice with elements in reverse order.
 // Note: For in-place reversal, use slices.Reverse from stdlib.
 func Reverse[T any](s []T) []T {
 	result := slices.Clone(s)
 	slices.Reverse(result)
 	return result
-}
-
-// ReverseInPlace reverses a slice in place.
-// Deprecated: Use slices.Reverse from stdlib instead.
-func ReverseInPlace[T any](s []T) {
-	slices.Reverse(s)
 }
 
 // Chunk splits a slice into chunks of size n.

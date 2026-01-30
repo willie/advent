@@ -162,59 +162,88 @@ func TestQueueEnqueue(t *testing.T) {
 func TestQueueDequeue(t *testing.T) {
 	q := NewQueue(1, 2, 3)
 
-	// Note: Current implementation has Dequeue not returning value
-	// It just calls Pop which returns the LAST element (wrong for queue)
-	// This documents the current (incorrect) behavior
-	q.Dequeue()
+	val := q.Dequeue()
+	if val != 1 {
+		t.Errorf("Dequeue: expected 1, got %d", val)
+	}
 	if q.Size() != 2 {
 		t.Errorf("Dequeue: expected size 2, got %d", q.Size())
 	}
 }
 
 func TestQueueFIFOBehavior(t *testing.T) {
-	// This test documents expected FIFO behavior
-	// The current implementation uses Stack.Pop which is LIFO
-	// For a proper queue, first in should be first out
-
 	q := NewQueue[int]()
 	q.Enqueue(1) // Should be first out
 	q.Enqueue(2)
 	q.Enqueue(3) // Should be last out
 
-	// Using Pop (which Queue inherits) - this is LIFO not FIFO
-	// A proper queue would have Pop return 1, but current returns 3
+	// FIFO: first in, first out
 	first := q.Pop()
+	if first != 1 {
+		t.Errorf("FIFO: first should be 1, got %d", first)
+	}
 
-	// Document current behavior (which is actually LIFO due to implementation)
-	// In a proper FIFO queue, first should be 1
-	// Current implementation returns 3 (last pushed)
-	if first != 3 {
-		t.Logf("Note: Queue.Pop() returns %d (LIFO behavior)", first)
+	second := q.Pop()
+	if second != 2 {
+		t.Errorf("FIFO: second should be 2, got %d", second)
+	}
+
+	third := q.Pop()
+	if third != 3 {
+		t.Errorf("FIFO: third should be 3, got %d", third)
+	}
+}
+
+func TestQueueTop(t *testing.T) {
+	q := NewQueue(1, 2, 3)
+
+	// Top should return front element without removing it
+	if q.Top() != 1 {
+		t.Errorf("Top: expected 1, got %d", q.Top())
+	}
+	if q.Size() != 3 {
+		t.Errorf("Top: should not change size, got %d", q.Size())
+	}
+}
+
+func TestQueuePush(t *testing.T) {
+	q := NewQueue[int]()
+	q.Push(1, 2, 3)
+
+	if q.Size() != 3 {
+		t.Errorf("Push: expected size 3, got %d", q.Size())
+	}
+
+	// Should still be FIFO
+	if q.Pop() != 1 {
+		t.Error("Push: first element should be 1")
 	}
 }
 
 // =============================================================================
-// Queue Performance Note
+// Queue Performance (now O(1) amortized)
 // =============================================================================
 
-func TestQueueEnqueuePerformanceNote(t *testing.T) {
-	// This test documents the O(n) performance issue with Enqueue
-	// Enqueue calls PushBottom which prepends to slice - O(n) operation
-	// For large queues in BFS, this can be slow
-
+func TestQueuePerformance(t *testing.T) {
 	q := NewQueue[int]()
 
-	// This is O(n²) total due to O(n) prepend
-	for i := 0; i < 1000; i++ {
+	// This should now be O(n) total instead of O(n²)
+	for i := 0; i < 10000; i++ {
 		q.Enqueue(i)
 	}
 
-	if q.Size() != 1000 {
-		t.Errorf("Queue stress: expected 1000, got %d", q.Size())
+	if q.Size() != 10000 {
+		t.Errorf("Queue stress: expected 10000, got %d", q.Size())
 	}
 
-	// A proper ring buffer or container/list would be O(1) per enqueue
-	t.Log("Note: Queue.Enqueue is O(n) - consider ring buffer for large queues")
+	// Verify FIFO order
+	for i := 0; i < 10000; i++ {
+		val := q.Dequeue()
+		if val != i {
+			t.Errorf("FIFO order: expected %d, got %d", i, val)
+			break
+		}
+	}
 }
 
 // =============================================================================
@@ -226,10 +255,10 @@ func TestStackForDFS(t *testing.T) {
 	s := NewStack[int]()
 
 	// Simulate visiting nodes
-	s.Push(1)        // Visit 1
-	s.Push(2)        // Visit 2
-	s.Push(3)        // Visit 3
-	node := s.Pop()  // Backtrack: should get 3
+	s.Push(1)       // Visit 1
+	s.Push(2)       // Visit 2
+	s.Push(3)       // Visit 3
+	node := s.Pop() // Backtrack: should get 3
 	if node != 3 {
 		t.Errorf("DFS simulation: expected 3, got %d", node)
 	}
@@ -246,31 +275,25 @@ func TestStackForDFS(t *testing.T) {
 	}
 }
 
-func TestQueueUsedAsStackForBFS(t *testing.T) {
-	// Since Queue's Enqueue/Dequeue don't work as expected for FIFO,
-	// BFS implementation uses Queue.Pop() and Queue.PushBottom()
-	// which effectively makes it work but with O(n) enqueue
-
+func TestQueueForBFS(t *testing.T) {
 	q := NewQueue[int]()
-	q.PushBottom(1) // First node to visit
-	q.PushBottom(2) // Second
-	q.PushBottom(3) // Third
+	q.Enqueue(1) // First node to visit
+	q.Enqueue(2) // Second
+	q.Enqueue(3) // Third
 
-	// Pop returns from top (last pushed to bottom = first)
-	// Wait, PushBottom prepends, so [3,2,1] internally, Pop returns 1
-	// Actually let's trace through:
-	// PushBottom(1) -> [1]
-	// PushBottom(2) -> [2,1]
-	// PushBottom(3) -> [3,2,1]
-	// Pop() returns s[len-1] = 1 ✓ (correct FIFO)
-
-	first := q.Pop()
+	// FIFO: first enqueued is first dequeued
+	first := q.Dequeue()
 	if first != 1 {
-		t.Errorf("Queue as BFS: first should be 1, got %d", first)
+		t.Errorf("BFS: first should be 1, got %d", first)
 	}
 
-	second := q.Pop()
+	second := q.Dequeue()
 	if second != 2 {
-		t.Errorf("Queue as BFS: second should be 2, got %d", second)
+		t.Errorf("BFS: second should be 2, got %d", second)
+	}
+
+	third := q.Dequeue()
+	if third != 3 {
+		t.Errorf("BFS: third should be 3, got %d", third)
 	}
 }

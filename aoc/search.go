@@ -16,7 +16,7 @@ func BFS[T comparable](start T, goal T, neighbors func(current T) []T) []T {
 		for _, n := range neighbors(current) {
 			if _, ok := visited[n]; !ok {
 				visited[n] = &current
-				Q.PushBottom(n)
+				Q.Enqueue(n)
 			}
 		}
 	}

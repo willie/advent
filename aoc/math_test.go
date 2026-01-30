@@ -216,13 +216,6 @@ func TestPermutationsSingle(t *testing.T) {
 	}
 }
 
-func TestPermutationsString(t *testing.T) {
-	perms := PermutationsString([]string{"a", "b"})
-	if len(perms) != 2 { // 2! = 2
-		t.Errorf("PermutationsString: expected 2, got %d", len(perms))
-	}
-}
-
 // =============================================================================
 // AngleDistance Tests
 // =============================================================================

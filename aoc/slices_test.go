@@ -20,19 +20,6 @@ func TestReverse(t *testing.T) {
 	}
 }
 
-func TestReverseInPlace(t *testing.T) {
-	input := []int{1, 2, 3, 4, 5}
-	ReverseInPlace(input)
-
-	expected := []int{5, 4, 3, 2, 1}
-	for i, v := range input {
-		if v != expected[i] {
-			t.Errorf("ReverseInPlace: expected %v, got %v", expected, input)
-			break
-		}
-	}
-}
-
 func TestChunk(t *testing.T) {
 	input := []int{1, 2, 3, 4, 5, 6, 7}
 	chunks := Chunk(input, 3)

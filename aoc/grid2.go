@@ -3,7 +3,9 @@ package aoc
 import (
 	"fmt"
 	"image"
+	"maps"
 	"math"
+	"slices"
 )
 
 type Grid2[T comparable] map[image.Point]T
@@ -53,7 +55,7 @@ func (grid Grid2[T]) SlopeIterate(origin image.Point, delta image.Point, f func(
 }
 
 func (grid Grid2[T]) Bounds() (bounds image.Rectangle) {
-	return Bounds(MapKeys(grid))
+	return Bounds(slices.Collect(maps.Keys(grid)))
 }
 
 // Print the grid

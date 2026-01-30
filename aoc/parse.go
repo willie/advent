@@ -58,5 +58,12 @@ func SplitInts(s string, sep string) []int {
 
 // Words splits a string on whitespace, returning non-empty parts.
 func Words(s string) []string {
-	return regexp.MustCompile(`\s+`).Split(s, -1)
+	parts := regexp.MustCompile(`\s+`).Split(s, -1)
+	result := make([]string, 0, len(parts))
+	for _, p := range parts {
+		if p != "" {
+			result = append(result, p)
+		}
+	}
+	return result
 }

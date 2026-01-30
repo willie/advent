@@ -30,18 +30,18 @@ func parseTickets(in string) (tickets []aoc.Ints) {
 func part1(in string) (result [2]int) {
 	parts := strings.Split(in, "\n\n")
 
-	fieldNames := aoc.StringSet{}
+	fieldNames := aoc.Set[string]{}
 	validation := map[int][]string{}
 	// parse fields, ranges
 	for _, p := range strings.Split(parts[0], "\n") {
 		row := strings.Split(p, ": ")
 
-		field, ranges := row[0], aoc.IntSet{}
+		field, ranges := row[0], aoc.Set[int]{}
 		fieldNames.Add(field)
 
 		for _, valid := range strings.Split(row[1], " or ") {
 			r := strings.Split(valid, "-")
-			ranges.AddMany(aoc.Series(aoc.AtoI(r[0]), aoc.AtoI(r[1])))
+			ranges.AddSlice(aoc.Series(aoc.AtoI(r[0]), aoc.AtoI(r[1])))
 
 			for _, i := range aoc.Series(aoc.AtoI(r[0]), aoc.AtoI(r[1])) {
 				validation[i] = append(validation[i], field)
@@ -96,9 +96,9 @@ func part1(in string) (result [2]int) {
 		}
 	}
 
-	fieldNameSorter := map[int]aoc.StringSet{}
+	fieldNameSorter := map[int]aoc.Set[string]{}
 	for i := range validTickets[0] {
-		fieldNameSorter[i] = aoc.StringSet{}
+		fieldNameSorter[i] = aoc.Set[string]{}
 	}
 
 	for i, nameCount := range fieldSort {
@@ -111,7 +111,7 @@ func part1(in string) (result [2]int) {
 	fmt.Println("fieldNameSorter", fieldNameSorter, len(allTickets))
 
 	fieldNameOrder := map[int]string{}
-	namesFound := aoc.StringSet{}
+	namesFound := aoc.Set[string]{}
 	for len(fieldNameOrder) < len(fieldNameSorter) {
 		for n, names := range fieldNameSorter {
 			if len(names) == 1 {

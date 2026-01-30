@@ -6,13 +6,14 @@ import (
 )
 
 // Ints is []int with convenience methods.
-// Note: For new code, consider using:
+// Deprecated: For new code, use []int with:
 //   - slices.Min, slices.Max from stdlib
 //   - slices.Index, slices.Contains from stdlib
 //   - Sum[T], Product[T] from math.go
 type Ints []int
 
-// StringInts returns ints from strings
+// StringInts converts string slice to ints.
+// Deprecated: Use Map(AtoI, ss) or ParseInts for new code.
 func StringInts(ss []string) (ints Ints) {
 	for _, s := range ss {
 		ints = append(ints, AtoI(s))

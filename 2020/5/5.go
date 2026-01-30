@@ -61,7 +61,7 @@ func part2(in []string) (seatID int) {
 	sort.Ints(seatIDs)
 	// fmt.Println(seatIDs)
 
-	assigned := aoc.NewIntSet(seatIDs...)
+	assigned := aoc.NewSet(seatIDs...)
 	for i := seatIDs[1]; i < seatIDs[len(seatIDs)-2]; i++ {
 		if assigned.Contains(i-1) && !assigned.Contains(i) && assigned.Contains(i+1) {
 			return i
