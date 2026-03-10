@@ -4,3 +4,5 @@ github.com/tidwall/geometry v0.1.0 h1:/c+LeianULZDsSoU5SQXBwSYrQv0W2wetTP7KSPPX/
 github.com/tidwall/geometry v0.1.0/go.mod h1:Ic6VSa4h9QbCgMzs0/uOqf9J9BksktU065RQleKCMsU=
 golang.org/x/exp v0.0.0-20221204150635-6dcec336b2bb h1:QIsP/NmClBICkqnJ4rSIhnrGiGR7Yv9ZORGGnmmLTPk=
 golang.org/x/exp v0.0.0-20221204150635-6dcec336b2bb/go.mod h1:CxIveKay+FTh1D0yPZemJVgC/95VzuuOLq5Qi4xnoYc=
+golang.org/x/net v0.49.0 h1:eeHFmOGUTtaaPSGNmjBKpbng9MulQsJURQUAfUwY++o=
+golang.org/x/net v0.49.0/go.mod h1:/ysNB2EvaqvesRkuLAyjI1ycPZlQHM3q01F02UY/MV8=
