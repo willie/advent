@@ -1,6 +1,7 @@
 package main
 
 import (
+	"slices"
 	"strings"
 
 	"github.com/willie/advent/aoc"
@@ -15,7 +16,7 @@ func splitInts(in string) (ints []int) {
 
 func part1(in string) (result int) {
 	crabs := splitInts(in)
-	max := aoc.Max(crabs...)
+	max := slices.Max(crabs)
 	moves := make([]int, max)
 
 	for p := 0; p < max; p++ {
@@ -28,7 +29,7 @@ func part1(in string) (result int) {
 		moves[p] = count
 	}
 
-	return aoc.Min(moves...)
+	return slices.Min(moves)
 }
 
 func fuel(distance int) (cost int) {
@@ -41,7 +42,7 @@ func fuel(distance int) (cost int) {
 
 func part2(in string) (result int) {
 	crabs := splitInts(in)
-	max := aoc.Max(crabs...)
+	max := slices.Max(crabs)
 	moves := make([]int, max)
 
 	for p := 0; p < max; p++ {
@@ -54,7 +55,7 @@ func part2(in string) (result int) {
 		moves[p] = count
 	}
 
-	return aoc.Min(moves...)
+	return slices.Min(moves)
 }
 
 const day = "https://adventofcode.com/2021/day/7"

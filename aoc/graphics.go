@@ -35,7 +35,7 @@ func PaletteImageFromImage(img image.Image) (palleted *image.Paletted) {
 
 // SaveGIF from a single palette image
 func SaveGIF(filename string, img *image.Paletted) {
-	SaveGIFs("text.gif", []*image.Paletted{img}, 0)
+	SaveGIFs(filename, []*image.Paletted{img}, 0)
 }
 
 // SaveGIFs from a series of paletted images

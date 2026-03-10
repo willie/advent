@@ -47,7 +47,7 @@ func part2(in []string) (result int) {
 			output[i] = -1
 		}
 
-		var seven, four aoc.StringSet
+		var seven, four aoc.Set[string]
 
 		// build known
 		for i, p := range parts {
@@ -58,10 +58,10 @@ func part2(in []string) (result int) {
 				n = 1
 			case 3:
 				n = 7
-				seven = aoc.NewStringSet(strings.Split(p, "")...)
+				seven = aoc.NewSet(strings.Split(p, "")...)
 			case 4:
 				n = 4
-				four = aoc.NewStringSet(strings.Split(p, "")...)
+				four = aoc.NewSet(strings.Split(p, "")...)
 			case 7:
 				n = 8
 			default:
@@ -77,7 +77,7 @@ func part2(in []string) (result int) {
 				continue
 			}
 
-			p := aoc.NewStringSet(strings.Split(parts[i], "")...)
+			p := aoc.NewSet(strings.Split(parts[i], "")...)
 
 			switch len(p) {
 			case 5: // 2, 3, 5

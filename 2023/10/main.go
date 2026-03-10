@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"image"
+	"maps"
 	"slices"
 
 	"github.com/willie/advent/aoc"
-	"golang.org/x/exp/maps"
 )
 
-func nextPoints(grid aoc.Grid2[string], c image.Point) (next []image.Point) {
+func nextPoints(grid aoc.SparseGrid[string], c image.Point) (next []image.Point) {
 	var (
 		north = c.Add(image.Point{0, -1})
 		south = c.Add(image.Point{0, 1})
@@ -35,7 +35,7 @@ func nextPoints(grid aoc.Grid2[string], c image.Point) (next []image.Point) {
 	return
 }
 
-func nextPoint(grid aoc.Grid2[string], c image.Point, previous image.Point) (next image.Point) {
+func nextPoint(grid aoc.SparseGrid[string], c image.Point, previous image.Point) (next image.Point) {
 	for _, n := range nextPoints(grid, c) {
 		if n != previous {
 			return n
@@ -76,7 +76,7 @@ func part1(in []string) (total int) {
 	}
 
 	// fmt.Println(visited)
-	return aoc.Max(maps.Values(visited)...)/2 + 1
+	return slices.Max(slices.Collect(maps.Values(visited)))/2 + 1
 }
 
 func part2(in []string) (total int) {
@@ -112,13 +112,13 @@ func part2(in []string) (total int) {
 
 	// what tiles are inside the loop?
 	visited[s] = 0
-	bounds := aoc.Bounds(maps.Keys(visited))
+	bounds := aoc.Bounds(slices.Collect(maps.Keys(visited)))
 
 	for y := bounds.Max.Y; y >= bounds.Min.Y; y-- {
 
 		// find all of the visited tiles in this row and get the min and max x values
 		visitedInRow := []int{}
-		for _, pt := range maps.Keys(visited) {
+		for _, pt := range slices.Collect(maps.Keys(visited)) {
 			if pt.Y == y {
 				visitedInRow = append(visitedInRow, pt.X)
 			}
@@ -127,7 +127,7 @@ func part2(in []string) (total int) {
 		inside := false
 		prev := ""
 
-		for x := aoc.Min(visitedInRow...); x < aoc.Max(visitedInRow...); x++ {
+		for x := slices.Min(visitedInRow); x < slices.Max(visitedInRow); x++ {
 			pt := image.Pt(x, y)
 			v := grid[pt]
 

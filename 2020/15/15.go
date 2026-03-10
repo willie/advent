@@ -8,26 +8,27 @@ import (
 )
 
 func part1(in string, turns int) (result [2]int) {
-	starting := aoc.Ints{}
+	starting := []int{}
 
 	for _, i := range strings.Split(in, ",") {
 		starting = append(starting, aoc.AtoI(i))
 	}
 
-	spoken := aoc.Ints{}
-	spoken = append(spoken, starting...)
-
-	last := spoken.Last()
+	spoken := append([]int{}, starting...)
+	last := spoken[len(spoken)-1]
 
 	for turn := len(spoken) + 1; turn <= turns; turn++ {
 		this := 0
 
-		all := spoken.AllIndex(last)
-		switch {
-		case len(all) <= 1: // never been spoken
-			this = 0
+		// Find all indices where last was spoken
+		var all []int
+		for i, v := range spoken {
+			if v == last {
+				all = append(all, i)
+			}
+		}
 
-		default:
+		if len(all) > 1 {
 			this = all[len(all)-1] - all[len(all)-2]
 		}
 

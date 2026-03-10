@@ -7,7 +7,7 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func isBingo(called aoc.StringSet, board aoc.Grid) (bingo bool, winner []string) {
+func isBingo(called aoc.Set[string], board aoc.Grid) (bingo bool, winner []string) {
 	possibilities := append(board.Columns(), board.Rows()...)
 
 	for _, poss := range possibilities {
@@ -36,7 +36,7 @@ func part1(in string) (result int) {
 		boards = append(boards, g)
 	}
 
-	called := aoc.NewStringSet()
+	called := aoc.NewSet[string]()
 	var winningBoard aoc.Grid
 	var poss []string
 	var last int
@@ -90,9 +90,9 @@ func part2(in string) (result int) {
 		boards = append(boards, g)
 	}
 
-	called := aoc.NewStringSet()
+	called := aoc.NewSet[string]()
 	var winningBoard aoc.Grid
-	winningBoards := aoc.NewIntSet()
+	winningBoards := aoc.NewSet[int]()
 	var last int
 
 	for _, turn := range numbers {

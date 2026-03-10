@@ -67,7 +67,7 @@ const (
 func arrangements(in string) (total int) {
 	row := strings.Fields(in)
 	condition := row[0]
-	groups := aoc.StringInts(strings.Split(row[1], ","))
+	groups := aoc.Map(aoc.AtoI, strings.Split(row[1], ","))
 	fmt.Println(condition, groups)
 
 	damagedCount := strings.Count(condition, damaged)

@@ -6,11 +6,11 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func contains(m map[string][]string, color string) (out aoc.StringSet) {
-	out = aoc.StringSet{}
+func contains(m map[string][]string, color string) (out aoc.Set[string]) {
+	out = aoc.Set[string]{}
 
 	if colors, has := m[color]; has {
-		out.AddMany(colors)
+		out.AddSlice(colors)
 		for _, c := range colors {
 			out.AddSet(contains(m, c))
 		}

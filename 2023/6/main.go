@@ -8,8 +8,8 @@ import (
 )
 
 func part1(in []string) (total int) {
-	times := aoc.StringInts(strings.Fields(strings.Split(in[0], ": ")[1]))
-	record := aoc.StringInts(strings.Fields(strings.Split(in[1], ": ")[1]))
+	times := aoc.Map(aoc.AtoI, strings.Fields(strings.Split(in[0], ": ")[1]))
+	record := aoc.Map(aoc.AtoI, strings.Fields(strings.Split(in[1], ": ")[1]))
 
 	total = 1
 	for i, time := range times {

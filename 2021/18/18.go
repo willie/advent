@@ -47,13 +47,11 @@ func (p *pair) addPair(v *pair) {
 	}
 }
 
-func (p *pair) maxdepth() (max int) {
+func (p *pair) maxdepth() int {
 	if p == nil {
 		return 0
 	}
-
-	max = aoc.Max(p.depth(), p.left.maxdepth(), p.left.maxdepth())
-	return
+	return max(p.depth(), p.left.maxdepth(), p.left.maxdepth())
 }
 
 func part1(in []string) (result int) {

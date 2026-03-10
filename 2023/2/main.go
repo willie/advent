@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"maps"
+	"slices"
 	"strings"
 
 	"github.com/willie/advent/aoc"
-	"golang.org/x/exp/maps"
 )
 
 func part1(in []string) (total int) {
@@ -56,7 +57,7 @@ func part2(in []string) (total int) {
 			}
 		}
 
-		total += aoc.Product(maps.Values(cubesNeeded)...)
+		total += aoc.Product(slices.Collect(maps.Values(cubesNeeded))...)
 	}
 
 	return

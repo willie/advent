@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -61,7 +62,7 @@ func part2(in []string) (seatID int) {
 	sort.Ints(seatIDs)
 	// fmt.Println(seatIDs)
 
-	assigned := aoc.NewIntSet(seatIDs...)
+	assigned := aoc.NewSet(seatIDs...)
 	for i := seatIDs[1]; i < seatIDs[len(seatIDs)-2]; i++ {
 		if assigned.Contains(i-1) && !assigned.Contains(i) && assigned.Contains(i+1) {
 			return i
@@ -82,7 +83,7 @@ func main() {
 
 	fmt.Println("------- binary solution after some sleep, damnit")
 
-	seatIDs := aoc.Ints{}
+	seatIDs := []int{}
 
 	// for _, pass := range aoc.Strings("test") {
 	for _, pass := range aoc.Strings(day) {
@@ -108,10 +109,6 @@ exit:
 
 	//  sum version
 	println("------- sum version")
-	fmt.Println("part2", aoc.Sum(aoc.Series(aoc.Min(seatIDs...), aoc.Max(seatIDs...))...)-aoc.Sum(seatIDs...))
-
-	// test Ints
-	println("------- sum Ints version")
-	fmt.Println("part2", aoc.Series(seatIDs.Min(), seatIDs.Max()).Sum()-seatIDs.Sum())
+	fmt.Println("part2", aoc.Sum(aoc.Series(slices.Min(seatIDs), slices.Max(seatIDs))...)-aoc.Sum(seatIDs...))
 
 }

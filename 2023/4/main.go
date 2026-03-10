@@ -10,8 +10,8 @@ func part1(in []string) (total int) {
 	for _, s := range in {
 		line := strings.Split(strings.Split(s, ": ")[1], " | ")
 
-		winners := aoc.StringInts(strings.Fields(line[0]))
-		card := aoc.StringInts(strings.Fields(line[1]))
+		winners := aoc.Map(aoc.AtoI, strings.Fields(line[0]))
+		card := aoc.Map(aoc.AtoI, strings.Fields(line[1]))
 
 		losers := aoc.NewSet(card...).Subtract(aoc.NewSet(winners...))
 		diff := len(card) - len(losers)
@@ -37,8 +37,8 @@ func part2(in []string) (total int) {
 	for _, s := range in {
 		line := strings.Split(strings.Split(s, ": ")[1], " | ")
 
-		winners := aoc.StringInts(strings.Fields(line[0]))
-		card := aoc.StringInts(strings.Fields(line[1]))
+		winners := aoc.Map(aoc.AtoI, strings.Fields(line[0]))
+		card := aoc.Map(aoc.AtoI, strings.Fields(line[1]))
 
 		won := aoc.NewSet(card...).Intersect(aoc.NewSet(winners...))
 

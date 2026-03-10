@@ -2,22 +2,26 @@ package aoc
 
 import (
 	"image"
-	"log"
 	"math"
-
-	"golang.org/x/exp/constraints"
 )
 
-// Sum returns total
-func Sum[T constraints.Integer](in ...T) (sum T) {
+// Integer is a constraint for integer types.
+// Note: cmp.Ordered from stdlib is more general (includes floats/strings).
+type Integer interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 |
+		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
+
+// Sum returns total of all values.
+func Sum[T Integer](in ...T) (sum T) {
 	for _, i := range in {
 		sum += i
 	}
 	return
 }
 
-// Product multiplies all the numbers together
-func Product[T constraints.Integer](in ...T) (p T) {
+// Product multiplies all values together.
+func Product[T Integer](in ...T) (p T) {
 	p = 1
 	for _, i := range in {
 		p = p * i
@@ -25,48 +29,16 @@ func Product[T constraints.Integer](in ...T) (p T) {
 	return
 }
 
-// Min returns smallest value
-func Min[T constraints.Integer](in ...T) (min T) {
-	if len(in) == 0 {
-		log.Fatalln("no values in array")
-	}
-
-	min = in[0]
-	for i := 1; i < len(in); i++ {
-		if in[i] < min {
-			min = in[i]
-		}
-	}
-
-	return
-}
-
-// Max returns largest value
-func Max[T constraints.Integer](in ...T) (max T) {
-	if len(in) == 0 {
-		log.Fatalln("no values in array")
-	}
-
-	max = in[0]
-	for i := 1; i < len(in); i++ {
-		if max < in[i] {
-			max = in[i]
-		}
-	}
-
-	return
-}
-
-// GCD returns the greatest common divisor (GCD) via Euclidean algorithm
-func GCD[T constraints.Integer](a, b T) T {
+// GCD returns the greatest common divisor (GCD) via Euclidean algorithm.
+func GCD[T Integer](a, b T) T {
 	for b > 0 {
 		a, b = b, a%b
 	}
 	return a
 }
 
-// LCM returns Least Common Multiple (LCM) via GCD
-func LCM[T constraints.Integer](nums ...T) (lcm T) {
+// LCM returns Least Common Multiple (LCM) via GCD.
+func LCM[T Integer](nums ...T) (lcm T) {
 	if len(nums) == 0 {
 		return
 	}
@@ -78,8 +50,13 @@ func LCM[T constraints.Integer](nums ...T) (lcm T) {
 	return
 }
 
-// Abs return absolute value
-func Abs[T constraints.Signed](x T) T {
+// Signed is a constraint for signed integer types.
+type Signed interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64
+}
+
+// Abs returns absolute value.
+func Abs[T Signed](x T) T {
 	if x < 0 {
 		return -x
 	}
@@ -112,66 +89,6 @@ func Permutations[T any](in []T) [][]T {
 		}
 	}
 	return out
-}
-
-/*
-// Permutations returns all the permutations
-func Permutations(arr []int) [][]int {
-	var helper func([]int, int)
-	res := [][]int{}
-
-	helper = func(arr []int, n int) {
-		if n == 1 {
-			tmp := make([]int, len(arr))
-			copy(tmp, arr)
-			res = append(res, tmp)
-		} else {
-			for i := 0; i < n; i++ {
-				helper(arr, n-1)
-				if n%2 == 1 {
-					tmp := arr[i]
-					arr[i] = arr[n-1]
-					arr[n-1] = tmp
-				} else {
-					tmp := arr[0]
-					arr[0] = arr[n-1]
-					arr[n-1] = tmp
-				}
-			}
-		}
-	}
-	helper(arr, len(arr))
-	return res
-}
-*/
-
-// PermutationsString returns all the permutations
-func PermutationsString(arr []string) [][]string {
-	var helper func([]string, int)
-	res := [][]string{}
-
-	helper = func(arr []string, n int) {
-		if n == 1 {
-			tmp := make([]string, len(arr))
-			copy(tmp, arr)
-			res = append(res, tmp)
-		} else {
-			for i := 0; i < n; i++ {
-				helper(arr, n-1)
-				if n%2 == 1 {
-					tmp := arr[i]
-					arr[i] = arr[n-1]
-					arr[n-1] = tmp
-				} else {
-					tmp := arr[0]
-					arr[0] = arr[n-1]
-					arr[n-1] = tmp
-				}
-			}
-		}
-	}
-	helper(arr, len(arr))
-	return res
 }
 
 // AngleDistance returns the angle and distance between 2 points

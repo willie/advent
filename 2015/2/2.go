@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/willie/advent/aoc"
 )
@@ -15,14 +16,14 @@ func wrap(in string) (paper int) {
 	l, w, h := parse(in)
 	sides := []int{l * w, w * h, h * l}
 
-	return 2*aoc.Sum(sides...) + aoc.Min(sides...)
+	return 2*aoc.Sum(sides...) + slices.Min(sides)
 }
 
 func ribbon(in string) (ribbon int) {
 	l, w, h := parse(in)
 	perimeter := []int{2 * (l + w), 2 * (w + h), 2 * (h + l)}
 
-	return aoc.Min(perimeter...) + (l * w * h)
+	return slices.Min(perimeter) + (l * w * h)
 }
 
 func part1(in []string) (total int) {

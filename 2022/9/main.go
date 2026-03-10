@@ -41,7 +41,7 @@ func closestCandidate(A image.Point, candidates []image.Point) (closest image.Po
 func part1(name string) {
 	var head, tail image.Point
 
-	visited := aoc.Grid2[string]{image.Pt(0, 0): "#"}
+	visited := aoc.SparseGrid[string]{image.Pt(0, 0): "#"}
 
 	for _, s := range aoc.Strings(name) {
 		var dir string
@@ -77,7 +77,7 @@ func part2(name string) {
 	var head image.Point
 	tails := make([]image.Point, 9)
 
-	visited := aoc.Grid2[string]{image.Pt(0, 0): "#"}
+	visited := aoc.SparseGrid[string]{image.Pt(0, 0): "#"}
 
 	for _, s := range aoc.Strings(name) {
 		var dir string

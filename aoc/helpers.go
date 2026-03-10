@@ -66,12 +66,14 @@ func Strings(url string) (strings []string) {
 	return
 }
 
-// LoadInts returns each line in input as a int array
-func LoadInts(url string) (ints Ints) {
-	for _, s := range Strings(url) {
-		ints = append(ints, AtoI(s))
+// LoadInts returns each line in input as an int slice.
+func LoadInts(url string) []int {
+	lines := Strings(url)
+	ints := make([]int, len(lines))
+	for i, s := range lines {
+		ints[i] = AtoI(s)
 	}
-	return
+	return ints
 }
 
 // StringsSplit returns each line in input separated by a delimiter as an [][]string
@@ -88,17 +90,6 @@ func LoadGrid(url string) (grid Grid) { return NewGrid(Strings(url)) }
 
 // Test prints output and compares to expected
 func Test[T comparable](label string, result T, expected T) {
-	extra := "PASS"
-
-	if result != expected {
-		extra = fmt.Sprint("FAIL, expected: ", expected)
-	}
-
-	fmt.Println(label+":\t", result, extra)
-}
-
-// Test64 prints output and compares to expected
-func Test64(label string, result int64, expected int64) {
 	extra := "PASS"
 
 	if result != expected {

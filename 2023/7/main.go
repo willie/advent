@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"maps"
 	"slices"
 	"strings"
 
 	"github.com/willie/advent/aoc"
-	"golang.org/x/exp/maps"
 )
 
 const (
@@ -30,7 +30,7 @@ func cardinality(hand string) (cardinality map[string]int) {
 func handType(hand string) (score int) {
 	cardinality := cardinality(hand)
 
-	values := maps.Values(cardinality)
+	values := slices.Collect(maps.Values(cardinality))
 	slices.Sort(values)
 	slices.Reverse(values)
 
@@ -122,7 +122,7 @@ func handType2(hand string) (score int) {
 		delete(cardinality, "J")
 	}
 
-	values := maps.Values(cardinality)
+	values := slices.Collect(maps.Values(cardinality))
 	slices.Sort(values)
 	slices.Reverse(values)
 

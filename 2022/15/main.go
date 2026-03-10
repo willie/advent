@@ -9,7 +9,7 @@ import (
 	"github.com/willie/advent/aoc"
 )
 
-func drawSensor(grid aoc.Grid2[string], origin image.Point, distance int, row int) {
+func drawSensor(grid aoc.SparseGrid[string], origin image.Point, distance int, row int) {
 	for x := -distance; x <= distance; x++ {
 		for y := -distance; y <= distance; y++ {
 			dest := origin.Add(image.Pt(x, y))
@@ -28,7 +28,7 @@ func drawSensor(grid aoc.Grid2[string], origin image.Point, distance int, row in
 }
 
 func part1(name string, row int) {
-	grid := aoc.Grid2[string]{}
+	grid := aoc.SparseGrid[string]{}
 
 	for _, s := range aoc.Strings(name) {
 		var sensor, beacon image.Point
@@ -55,7 +55,7 @@ func part1(name string, row int) {
 	fmt.Println(notBeacon)
 }
 
-func drawSensorAll(grid aoc.Grid2[string], origin image.Point, distance int) {
+func drawSensorAll(grid aoc.SparseGrid[string], origin image.Point, distance int) {
 	for x := -distance; x <= distance; x++ {
 		for y := -distance; y <= distance; y++ {
 			dest := origin.Add(image.Pt(x, y))
@@ -70,7 +70,7 @@ func drawSensorAll(grid aoc.Grid2[string], origin image.Point, distance int) {
 }
 
 func part1draw(name string) {
-	grid := aoc.Grid2[string]{}
+	grid := aoc.SparseGrid[string]{}
 
 	for _, s := range aoc.Strings(name) {
 		var sensor, beacon image.Point

@@ -56,7 +56,7 @@ func part1(in []string) (result int) {
 	}
 
 	for k, v := range g {
-		g[k] = aoc.NewStringSet(v...).Remove("start").Values()
+		g[k] = aoc.NewSet(v...).Remove("start").Values()
 	}
 
 	p := follow(g, path{}, "start")
@@ -109,7 +109,7 @@ func part2(in []string) (result int) {
 	}
 
 	for k, v := range g {
-		g[k] = aoc.NewStringSet(v...).Remove("start").Values()
+		g[k] = aoc.NewSet(v...).Remove("start").Values()
 	}
 
 	p := follow2(g, path{}, "start")

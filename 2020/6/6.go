@@ -9,13 +9,13 @@ import (
 )
 
 func part1(in string) (count int) {
-	groups := []aoc.StringSet{}
+	groups := []aoc.Set[string]{}
 	in = strings.TrimSpace(in)
 	in = strings.ReplaceAll(in, "\n", "|")
 	in = strings.ReplaceAll(in, "||", "\n")
 	in = strings.ReplaceAll(in, "|", "")
 	for _, p := range strings.Split(in, "\n") {
-		g := aoc.NewStringSet()
+		g := aoc.NewSet[string]()
 
 		for _, c := range p {
 			letter := string(c)
@@ -100,12 +100,12 @@ func part2set(in string) (total int) {
 	// groups
 	for _, i := range strings.Split(in, "\n\n") {
 		people := 0
-		commonAnswers := aoc.StringSet{}
+		commonAnswers := aoc.Set[string]{}
 
 		// per user
 		scanner := bufio.NewScanner(strings.NewReader(i))
 		for scanner.Scan() {
-			answers := aoc.StringSet{}
+			answers := aoc.Set[string]{}
 
 			for _, c := range scanner.Text() {
 				answers.Add(string(c))

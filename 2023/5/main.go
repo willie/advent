@@ -15,7 +15,7 @@ type mapping struct {
 }
 
 func part1(in []string) (total int) {
-	seeds := aoc.StringInts(strings.Fields(strings.Split(in[0], ": ")[1]))
+	seeds := aoc.Map(aoc.AtoI, strings.Fields(strings.Split(in[0], ": ")[1]))
 
 	name := "seeds"
 
@@ -29,7 +29,7 @@ func part1(in []string) (total int) {
 			continue
 		}
 
-		if m := aoc.StringInts(strings.Fields(s)); len(m) == 3 {
+		if m := aoc.Map(aoc.AtoI, strings.Fields(s)); len(m) == 3 {
 			dest, source, length := m[0], m[1], m[2]
 
 			mappings = append(mappings, mapping{source, dest, length})
@@ -69,13 +69,13 @@ func part1(in []string) (total int) {
 	}
 
 	fmt.Println(seeds)
-	return aoc.Min(seeds...)
+	return slices.Min(seeds)
 }
 
 func part2(in []string) (total int) {
 	seeds := []int{}
 
-	input := aoc.StringInts(strings.Fields(strings.Split(in[0], ": ")[1]))
+	input := aoc.Map(aoc.AtoI, strings.Fields(strings.Split(in[0], ": ")[1]))
 	fmt.Println(input)
 
 	for i := 0; i < len(input); i += 2 {
@@ -88,7 +88,7 @@ func part2(in []string) (total int) {
 	}
 	fmt.Println(len(seeds))
 
-	// seeds := aoc.StringInts(strings.Fields(strings.Split(in[0], ": ")[1]))
+	// seeds := aoc.Map(aoc.AtoI, strings.Fields(strings.Split(in[0], ": ")[1]))
 
 	name := "seeds"
 	mappings := []mapping{}
@@ -102,7 +102,7 @@ func part2(in []string) (total int) {
 			continue
 		}
 
-		if m := aoc.StringInts(strings.Fields(s)); len(m) == 3 {
+		if m := aoc.Map(aoc.AtoI, strings.Fields(s)); len(m) == 3 {
 			dest, source, length := m[0], m[1], m[2]
 
 			mappings = append(mappings, mapping{source, dest, length})
@@ -142,7 +142,7 @@ func part2(in []string) (total int) {
 	}
 
 	// fmt.Println(seeds)
-	return aoc.Min(seeds...)
+	return slices.Min(seeds)
 }
 
 const day = "https://adventofcode.com/2023/day/5"

@@ -1,12 +1,13 @@
 package main
 
 import (
+	"slices"
 	"sort"
 
 	"github.com/willie/advent/aoc"
 )
 
-func combined(in aoc.Ints) (first, second int) {
+func combined(in []int) (first, second int) {
 	sort.Ints(in)
 
 	last := 0
@@ -24,7 +25,7 @@ func combined(in aoc.Ints) (first, second int) {
 	}
 
 	first = differences[1] * differences[3]
-	second = perms[aoc.Max(in...)]
+	second = perms[slices.Max(in)]
 
 	return
 }

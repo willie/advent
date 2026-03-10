@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"slices"
 	"sort"
 
 	"github.com/willie/advent/aoc"
@@ -32,7 +33,7 @@ func part1(in []string) (result int) {
 		}
 
 		c := aoc.AtoI(s)
-		if c < aoc.Min(values...) {
+		if c < slices.Min(values) {
 			result += (1 + c)
 			// fmt.Println(x, y, " -> ", c)
 		}
@@ -101,7 +102,7 @@ func part2(in []string) (result int) {
 		}
 
 		c := aoc.AtoI(s)
-		if c < aoc.Min(values...) {
+		if c < slices.Min(values) {
 			// result += (1 + c)
 			points := map[image.Point]int{}
 			fill(g, x, y, points)

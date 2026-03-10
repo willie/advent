@@ -50,7 +50,7 @@ import (
 type wordscore struct {
 	word    string
 	score   int
-	letters aoc.StringSet
+	letters aoc.Set[string]
 }
 
 func process(words []string) {
@@ -127,7 +127,7 @@ func process(words []string) {
 	// print out the words in score order
 	scores := []wordscore{}
 	for word, score := range wordScore {
-		letters := aoc.NewStringSet(strings.Split(word, "")...)
+		letters := aoc.NewSet(strings.Split(word, "")...)
 		// no dupes
 		if len(letters) != 5 {
 			continue
@@ -191,7 +191,7 @@ func process(words []string) {
 				continue
 			}
 
-			letters := aoc.NewStringSet().AddSet(f).AddSet(f2)
+			letters := aoc.NewSet[string]().AddSet(f).AddSet(f2)
 			if len(letters) != 10 {
 				continue
 			}
@@ -199,7 +199,7 @@ func process(words []string) {
 			candidates2 := candidates[j+1:]
 			for _, score3 := range candidates2 {
 				if score.score+score2.score+score3.score >= maxscore {
-					f3 := aoc.NewStringSet(score3.letters.Values()...)
+					f3 := aoc.NewSet(score3.letters.Values()...)
 					if len(f3) != 5 {
 						continue
 					}
